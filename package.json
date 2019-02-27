@@ -1,0 +1,23 @@
+{
+  "name": "automeal",
+  "version": "1.0.0",
+  "description": "Generate meals based on ingredients you already have",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/automeal/AutoMeal.git"
+  },
+  "author": "Daniel Segarra, Wei Lian, Savannah Nester, Victoria Simatupang, Roy Lema",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/automeal/AutoMeal/issues"
+  },
+  "homepage": "https://github.com/automeal/AutoMeal#readme",
+  "dependencies": {
+    "client": "0.0.1",
+    "create-react-app": "^2.1.5"
+  }
+}
