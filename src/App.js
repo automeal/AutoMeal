@@ -1,28 +1,25 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import Profile from './Profile'
 
-class App extends Component {
-  render() {
+export default class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      photo: require('./landing_page_image-46.png'),
+      profileFields: {
+        Email: 'lian576267257@gmail.com',
+        DietRestrictions: 'none',
+        SavedItems:'none',
+        LikedRecipes:'none'
+      }
+    }
+  }
+
+  render () {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <Profile profileFields={this.state.profileFields} photo={this.state.photo} />
       </div>
-    );
+    )
   }
 }
-
-export default App;
