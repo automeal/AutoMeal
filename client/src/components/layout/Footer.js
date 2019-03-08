@@ -7,8 +7,7 @@ function Footer() {
           <Link style={linkStyle} to="/">Home</Link> | <Link style={linkStyle}
           to="/pantry">Pantry</Link> | <Link style={linkStyle}
           to="/profile">Profile</Link> | <Link style={linkStyle}
-          to="/recipes">Recipes</Link> | <Link style={linkStyle}
-          to="/userSettings">User Settings</Link>
+          to="/recipes">Recipes</Link>
         </footer>
     );
 }
