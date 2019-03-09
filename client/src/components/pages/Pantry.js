@@ -8,12 +8,12 @@ class Pantry extends Component {
   }
 
   render() {
-    return this.props.pantry.map( (item) => (
-        /*<PantryItem key={item.id} item={item} toggleAvailable=
-        {this.props.toggleAvailable} delItem = {this.props.delItem} />*/
-        <PantryItem key={item.id} item={item} toggleAvailable=
-        {this.props.toggleAvailable} delItem = {this.props.delItem} />
-    ))
+      return this.props.pantry.map( (item) => (
+          /*<PantryItem key={item.id} item={item} toggleAvailable=
+          {this.props.toggleAvailable} delItem = {this.props.delItem} />*/
+          <PantryItem key={item.id} item={item} toggleAvailable=
+          {this.props.toggleAvailable} delItem = {this.props.delItem} />
+      ))
   }
 }
 

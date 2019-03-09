@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Pantry from './components/pages/Pantry';
 import AddItem from './components/AddItem';
+import Home from './components/pages/Home';
 import uuid from 'uuid';
 
 import './App.css';
@@ -57,16 +59,25 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="container">
-          <Header />
-          <AddItem addItem={this.addItem}/>
-          <Pantry pantry={this.state.pantry} toggleAvailable=
-          {this.toggleAvailable} delItem={this.delItem} />
-          <Footer />
+      <Router>
+        <div className="App">
+          <div className="container">
+            <Header />
+            {/* HOME */}
+            <Route exact path="/home" component={Home}/>
+            {/* PANTRY */}
+            <Route exact path="/pantry" render={ props => (
+                <React.Fragment>
+                  <AddItem addItem={this.addItem}/>
+                  <Pantry pantry={this.state.pantry} toggleAvailable=
+                  {this.toggleAvailable} delItem={this.delItem} />
+                </React.Fragment>
+            )} />
+            {/* <Route exact path="/about" component={About}/> */}
+            <Footer />
+          </div>
         </div>
-
-      </div>
+      </Router>
     );
   }
 }

@@ -3,18 +3,17 @@ import {Link} from 'react-router-dom';
 
 function Footer() {
     return (
-        <footer style={footerStyle}>
-          <Link style={linkStyle} to="/">Home</Link> | <Link style={linkStyle}
-          to="/pantry">Pantry</Link> | <Link style={linkStyle}
-          to="/profile">Profile</Link> | <Link style={linkStyle}
-          to="/recipes">Recipes</Link>
-        </footer>
+        <div>
+          <footer style={footerStyle}>
+            <Link style={linkStyle} to="/about">AutoMeal</Link> 2019
+          </footer>
+        </div>
     );
 }
 
 const footerStyle = {
-    background: '#dbdbdb',
-    color: '#9e6969',
+    background: '#b2c5b3',
+    color: '#3c5148',
     textAlign: 'center',
     padding: '10px'
 }
