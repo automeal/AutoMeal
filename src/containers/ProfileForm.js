@@ -5,20 +5,17 @@ export default class ProfileForm extends React.Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			Email: this.props.values.Email || 'Your personal email address',
-			DietRestrictions: this.props.values.DietRestrictions || 'Your diet restrictions',
-			SavedItems: this.props.values.SavedItems || 'Your saved items',
-			LikedRecipes: this.props.values.LikedRecipes || 'Your liked recipes'
-		}
-		this.handleChange = this.handleChange.bind(this)
-		this.handleSumbit = this.handleSumbit.bind(this)
+			Email: 'Your personal email address',
+			DietRestrictions: 'Your diet restrictions',
+			SavedItems: 'Your saved items',
+			LikedRecipes: 'Your liked recipes'
+		};
 	}
-	handleChange (event){
-		event.preventDefault();
+	handleChange = event => {
 		this.setState({
-			[event.target.name]: event.target.value
-		})
-	}
+		  [event.target.id]: event.target.value
+		});
+	  }
 	handleSumbit (event){
 		event.preventDefault();
 	}

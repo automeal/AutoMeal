@@ -1,25 +1,52 @@
-import React from 'react'
-import Profile from './Profile'
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { Nav, Navbar, NavItem } from "react-bootstrap";
+import "./App.css";
+import Routes from "./Routes";
+import Header from "./Layout/Header"
 
-export default class App extends React.Component {
-  constructor (props) {
-    super(props)
+
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+  
     this.state = {
-      photo: require('./landing_page_image-46.png'),
-      profileFields: {
-        Email: 'lian576267257@gmail.com',
-        DietRestrictions: 'none',
-        SavedItems:'none',
-        LikedRecipes:'none'
-      }
-    }
+      isAuthenticated: false
+    };
   }
-
-  render () {
+  
+  userHasAuthenticated = authenticated => {
+    this.setState({ isAuthenticated: authenticated });
+  }
+  
+  render() {
+    const childProps = {
+      isAuthenticated: this.state.isAuthenticated,
+      userHasAuthenticated: this.userHasAuthenticated
+    };
+    
     return (
-      <div>
-        <Profile profileFields={this.state.profileFields} photo={this.state.photo} />
+      <div className="App container">
+        <Header />
+        <Navbar fluid collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/">Automeal</Link>
+            </Navbar.Brand>
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              <NavItem href="/login">Login</NavItem>
+              <NavItem href="/register">Register</NavItem>
+              <NavItem href="/profile">Profile</NavItem>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+        <Routes childProps={childProps} />
       </div>
-    )
+    );
   }
-}
+}  
+
+export default App;
