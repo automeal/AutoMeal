@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
+
 import './Menu.css';
 
 class Menu extends Component {
@@ -13,10 +15,10 @@ class Menu extends Component {
             <div id="flyoutMenu"
             onMouseDown={this.props.handleMouseDown}
             className={visibility}>
-              <h2><a href="/Home">Home</a></h2>
-              <h2><a href="/Pantry">Pantry</a></h2>
-              <h2><a href="/Profile">Profile</a></h2>
-              <h2><a href="/Recipes">Recipes</a></h2>
+              <h2><Link to="/Home">Home</Link></h2>
+              <h2><Link to="/Pantry">Pantry</Link></h2>
+              <h2><Link to="/Profile">Profile</Link></h2>
+              <h2><Link to="/Recipes">Recipes</Link></h2>
             </div>
         );
     }
