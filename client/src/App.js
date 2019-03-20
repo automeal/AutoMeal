@@ -6,6 +6,8 @@ import Pantry from './components/pages/Pantry';
 import AddItem from './components/AddItem';
 import Home from './components/pages/Home';
 import Profile from './components/pages/Profile';
+import Login from './components/pages/Login';
+import Register from './components/pages/Register';
 import uuid from 'uuid';
 
 import './App.css';
@@ -77,6 +79,14 @@ class App extends Component {
             {/* PROFILE */}
             <Route exact path ="/Profile" render ={ props => (
                 <Profile />
+            )} />
+            {/* LOGIN */}
+            <Route exact path ="/Login" render ={ props => (
+                <Login />
+            )} />
+            {/* REGISTER */}
+            <Route exact path ="/Register" render ={ props => (
+                <Register />
             )} />
             {/* <Route exact path="/about" component={About}/> */}
             <Footer />
