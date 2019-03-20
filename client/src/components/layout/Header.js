@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import MenuButton from '../../components/MenuButton';
 import Menu from './Menu';
 import PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
 
 import pantrylogo from '../../img/pantry.png';
-import logo from '../../img/logo.png';
 //import MenuContainer from './MenuContainer';
 
 class Header extends Component {
@@ -33,17 +33,17 @@ class Header extends Component {
     }
 
     render() {
+        const path = this.props.location.pathname.slice(1);
         return (
           <div>
             <header style={buttonStyle}>
               <MenuButton handleMouseDown={this.handleMouseDown}/>
             </header>
             <header style={headerStyle}>
-              <img src={logo} align="center" width="20%" />
               <Menu handleMouseDown={this.handleMouseDown}
               menuVisibility={this.state.visible} />
-              <h1>Your Pantry</h1>
-              <img src={pantrylogo} width="40%"/>
+              <h1>{path}</h1>
+              <img src={pantrylogo} width="20%"/>
             </header>
           </div>
         );
@@ -73,4 +73,4 @@ Header.propTypes = {
     handleMouseDown: PropTypes.func.isRequired,
 }
 
-export default Header;
+export default withRouter(Header);

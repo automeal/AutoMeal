@@ -1,11 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
+import logo from '../../img/logo.png';
+
 function Footer() {
     return (
         <div>
           <footer style={footerStyle}>
-            <Link style={linkStyle} to="/about">AutoMeal</Link> 2019
+          <Link style={linkStyle} to="/about"><img src={logo} align="center"
+          width="10%" /></Link> 
           </footer>
         </div>
     );

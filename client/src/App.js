@@ -5,6 +5,7 @@ import Footer from './components/layout/Footer';
 import Pantry from './components/pages/Pantry';
 import AddItem from './components/AddItem';
 import Home from './components/pages/Home';
+import Profile from './components/pages/Profile';
 import uuid from 'uuid';
 
 import './App.css';
@@ -64,14 +65,18 @@ class App extends Component {
           <div className="container">
             <Header />
             {/* HOME */}
-            <Route exact path="/home" component={Home}/>
+            <Route exact path="/Home" component={Home}/>
             {/* PANTRY */}
-            <Route exact path="/pantry" render={ props => (
+            <Route exact path="/Pantry" render={ props => (
                 <React.Fragment>
                   <AddItem addItem={this.addItem}/>
                   <Pantry pantry={this.state.pantry} toggleAvailable=
                   {this.toggleAvailable} delItem={this.delItem} />
                 </React.Fragment>
+            )} />
+            {/* PROFILE */}
+            <Route exact path ="/Profile" render ={ props => (
+                <Profile />
             )} />
             {/* <Route exact path="/about" component={About}/> */}
             <Footer />

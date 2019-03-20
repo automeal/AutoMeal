@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Carousel from 'react-bootstrap/Carousel';
-import ex1 from '../../img/FrqItmEx1.jpg'
+import Carousel from '../../components/Carousel'
+
+import ex1 from '../../img/FrqItmEx1.jpg';
 
 class Home extends Component {
   constructor(props) {
@@ -10,19 +11,11 @@ class Home extends Component {
 
   render() {
     return (
-      <Carousel>
-        <Carousel.Item>
-          <img
-            className="d-block w-100"
-            src={ex1}
-            alt="First slide"
-          />
-          <Carousel.Caption>
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-          </Carousel.Caption>
-        </Carousel.Item>
-      </Carousel>
+      <div>
+      <h1>Frequently Used Items</h1>
+      <h1>Based on Your Previous Meals...</h1>
+      <h1>Highest Rated Recipes</h1>
+      </div>
   );
   }
 }
