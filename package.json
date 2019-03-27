@@ -4,6 +4,7 @@
   "description": "Generate meals based on ingredients you already have",
   "main": "server.js",
   "scripts": {
+    "i": "npm i && npm i --prefix client",
     "start": "node server",
     "server": "nodemon server",
     "client": "npm start --prefix client",
