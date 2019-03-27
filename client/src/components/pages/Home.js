@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Carousel from "../../components/Carousel";
+// import Carousel from "../../components/Carousel";
 
-import ex1 from "../../img/FrqItmEx1.jpg";
+// import ex1 from "../../img/FrqItmEx1.jpg";
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     return (

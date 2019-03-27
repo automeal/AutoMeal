@@ -45,7 +45,7 @@ class Header extends Component {
             menuVisibility={this.state.visible}
           />
           <h1>{path}</h1>
-          <img src={pantrylogo} width="20%" />
+          <img src={pantrylogo} width="20%" alt="pantryLogo" />
         </header>
       </div>
     );
@@ -66,10 +66,10 @@ const buttonStyle = {
   padding: "2px"
 };
 
-const linkStyle = {
-  color: "#fff",
-  textDecoration: "none"
-};
+// const linkStyle = {
+//   color: "#fff",
+//   textDecoration: "none"
+// };
 
 Header.propTypes = {
   handleMouseDown: PropTypes.func.isRequired

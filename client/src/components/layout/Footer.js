@@ -8,7 +8,7 @@ function Footer() {
     <div>
       <footer style={footerStyle}>
         <Link style={linkStyle} to="/about">
-          <img src={logo} align="center" width="10%" />
+          <img src={logo} align="center" width="10%" alt="logo" />
         </Link>
       </footer>
     </div>

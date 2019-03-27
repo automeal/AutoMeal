@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Pantry from "./components/pages/Pantry";
+import Recipes from "./components/pages/Recipes";
 import AddItem from "./components/AddItem";
 import Home from "./components/pages/Home";
 import Profile from "./components/pages/Profile";
@@ -92,6 +93,7 @@ class App extends Component {
             <Route exact path="/Login" render={props => <Login />} />
             {/* REGISTER */}
             <Route exact path="/Register" render={props => <Register />} />
+            <Route exact path="/Recipes" render={props => <Recipes />} />
             {/* <Route exact path="/about" component={About}/> */}
             <Footer />
           </div>

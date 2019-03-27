@@ -3,9 +3,9 @@ import PantryItem from "../PantryItem";
 import PropTypes from "prop-types";
 
 class Pantry extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     return this.props.pantry.map(item => (
