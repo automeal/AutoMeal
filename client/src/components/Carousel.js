@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Carousel extends Component {
   constructor(props) {
@@ -16,18 +16,18 @@ class Carousel extends Component {
     const lastIndex = imgUrls.length - 1;
     const { currentImageIndex } = this.state;
     const shouldResetIndex = currentImageIndex === 0;
-    const index =  shouldResetIndex ? lastIndex : currentImageIndex - 1;
+    const index = shouldResetIndex ? lastIndex : currentImageIndex - 1;
 
     this.setState({
       currentImageIndex: index
     });
   }
 
-  nextSlide () {
+  nextSlide() {
     const lastIndex = imgUrls.length - 1;
     const { currentImageIndex } = this.state;
     const shouldResetIndex = currentImageIndex === lastIndex;
-    const index =  shouldResetIndex ? 0 : currentImageIndex + 1;
+    const index = shouldResetIndex ? 0 : currentImageIndex + 1;
 
     this.setState({
       currentImageIndex: index
@@ -35,18 +35,20 @@ class Carousel extends Component {
   }
 
   render() {
-    return(
+    return (
       <div className="carousel">
         <Arrow
           direction="left"
-          clickFunction={ this.previousSlide }
-          glyph="&#9664;" />
+          clickFunction={this.previousSlide}
+          glyph="&#9664;"
+        />
 
-        <ImageSlide url={ imgUrls[this.state.currentImageIndex] } />
+        <ImageSlide url={imgUrls[this.state.currentImageIndex]} />
         <Arrow
           direction="right"
-          clickFunction={ this.nextSlide }
-          glyph="&#9654;" />
+          clickFunction={this.nextSlide}
+          glyph="&#9654;"
+        />
       </div>
     );
   }
@@ -55,29 +57,25 @@ class Carousel extends Component {
 const ImageSlide = ({ url }) => {
   const styles = {
     backgroundImage: `url(${url})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center'
+    backgroundSize: "cover",
+    backgroundPosition: "center"
   };
 
-  return (
-    <div className="image-slide" style={styles}></div>
-  );
-}
+  return <div className="image-slide" style={styles} />;
+};
 
 const Arrow = ({ direction, clickFunction, glyph }) => (
-  <div
-    className={ `slide-arrow ${direction}` }
-    onClick={ clickFunction }>
-    { glyph }
+  <div className={`slide-arrow ${direction}`} onClick={clickFunction}>
+    {glyph}
   </div>
 );
 
 const imgUrls = [
-    "https://images-na.ssl-images-amazon.com/images/I/71gI-IUNUkL._SY355_.jpg",
-    "https://img1.cookinglight.timeinc.net/sites/default/files/1523901147/1804w-Eggs.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Milk_glass.jpg/220px-Milk_glass.jpg",
-    "https://previews.123rf.com/images/movingmoment/movingmoment1608/movingmoment160800076/62842289-many-strips-of-streaky-uncooked-bacon-isolated-on-white-from-above-.jpg",
-    "https://www.simplyhealthyfamily.org/wp-content/uploads/2017/08/can-you-freeze-uncooked-rice.2..jpg"
-]
+  "https://images-na.ssl-images-amazon.com/images/I/71gI-IUNUkL._SY355_.jpg",
+  "https://img1.cookinglight.timeinc.net/sites/default/files/1523901147/1804w-Eggs.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Milk_glass.jpg/220px-Milk_glass.jpg",
+  "https://previews.123rf.com/images/movingmoment/movingmoment1608/movingmoment160800076/62842289-many-strips-of-streaky-uncooked-bacon-isolated-on-white-from-above-.jpg",
+  "https://www.simplyhealthyfamily.org/wp-content/uploads/2017/08/can-you-freeze-uncooked-rice.2..jpg"
+];
 
 export default Carousel;

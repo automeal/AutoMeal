@@ -20,7 +20,7 @@ class Login extends Component {
     this.setState({
       [event.target.id]: event.target.value
     });
-  }
+  };
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -31,8 +31,7 @@ class Login extends Component {
     } catch (e) {
       alert(e.message);
     }
-  }
-
+  };
 
   render() {
     return (
