@@ -1,7 +1,8 @@
 const unirest = require("unirest");
 const express = require("express");
 const router = express.Router();
-const rapidAPIKey = require("../../config/keys").rapidAPIKey;
+const config = require("config");
+const rapidAPIKey = config.get("rapidAPIKey");
 
 router.get("/", (req, res) => {
   unirest
