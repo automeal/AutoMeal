@@ -19,8 +19,8 @@ Go into source folder
 Install dependencies with npm script  
 `$ npm run i`
 
-create a folder **config** with a file **keys.js** that has the following:  
-`module.exports = { mongoURI: <String>, rapidAPIKey: <String> };`
+create a folder **config** with a file **default.json** that has the following:  
+`{ "mongoURI": "<getMongoCloudServerAccount>", "rapidAPIKey": "<getRapidAPIKey>", "jwtSecret": "<chooseSecret>" }`
 
 These keys must be attained in order to fetch recipe data.
 

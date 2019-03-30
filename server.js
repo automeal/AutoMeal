@@ -9,11 +9,8 @@ const auth = require("./routes/api/auth");
 // Bodyparser Middleware
 app.use(express.json());
 
-// DB Config
+// Exract our URI
 const db = config.get("mongoURI");
-
-// Extract our URI
-// const db = require("./config/keys").mongoURI;
 
 // Connect to MongoDB
 mongoose
