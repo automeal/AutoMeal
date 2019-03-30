@@ -1,3 +1,6 @@
+# Keys
+config/
+
 # Logs
 logs
 *.log

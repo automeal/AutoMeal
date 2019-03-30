@@ -1,32 +1,32 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.4;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.4;
 }
 
 a {
-    color: #333;
-    text-decoration: none;
+  color: #333;
+  text-decoration: none;
 }
 
 .container {
-    padding: 0 1rem;
+  padding: 0 0rem;
 }
 
 .enterBtn {
-    display: inline-block !important;
-    border: none !important;
-    background: #555555 !important;
-    color: #ffffff !important;
-    padding: 7px 20px !important;
-    cursor: pointer !important;
+  display: inline-block !important;
+  border: none !important;
+  background: #555555 !important;
+  color: #ffffff !important;
+  padding: 7px 20px !important;
+  cursor: pointer !important;
 }
 
 .enterBtn:hover {
-    background: #666 !important;
+  background: #666 !important;
 }

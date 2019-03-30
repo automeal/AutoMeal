@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { FormGroup,FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../../components/LoaderButton";
 import "./Register.css";
+import axios from "axios";
 
 export default class Register extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ export default class Register extends Component {
 
     this.state = {
       isLoading: false,
+      displayName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -24,64 +26,111 @@ export default class Register extends Component {
     );
   }
 
-
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
-  }
+  };
 
   handleSubmit = async event => {
     event.preventDefault();
 
     this.setState({ isLoading: true });
 
-    this.setState({ newUser: "test" });
+    this.setState({
+      newUser: this.state.displayName === "" ? "test" : this.state.displayName
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    // Request body
+    // const body = JSON.stringify({ event.displayName, event.email, event.password });
+
+    // axios
+    //   .post('/api/users', body, config)
+    //   .then(res => console.log(res.token))
+    //   .catch(err => console.log(err))
+    // };
+
+    // console.log(
+    //   "name:" +
+    //     this.state.displayName +
+    //     ", email:" +
+    //     this.state.email +
+    //     ", password:" +
+    //     this.state.password
+    // );
+    axios
+      .post(
+        "/api/users",
+        {
+          full_name: this.state.displayName,
+          email: this.state.email,
+          password: this.state.password
+        },
+        config
+      )
+      .then((req, res) => {
+        console.log("User added");
+      })
+      .catch(err => console.log(err));
 
     this.setState({ isLoading: false });
-  }
-
+  };
 
   render() {
     return (
       <div className="Signup">
-      <form onSubmit={this.handleSubmit}>
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
-            autoFocus
-            type="email"
-            value={this.state.email}
-            onChange={this.handleChange}
+        <form onSubmit={this.handleSubmit}>
+          <FormGroup controlId="displayName" bsSize="large">
+            <ControlLabel>Display Name</ControlLabel>
+            <FormControl
+              autoFocus
+              type="text"
+              value={this.state.displayName}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          <FormGroup controlId="email" bsSize="large">
+            <ControlLabel>Email</ControlLabel>
+            <FormControl
+              autoFocus
+              type="email"
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          <FormGroup controlId="password" bsSize="large">
+            <ControlLabel>Password</ControlLabel>
+            <FormControl
+              value={this.state.password}
+              onChange={this.handleChange}
+              type="password"
+            />
+          </FormGroup>
+          <FormGroup controlId="confirmPassword" bsSize="large">
+            <ControlLabel>Confirm Password</ControlLabel>
+            <FormControl
+              value={this.state.confirmPassword}
+              onChange={this.handleChange}
+              type="password"
+            />
+          </FormGroup>
+          <LoaderButton
+            block
+            bsSize="large"
+            disabled={!this.validateForm()}
+            type="submit"
+            isLoading={this.state.isLoading}
+            text="Register"
+            loadingText="Signing up…"
           />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
-            value={this.state.password}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <FormGroup controlId="confirmPassword" bsSize="large">
-          <ControlLabel>Confirm Password</ControlLabel>
-          <FormControl
-            value={this.state.confirmPassword}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <LoaderButton
-          block
-          bsSize="large"
-          disabled={!this.validateForm()}
-          type="submit"
-          isLoading={this.state.isLoading}
-          text="Register"
-          loadingText="Signing up…"
-        />
-      </form>
-       </div>
+        </form>
+      </div>
     );
   }
 }
