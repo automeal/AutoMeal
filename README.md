@@ -19,8 +19,13 @@ Go into source folder
 Install dependencies with npm script  
 `$ npm run i`
 
-create a folder **config** with a file **default.json** that has the following:  
-`{ "mongoURI": "<getMongoCloudServerAccount>", "rapidAPIKey": "<getRapidAPIKey>", "jwtSecret": "<chooseSecret>" }`
+In the base folder `AutoMeal/` create the following in a `.env` file:
+
+```
+MONGODB_URI=<getMongoCloudServerAccount>
+RAPID_API_KEY=<getRapidAPIKey>
+JWT_SECRET=<chooseSecret>
+```
 
 These keys must be attained in order to fetch recipe data.
 

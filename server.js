@@ -12,7 +12,7 @@ const deleteUser = require("./routes/api/deleteUser");
 app.use(express.json());
 
 // Exract our URI
-const db = process.env.MONGO_URI;
+const db = process.env.MONGODB_URI;
 
 // Connect to MongoDB
 mongoose
