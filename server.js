@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const config = require("config");
+require("dotenv").config();
 const path = require("path");
 const app = express();
 const recipes = require("./routes/api/recipes");
@@ -11,7 +12,7 @@ const deleteUser = require("./routes/api/deleteUser");
 app.use(express.json());
 
 // Exract our URI
-const db = config.get("mongoURI");
+const db = process.env.MONGO_URI;
 
 // Connect to MongoDB
 mongoose
