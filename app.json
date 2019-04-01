@@ -2,5 +2,6 @@
   "name": "AutoMeal",
   "description": "Generate scalable, individual recipes and meal plans",
   "repository": "https://github.com/automeal/AutoMeal",
+  "addons": ["mongolab:sandbox"],
   "keywords": ["mongoDB", "express", "react", "node", "MERN", "food"]
 }
