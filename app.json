@@ -1,0 +1,6 @@
+{
+  "name": "AutoMeal",
+  "description": "Generate scalable, individual recipes and meal plans",
+  "repository": "https://github.com/automeal/AutoMeal",
+  "keywords": ["mongoDB", "express", "react", "node", "MERN", "food"]
+}

@@ -2,6 +2,8 @@
 
 ![](./img/logo.jpg)
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 Find recipes based on ingredients you already have at home.
 
 Join a community of enthusiastic home cooks.
