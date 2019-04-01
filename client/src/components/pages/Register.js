@@ -74,8 +74,9 @@ export default class Register extends Component {
         },
         config
       )
-      .then((req, res) => {
-        console.log("User added");
+      .then(res => {
+        console.log(res.data.token);
+        localStorage.setItem("token", res.data.token);
       })
       .catch(err => console.log(err));
 
@@ -93,6 +94,7 @@ export default class Register extends Component {
               type="text"
               value={this.state.displayName}
               onChange={this.handleChange}
+              autoComplete="on"
             />
           </FormGroup>
           <FormGroup controlId="email" bsSize="large">
@@ -102,6 +104,7 @@ export default class Register extends Component {
               type="email"
               value={this.state.email}
               onChange={this.handleChange}
+              autoComplete="on"
             />
           </FormGroup>
           <FormGroup controlId="password" bsSize="large">
@@ -110,6 +113,7 @@ export default class Register extends Component {
               value={this.state.password}
               onChange={this.handleChange}
               type="password"
+              autoComplete="on"
             />
           </FormGroup>
           <FormGroup controlId="confirmPassword" bsSize="large">
@@ -118,6 +122,7 @@ export default class Register extends Component {
               value={this.state.confirmPassword}
               onChange={this.handleChange}
               type="password"
+              autoComplete="on"
             />
           </FormGroup>
           <LoaderButton

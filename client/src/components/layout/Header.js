@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MenuButton from "../../components/MenuButton";
 import Menu from "./Menu";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 import pantrylogo from "../../img/pantry.png";
@@ -15,8 +15,8 @@ class Header extends Component {
       visible: false
     };
 
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.toggleMenu = this.toggleMenu.bind(this);
+    // this.handleMouseDown = this.handleMouseDown.bind(this);
+    // this.toggleMenu = this.toggleMenu.bind(this);
   }
 
   handleMouseDown = e => {
@@ -26,11 +26,11 @@ class Header extends Component {
     e.stopPropagation();
   };
 
-  toggleMenu() {
+  toggleMenu = () => {
     this.setState({
       visible: !this.state.visible
     });
-  }
+  };
 
   render() {
     const path = this.props.location.pathname.slice(1);
@@ -71,8 +71,8 @@ const buttonStyle = {
 //   textDecoration: "none"
 // };
 
-Header.propTypes = {
-  handleMouseDown: PropTypes.func.isRequired
-};
+// Header.propTypes = {
+//   handleMouseDown: PropTypes.func.isRequired
+// };
 
 export default withRouter(Header);

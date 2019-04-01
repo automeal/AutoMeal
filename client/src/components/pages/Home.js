@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 // import Carousel from "../../components/Carousel";
 
 // import ex1 from "../../img/FrqItmEx1.jpg";
@@ -21,10 +21,10 @@ class Home extends Component {
 }
 
 // Proptypes
-Home.propTypes = {
-  pantry: PropTypes.array.isRequired,
-  toggleAvailable: PropTypes.func.isRequired,
-  delItem: PropTypes.func.isRequired
-};
+// Home.propTypes = {
+//   pantry: PropTypes.array.isRequired,
+//   toggleAvailable: PropTypes.func.isRequired,
+//   delItem: PropTypes.func.isRequired
+// };
 
 export default Home;
