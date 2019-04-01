@@ -25,12 +25,14 @@ class Login extends Component {
   handleSubmit = async event => {
     event.preventDefault();
 
-    try {
-      console.log(this.state.email, this.state.password);
-      alert("Logged in");
-    } catch (e) {
-      alert(e.message);
-    }
+    // try {
+    //   console.log(this.state.email, this.state.password);
+    //   alert("Logged in");
+    // } catch (e) {
+    //   alert(e.message);
+    // }
+
+    // VALIDATE USER CREDENTIALS
   };
 
   render() {
