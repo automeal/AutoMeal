@@ -6,16 +6,14 @@ const app = express();
 const recipes = require("./routes/api/recipes");
 const users = require("./routes/api/users");
 const auth = require("./routes/api/auth");
+const ingredientSearch = require("./routes/recipeAPI/ingredientSearch");
 
 // Bodyparser Middleware
 app.use(express.json());
 
-// Exract our URI
-const db = process.env.MONGODB_URI;
-
 // Connect to MongoDB
 mongoose
-  .connect(db, {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true
   })
@@ -25,9 +23,13 @@ mongoose
 // Body parser middleware
 app.use(express.json());
 
+// API to mongoDB
 app.use("/api/recipes", recipes);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
+
+// API to rapidAPI
+app.use("/recipeAPI/ingredientSearch", ingredientSearch);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
