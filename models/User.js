@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const UserSchema = new Schema({
+  // Credentials/Authorization/Metadata
   full_name: {
     type: String,
     required: true
@@ -23,9 +24,20 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  dietary_restrictions: {
+
+  // AutoMeal watching your every move
+  // Data users provide and we store create a more personal experience
+  pantry: {
     type: Array,
     default: ["salt", "oil", "lettuce", "pepper", "goya", "milk", "ice cream"]
+  },
+  dietary_restrictions: {
+    type: Array,
+    default: []
+  },
+  allergies: {
+    type: Array,
+    default: []
   }
 });
 
