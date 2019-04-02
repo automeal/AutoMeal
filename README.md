@@ -2,15 +2,19 @@
 
 ![](./img/logo.jpg)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-_Note: If deployed with Heroku, please set environment variables in your Heroku app (Settings -> Config Vars -> Reveal Config Vars) and then set **RAPID_API_KEY** and **JWT_SECRET**, below -- MONGODB_URI is automatically set by Heroku configuration._
+[![Build Status](https://travis-ci.com/automeal/AutoMeal.svg?branch=master)](https://travis-ci.com/automeal/AutoMeal)
 
 Find recipes based on ingredients you already have at home.
 
 Join a community of enthusiastic home cooks.
 
 More convincing words.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+_Note: If deployed with Heroku, please set environment variables in your Heroku app (Settings -> Config Vars -> Reveal Config Vars) and then set **RAPID_API_KEY** and **JWT_SECRET**, below -- MONGODB_URI is automatically set by Heroku configuration._
+
+---
 
 ### Development
 
