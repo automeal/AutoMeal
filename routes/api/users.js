@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const config = require("config");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
@@ -60,6 +59,31 @@ router.post("/", (req, res) => {
       });
     });
   });
+});
+
+// @route   PUT api/users/
+// @desc    update user
+// @access  Private
+router.patch("/:id", (req, res) => {
+  // User.findById(req.params.id)
+  //   .then(
+  //     user =>
+  //       // user.updateOne(
+  //       //   { _id: user._id },
+  //       //   { $set: { dietary_restrictions: req.body } }
+  //       // )
+  //       (user.dietary_restrictions = req.body.dietary_restrictions)
+  //   )
+  //   .catch(err => res.status(404).json({ success: false }));
+});
+
+// @route   DELETE api/users/
+// @desc    delete user
+// @access  Private
+router.delete("/:id", (req, res) => {
+  User.findById(req.params.id)
+    .then(user => user.remove().then(() => res.json({ success: true })))
+    .catch(err => res.status(404).json({ success: false }));
 });
 
 module.exports = router;

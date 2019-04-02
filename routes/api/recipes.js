@@ -1,7 +1,6 @@
 const unirest = require("unirest");
 const express = require("express");
 const router = express.Router();
-const config = require("config");
 require("dotenv").config();
 const rapidAPIKey = process.env.RAPID_API_KEY;
 
