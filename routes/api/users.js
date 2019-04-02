@@ -61,20 +61,17 @@ router.post("/", (req, res) => {
   });
 });
 
-// @route   PUT api/users/
+// @route   PATCH api/users/
 // @desc    update user
 // @access  Private
 router.patch("/:id", (req, res) => {
-  // User.findById(req.params.id)
-  //   .then(
-  //     user =>
-  //       // user.updateOne(
-  //       //   { _id: user._id },
-  //       //   { $set: { dietary_restrictions: req.body } }
-  //       // )
-  //       (user.dietary_restrictions = req.body.dietary_restrictions)
-  //   )
-  //   .catch(err => res.status(404).json({ success: false }));
+  User.findById(req.params.id);
+  User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(raw);
+  });
 });
 
 // @route   DELETE api/users/
