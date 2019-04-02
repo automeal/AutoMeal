@@ -65,7 +65,6 @@ router.post("/", (req, res) => {
 // @desc    update user
 // @access  Private
 router.patch("/:id", (req, res) => {
-  User.findById(req.params.id);
   User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
     if (err) {
       res.send(err);
