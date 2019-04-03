@@ -47,26 +47,9 @@ export default class Register extends Component {
       }
     };
 
-    // Request body
-    // const body = JSON.stringify({ event.displayName, event.email, event.password });
-
-    // axios
-    //   .post('/api/users', body, config)
-    //   .then(res => console.log(res.token))
-    //   .catch(err => console.log(err))
-    // };
-
-    // console.log(
-    //   "name:" +
-    //     this.state.displayName +
-    //     ", email:" +
-    //     this.state.email +
-    //     ", password:" +
-    //     this.state.password
-    // );
     axios
       .post(
-        "/api/users",
+        "/api/users/register",
         {
           full_name: this.state.displayName,
           email: this.state.email,
