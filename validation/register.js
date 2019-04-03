@@ -31,17 +31,13 @@ module.exports = function validateRegisterInput(data) {
   }
 
   // PASSWORD
-  // PASSWORD FIELD EMPTY
-  if (Validator.isEmpty(data.password)) {
-    errors.password = "Password field is required.";
-  }
   // INCORRECT PASSWORD LENGTH
   if (!Validator.isLength(data.password, { min: 8, max: 32 })) {
     errors.password = "Password field must be between 8 and 32 characters.";
   }
-  // CONFIRM PASSWORD EMPTY
-  if (Validator.isEmpty(data.password2)) {
-    errors.password2 = "Confirm Password field is required.";
+  // PASSWORD FIELD EMPTY
+  if (Validator.isEmpty(data.password)) {
+    errors.password = "Password field is required.";
   }
   // INCORRECT CONFIRM PASSWORD LENGTH
   if (!Validator.isLength(data.password2, { min: 8, max: 32 })) {
@@ -51,6 +47,10 @@ module.exports = function validateRegisterInput(data) {
   // CONFIRM PASSWORD DOES NOT MATCH FIRST PASSWORD FIELD
   if (!Validator.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
+  }
+  // CONFIRM PASSWORD EMPTY
+  if (Validator.isEmpty(data.password2)) {
+    errors.password2 = "Confirm Password field is required.";
   }
 
   return { errors, isValid: isEmpty(errors) };
