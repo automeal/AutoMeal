@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - lts/*
+install:
+  - npm ci
+cache:
+  directories:
+    - "$HOME/.npm"
+before_deploy:
+  - gem install mime-types -v 2.6.2
+deploy:
+  provider: heroku
+  api_key:
+    secure: abFVjiNgDF96cchtNRh+4KHM8l9CAYrGEau/fiTUe5G6TPsacx+x49Ef7vDytPHYTm/n76E19E9I8AX9FjvLr+PL8t51yJFf9RZqjMbgHPagqVrxX1y/ZYCRCYGMWc8IdHDtx6sy30ZjkIbRNJz8iY2IpsstnNNc0LDLj/6+fDf04TtZR0fxWRI+1/eqqkn+AQ3LxFAh+hrOqViTLBTuCaX82prrpb0fyWrQ7CoSHa7iCTnqWMKCAOnM7MlRgCCbxWhW0PvZD2MvqtYqFt1oQwC3ghvYjsIpWA8CrovMUEhO8NbD4bPTRIbP7ULgHRU9PTC+nQ3Zx4MQptMWR45Zhq59Aefk8OoGtUrGb8AorD+Ox/sZ0wHNndw+1KD2qXo4tIXI2aDmGHRirqIgTgtec+J3jmB58T0VgYC9F1xeelTOisX1vkh3HerPj1kFb+f3bHRPq6mxH6Ij8/bYBTCUnmNPG9svIzgGVsPFSaSopfOiLAxTW0B2BsewtzJe6X+33tyxOAcTGbqVXvdOsSrFKVY0qYs8L5444SpZO39PljpfGdRC91xy62W1GCoK1RhpGENwYOLgBgCH/woXn+jU3ncc25JX9JA+49QqCYEaxvLwMq0lUj1w4Y+930Iqnnrqs/rmLY/u863aD8YG+2C/ruiM5VVnT9kIp7ttbQZjYs0=
+  app: automeal
+  on:
+    repo: automeal/AutoMeal
