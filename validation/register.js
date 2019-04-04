@@ -8,7 +8,9 @@ module.exports = function validateRegisterInput(data) {
   data.full_name = !isEmpty(data.full_name) ? data.full_name : "";
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
-  data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+  data.confirm_password = !isEmpty(data.confirm_password)
+    ? data.confirm_password
+    : "";
 
   // NAME
   // INCORRECT NAME LENGTH
@@ -40,17 +42,17 @@ module.exports = function validateRegisterInput(data) {
     errors.password = "Password field is required.";
   }
   // INCORRECT CONFIRM PASSWORD LENGTH
-  if (!Validator.isLength(data.password2, { min: 8, max: 32 })) {
-    errors.password2 =
+  if (!Validator.isLength(data.confirm_password, { min: 8, max: 32 })) {
+    errors.confirm_password =
       "Confirm Password field must be between 8 and 32 characters.";
   }
   // CONFIRM PASSWORD DOES NOT MATCH FIRST PASSWORD FIELD
-  if (!Validator.equals(data.password, data.password2)) {
-    errors.password2 = "Passwords must match";
+  if (!Validator.equals(data.password, data.confirm_password)) {
+    errors.confirm_password = "Passwords must match";
   }
   // CONFIRM PASSWORD EMPTY
-  if (Validator.isEmpty(data.password2)) {
-    errors.password2 = "Confirm Password field is required.";
+  if (Validator.isEmpty(data.confirm_password)) {
+    errors.confirm_password = "Confirm Password field is required.";
   }
 
   return { errors, isValid: isEmpty(errors) };

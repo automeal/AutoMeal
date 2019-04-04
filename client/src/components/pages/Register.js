@@ -13,7 +13,7 @@ export default class Register extends Component {
       displayName: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
       newUser: null
     };
   }
@@ -22,7 +22,7 @@ export default class Register extends Component {
     return (
       this.state.email.length > 0 &&
       this.state.password.length > 0 &&
-      this.state.password === this.state.confirmPassword
+      this.state.password === this.state.confirm_password
     );
   }
 
@@ -53,7 +53,8 @@ export default class Register extends Component {
         {
           full_name: this.state.displayName,
           email: this.state.email,
-          password: this.state.password
+          password: this.state.password,
+          confirm_password: this.state.confirm_password
         },
         config
       )
@@ -99,10 +100,10 @@ export default class Register extends Component {
               autoComplete="on"
             />
           </FormGroup>
-          <FormGroup controlId="confirmPassword" bsSize="large">
+          <FormGroup controlId="confirm_password" bsSize="large">
             <ControlLabel>Confirm Password</ControlLabel>
             <FormControl
-              value={this.state.confirmPassword}
+              value={this.state.confirm_password}
               onChange={this.handleChange}
               type="password"
               autoComplete="on"
