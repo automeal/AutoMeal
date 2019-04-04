@@ -125,33 +125,34 @@ router.patch("/:id", (req, res) => {
 
         // if found check password
         bcrypt.compare(req.body.password, user.password).then(isMatch => {
-          // if passwords match
+          console.log("gave new password");
+          // if passwords match don't bother
           if (isMatch) {
             errors.password =
               "Password cannot be the same as previous password.";
+            console.log("gave old password");
             return res.status(400).json(errors);
+          } else {
+            // if new password given,
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(req.body.password, salt, (err, hash) => {
+                // Change password field in request to hashed version
+                req.body.password = hash;
+                // must do this step in arrow function (req.body.password is reset after)
+                User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
+                  err ? res.send(err) : res.send(raw);
+                });
+              });
+            });
           }
         });
       })
       .catch(err => console.log(err));
-
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(req.body.password, salt, (err, hash) => {
-        // Change password field in request to hashed version
-        req.body.password = hash;
-        // must do this step in arrow function (req.body.password is reset after)
-        User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
-          // Uncommenting line below attempt to set headers again and gives server error
-          // err ? res.send(err) : res.send(raw);
-        });
-      });
-    });
   }
   // If no password pushed push other data
   else {
     User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
-      // Uncommenting line below attempt to set headers again and gives server error
-      // err ? res.send(err) : res.send(raw);
+      err ? res.send(err) : res.send(raw);
     });
   }
 });
