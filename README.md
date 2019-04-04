@@ -2,20 +2,26 @@
 
 ![](./img/logo.jpg)
 
+<<<<<<< HEAD
+=======
 [![Build Status](https://travis-ci.com/automeal/AutoMeal.svg?branch=master)](https://travis-ci.com/automeal/AutoMeal)
 
+>>>>>>> ba9343a0f41bdb71327d56cfb318f194df03655d
 Find recipes based on ingredients you already have at home.
 
 Join a community of enthusiastic home cooks.
 
 More convincing words.
 
+<<<<<<< HEAD
+=======
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 _Note: If deployed with Heroku, please set environment variables in your Heroku app (Settings -> Config Vars -> Reveal Config Vars) and then set **RAPID_API_KEY** and **JWT_SECRET**, below -- MONGODB_URI is automatically set by Heroku configuration._
 
 ---
 
+>>>>>>> ba9343a0f41bdb71327d56cfb318f194df03655d
 ### Development
 
 Clone this repository  
@@ -27,6 +33,12 @@ Go into source folder
 Install dependencies with npm script  
 `$ npm run i`
 
+<<<<<<< HEAD
+create a folder **config** with a file **default.json** that has the following:  
+`{ "mongoURI": "<getMongoCloudServerAccount>", "rapidAPIKey": "<getRapidAPIKey>", "jwtSecret": "<chooseSecret>" }`
+
+These keys must be attained in order to fetch recipe data.
+=======
 In the base folder `AutoMeal/` create the following in a `.env` file:
 
 ```
@@ -36,12 +48,16 @@ JWT_SECRET=<chooseSecret>
 ```
 
 These keys' values must be set, in order to communicate with the database, fetch recipe data, and authenticate users throughout their web session.
+>>>>>>> ba9343a0f41bdb71327d56cfb318f194df03655d
 
 [Sign up](https://www.mongodb.com/cloud/atlas) for MongoDB Atlas (cloud database).
 
 [Sign up](https://rapidapi.com/spoonacular/api/recipe-food-nutrition) for RapidAPI account to get a RecipeAPI key.
 
+<<<<<<< HEAD
+=======
 `JWT_SECRET` can be set to a string of your choice.
 
+>>>>>>> ba9343a0f41bdb71327d56cfb318f194df03655d
 Run development environment with  
 `$ npm run dev`

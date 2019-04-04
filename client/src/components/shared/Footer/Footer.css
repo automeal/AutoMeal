@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Scope+One|Nunito+Sans");
+/** FONTS **/
+/** COLORS **/
+.Footer {
+  display: flex;
+  flex-flow: row wrap;
+  font-size: 1.3rem;
+  padding: 1rem;
+  color: #34495e;
+  margin: auto;
+  justify-content: center; }
+
+.Footer__icon {
+  color: #ff4c5a; }
+
+.Footer__link {
+  color: #ff4c5a; }

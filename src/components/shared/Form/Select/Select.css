@@ -1,0 +1,9 @@
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Scope+One|Nunito+Sans");
+/** FONTS **/
+/** COLORS **/
+.Select {
+  padding: 1rem;
+  background-color: white;
+  font-size: 1.2rem;
+  font-family: "Quicksand", sans-serif;
+  min-width: 45%; }
