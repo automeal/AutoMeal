@@ -53,11 +53,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "homepage": "https://github.com/automeal/AutoMeal",
-  "description": "![](./img/logo.jpg)",
-  "main": "server.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  ]
 }
