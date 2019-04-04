@@ -1,11 +1,9 @@
-import React from 'react';
-import './Footer.css';
+import React from "react";
+import "./Footer.css";
 
 const Footer = () => (
   <div className="Footer">
-    <p>
-      AutoMeal Meal Plan Generator
-    </p>
+    <p>AutoMeal Meal Plan Generator</p>
   </div>
 );
 

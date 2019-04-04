@@ -1,9 +1,6 @@
-import  { Survey, API } from './data';
+import { Survey, API } from "./data";
 
-const getSurveyData = () => Survey ;
+const getSurveyData = () => Survey;
 const getAPIData = () => API;
 
-export{
-  getSurveyData,
-  getAPIData,
-}
+export { getSurveyData, getAPIData };

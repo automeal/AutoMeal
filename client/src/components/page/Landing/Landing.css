@@ -7,7 +7,8 @@
   min-height: 85vh;
   text-align: center; }
 
-.Landing__banner, .Landing__data {
+.Landing__banner,
+.Landing__data {
   flex: 1;
   display: flex;
   flex-flow: column nowrap;

@@ -1,50 +1,53 @@
-@import '../../../partials/manifest.scss';
+@import "../../../partials/manifest.scss";
 // mobile first
-.Landing{
+.Landing {
   display: flex;
   flex-flow: row wrap;
   min-height: 85vh;
   text-align: center;
 }
-.Landing__banner, .Landing__data{
+.Landing__banner,
+.Landing__data {
   flex: 1;
   display: flex;
   flex-flow: column nowrap;
   padding: 1rem;
 }
-.Landing__banner{
-  background: url(https://res.cloudinary.com/dpgnscxq3/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1554063255/automeal/iStock-589415708-808x454.jpg);
+.Landing__banner {
+  background: url(
+    https://res.cloudinary.com/dpgnscxq3/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1554063255/automeal/iStock-589415708-808x454.jpg
+  );
   background-repeat: no-repeat;
   background-size: cover;
-  &__heading{
+  &__heading {
     margin: auto;
     font-family: $heading-font--cursive;
     color: white;
   }
 }
-.Landing__data{
+.Landing__data {
   flex: 100%;
   background: rgb(127, 190, 127);
   background-repeat: no-repeat;
   background-size: cover;
-  &__content{
+  &__content {
     margin: auto;
     font-family: $subHeading-font--serif;
     color: $asphalt;
     ul {
-    margin-bottom: 3%;
-      li{
+      margin-bottom: 3%;
+      li {
         padding: 0.71rem;
       }
     }
   }
 }
 //larger screens
-@media (min-width:900px){
-  .Landing__banner__heading{
+@media (min-width: 900px) {
+  .Landing__banner__heading {
     font-size: 3rem;
   }
-  .Landing__data{
-    flex:1;
+  .Landing__data {
+    flex: 1;
   }
 }
