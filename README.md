@@ -4,7 +4,6 @@
 
 [![Build Status](https://travis-ci.com/automeal/AutoMeal.svg?branch=master)](https://travis-ci.com/automeal/AutoMeal)
 
->>>>>>> ba9343a0f41bdb71327d56cfb318f194df03655d
 Find recipes based on ingredients you already have at home.
 
 Join a community of enthusiastic home cooks.
