@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Scope+One|Nunito+Sans");
+/** FONTS **/
+/** COLORS **/
+.Plan__tabs {
+  padding: 0; }
+  .Plan__tabs .Tabs__head {
+    flex-flow: row nowrap;
+    flex: 100%;
+    overflow-x: scroll;
+    white-space: nowrap;
+    color: #34495e; }
+  .Plan__tabs .Tabs__content {
+    display: flex;
+    flex-flow: row wrap;
+    padding: 0;
+    margin: auto; }
+  .Plan__tabs .Meal {
+    flex: 100%; }
+
+@media (min-width: 900px) {
+  .Plan__tabs .Tabs__head {
+    flex-flow: row wrap;
+    flex: 100%;
+    overflow: hidden;
+    justify-content: center; }
+  .Plan__tabs .Tabs__content {
+    padding: 0 3rem; }
+  .Plan__tabs .Meal {
+    flex: 1;
+    width: 25rem; } }

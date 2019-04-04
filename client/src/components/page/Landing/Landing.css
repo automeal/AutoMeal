@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Scope+One|Nunito+Sans");
+/** FONTS **/
+/** COLORS **/
+.Landing {
+  display: flex;
+  flex-flow: row wrap;
+  min-height: 85vh;
+  text-align: center; }
+
+.Landing__banner,
+.Landing__data {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 1rem; }
+
+.Landing__banner {
+  background: url(https://res.cloudinary.com/dpgnscxq3/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1554063255/automeal/iStock-589415708-808x454.jpg);
+  background-repeat: no-repeat;
+  background-size: cover; }
+  .Landing__banner__heading {
+    margin: auto;
+    font-family: "Pacifico", cursive;
+    color: white; }
+
+.Landing__data {
+  flex: 100%;
+  background: #7fbe7f;
+  background-repeat: no-repeat;
+  background-size: cover; }
+  .Landing__data__content {
+    margin: auto;
+    font-family: "Quicksand", sans-serif;
+    color: #34495e; }
+    .Landing__data__content ul {
+      margin-bottom: 3%; }
+      .Landing__data__content ul li {
+        padding: 0.71rem; }
+
+@media (min-width: 900px) {
+  .Landing__banner__heading {
+    font-size: 3rem; }
+  .Landing__data {
+    flex: 1; } }

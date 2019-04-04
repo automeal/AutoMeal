@@ -14,8 +14,6 @@ More convincing words.
 
 _Note: If deployed with Heroku, please set environment variables in your Heroku app (Settings -> Config Vars -> Reveal Config Vars) and then set **RAPID_API_KEY** and **JWT_SECRET**, below -- MONGODB_URI is automatically set by Heroku configuration._
 
----
-
 ### Development
 
 Clone this repository  

@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Scope+One|Nunito+Sans");
+/** FONTS **/
+/** COLORS **/
+.Button {
+  padding: 0.5rem 1.2rem;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  font-family: "Scope One", serif; }
+  .Button:hover {
+    transform: translateY(0.51px); }
+
+.Button--regular {
+  background-color: #1abc9c;
+  border-radius: 1rem;
+  color: white; }
+  .Button--regular:hover {
+    background-color: #2ecc71;
+    color: #ecf0f1; }
+
+.Button--accent {
+  background-color: #ff4c5a;
+  padding: 1.5rem 2rem;
+  border-radius: 2rem;
+  color: white; }
+  .Button--accent:hover {
+    background-color: #e74c3c;
+    color: #ecf0f1; }
+
+.Button--transparent {
+  background-color: transparent;
+  border-radius: 0;
+  color: #3498db; }
+  .Button--transparent:hover {
+    color: #e74c3c; }

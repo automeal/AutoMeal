@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Scope+One|Nunito+Sans");
+/** FONTS **/
+/** COLORS **/
+.Tabs {
+  display: flex;
+  flex-flow: column wrap; }
+
+.Tabs__head {
+  margin: 0;
+  padding: 1rem;
+  display: flex;
+  flex-flow: row wrap; }
+
+.Tabs__content {
+  padding: 2rem; }
+
+.Tab__link {
+  padding: 1rem;
+  margin: 0 0.2rem; }
+  .Tab__link:hover {
+    color: #1abc9c; }
+
+.Tab__active {
+  font-size: larger;
+  border-radius: 1rem;
+  border: solid;
+  padding: 0 1rem;
+  transition: all 0.1s ease-in-out;
+  transform: translateY(-0.3rem); }
