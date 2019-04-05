@@ -33,6 +33,17 @@
     "nodemon": "^1.18.10",
     "prettier": "^1.16.4"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "concurrently": "^4.1.0",
