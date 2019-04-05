@@ -1,6 +1,3 @@
-// this file has been altered to break styling guides
-// prettier should fix this
-
 const isEmpty = value => {
   return (
     value === undefined ||

@@ -58,7 +58,6 @@ class Register extends Component {
     const { errors } = this.state;
     return (
       <div className="container" style={{ marginTop: '50px', width: '700px' }}>
-        <a /> {/** dummy anchor tag */}
         <h2 style={{ marginBottom: '40px' }}>Registration</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
