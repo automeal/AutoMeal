@@ -2,11 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const path = require('path');
-const app = express();
 const recipes = require('./routes/api/recipes');
 const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
 const ingredientSearch = require('./routes/recipeAPI/ingredientSearch');
+
+const app = express();
 
 // Bodyparser Middleware
 app.use(express.json());
