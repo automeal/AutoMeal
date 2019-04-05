@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { registerUser } from "../../../actions/authentication";
-import classnames from "classnames";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { registerUser } from '../../../actions/authentication';
+import classnames from 'classnames';
 // import Nav from "../../shared/Nav";
 
 class Register extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
-      email: "",
-      password: "",
-      password_confirm: "",
+      name: '',
+      email: '',
+      password: '',
+      password_confirm: '',
       errors: {}
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -39,7 +39,7 @@ class Register extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/");
+      this.props.history.push('/');
     }
     if (nextProps.errors) {
       this.setState({
@@ -50,67 +50,62 @@ class Register extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/");
+      this.props.history.push('/');
     }
   }
 
   render() {
     const { errors } = this.state;
     return (
-      <div className="container" style={{ marginTop: "50px", width: "700px" }}>
-        <h2 style={{ marginBottom: "40px" }}>Registration</h2>
+      <div className="container" style={{ marginTop: '50px', width: '700px' }}>
+        <a /> {/** dummy anchor tag */}
+        <h2 style={{ marginBottom: '40px' }}>Registration</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <input
               type="text"
               placeholder="Name"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.name
+              className={classnames('form-control form-control-lg', {
+                'is-invalid': errors.name
               })}
               name="name"
               onChange={this.handleInputChange}
               value={this.state.name}
             />
-            {errors.name && (
-              <div className="invalid-feedback">{errors.name}</div>
-            )}
+            {errors.name && <div className="invalid-feedback">{errors.name}</div>}
           </div>
           <div className="form-group">
             <input
               type="email"
               placeholder="Email"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.email
+              className={classnames('form-control form-control-lg', {
+                'is-invalid': errors.email
               })}
               name="email"
               onChange={this.handleInputChange}
               value={this.state.email}
             />
-            {errors.email && (
-              <div className="invalid-feedback">{errors.email}</div>
-            )}
+            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
           </div>
           <div className="form-group">
             <input
               type="password"
               placeholder="Password"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.password
+              className={classnames('form-control form-control-lg', {
+                'is-invalid': errors.password
               })}
               name="password"
               onChange={this.handleInputChange}
               value={this.state.password}
             />
-            {errors.password && (
-              <div className="invalid-feedback">{errors.password}</div>
-            )}
+            {errors.password && <div className="invalid-feedback">{errors.password}</div>}
           </div>
           <div className="form-group">
             <input
               type="password"
               placeholder="Confirm Password"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.password_confirm
+              className={classnames('form-control form-control-lg', {
+                'is-invalid': errors.password_confirm
               })}
               name="password_confirm"
               onChange={this.handleInputChange}
