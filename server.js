@@ -1,5 +1,6 @@
 // dummy comment to test unstaged files with pre-commit hook
 // this will be the unstaged file
+// more dumy content
 
 const express = require('express');
 const mongoose = require('mongoose');
