@@ -4,38 +4,40 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { registerUser } from "../../../actions/authentication";
 import classnames from "classnames";
+// import ReCaptcha from "../../shared/ReCaptcha/ReCaptcha";
+import { ReCaptcha } from "react-recaptcha-google";
 // import Nav from "../../shared/Nav";
 
 class Register extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
+      full_name: "",
       email: "",
       password: "",
-      password_confirm: "",
+      confirm_password: "",
+      recaptchaToken: "",
       errors: {}
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputChange(e) {
+  handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     const user = {
-      name: this.state.name,
+      full_name: this.state.full_name,
       email: this.state.email,
       password: this.state.password,
-      password_confirm: this.state.password_confirm
+      confirm_password: this.state.confirm_password,
+      recaptchaToken: this.state.recaptchaToken
     };
     this.props.registerUser(user, this.props.history);
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
@@ -54,6 +56,8 @@ class Register extends Component {
     }
   }
 
+  verifyCallback = recaptchaToken => this.setState({ recaptchaToken });
+
   render() {
     const { errors } = this.state;
     return (
@@ -65,14 +69,15 @@ class Register extends Component {
               type="text"
               placeholder="Name"
               className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.name
+                "is-invalid": errors.full_name
               })}
-              name="name"
+              name="full_name"
+              autoComplete="full_name"
               onChange={this.handleInputChange}
-              value={this.state.name}
+              value={this.state.full_name}
             />
-            {errors.name && (
-              <div className="invalid-feedback">{errors.name}</div>
+            {errors.full_name && (
+              <div className="invalid-feedback">{errors.full_name}</div>
             )}
           </div>
           <div className="form-group">
@@ -83,6 +88,7 @@ class Register extends Component {
                 "is-invalid": errors.email
               })}
               name="email"
+              autoComplete="email"
               onChange={this.handleInputChange}
               value={this.state.email}
             />
@@ -98,6 +104,7 @@ class Register extends Component {
                 "is-invalid": errors.password
               })}
               name="password"
+              autoComplete="password"
               onChange={this.handleInputChange}
               value={this.state.password}
             />
@@ -110,16 +117,27 @@ class Register extends Component {
               type="password"
               placeholder="Confirm Password"
               className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.password_confirm
+                "is-invalid": errors.confirm_password
               })}
-              name="password_confirm"
+              name="confirm_password"
+              autoComplete="confirm_password"
               onChange={this.handleInputChange}
-              value={this.state.password_confirm}
+              value={this.state.confirm_password}
             />
-            {errors.password_confirm && (
-              <div className="invalid-feedback">{errors.password_confirm}</div>
+            {errors.confirm_password && (
+              <div className="invalid-feedback">{errors.confirm_password}</div>
             )}
           </div>
+          <ReCaptcha
+            ref={el => {
+              this.captchaDemo = el;
+            }}
+            size="normal"
+            data-theme="dark"
+            render="explicit"
+            sitekey="6Ld_j5wUAAAAAJKGxKli9PdUu83G_z9IPC8bGtJL"
+            verifyCallback={this.verifyCallback}
+          />
           <div className="form-group">
             <button type="submit" className="btn btn-primary">
               Register User

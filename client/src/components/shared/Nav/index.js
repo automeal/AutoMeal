@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { logoutUser } from "../../../actions/authentication";
 import { withRouter } from "react-router-dom";
 import "./Nav.css";
+
 class Navbar extends Component {
   onLogout(e) {
     e.preventDefault();
@@ -14,13 +15,16 @@ class Navbar extends Component {
     const { isAuthenticated, user } = this.props.auth;
     const authLinks = (
       <ul className="navbar-nav ml-auto">
-        <a href="" className="nav-link" onClick={this.onLogout.bind(this)}>
+        <a href="/" className="nav-link" onClick={this.onLogout.bind(this)}>
           <a
+            href="/"
             alt={user.name}
             title={user.name}
             className="rounded-circle"
             style={{ width: "25px", marginRight: "5px" }}
-          />
+          >
+            h
+          </a>
           Logout
         </a>
       </ul>

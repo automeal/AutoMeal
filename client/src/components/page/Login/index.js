@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { loginUser } from "../../../actions/authentication";
 import classnames from "classnames";
 // import Nav from "../../shared/Nav";
+import { ReCaptcha } from "react-recaptcha-google";
 
 class Login extends Component {
   constructor() {
@@ -11,34 +12,34 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      recaptchaToken: "",
       errors: {}
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputChange(e) {
+  handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     const user = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      recaptchaToken: this.state.recaptchaToken
     };
     this.props.loginUser(user);
-  }
+  };
 
-  componentDidMount() {
+  componentDidMount = () => {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/");
     }
-  }
+  };
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps = nextProps => {
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push("/");
     }
@@ -47,7 +48,9 @@ class Login extends Component {
         errors: nextProps.errors
       });
     }
-  }
+  };
+
+  verifyCallback = recaptchaToken => this.setState({ recaptchaToken });
 
   render() {
     const { errors } = this.state;
@@ -63,6 +66,7 @@ class Login extends Component {
                 "is-invalid": errors.email
               })}
               name="email"
+              autoComplete="email"
               onChange={this.handleInputChange}
               value={this.state.email}
             />
@@ -78,6 +82,7 @@ class Login extends Component {
                 "is-invalid": errors.password
               })}
               name="password"
+              autoComplete="password"
               onChange={this.handleInputChange}
               value={this.state.password}
             />
@@ -85,6 +90,16 @@ class Login extends Component {
               <div className="invalid-feedback">{errors.password}</div>
             )}
           </div>
+          <ReCaptcha
+            ref={el => {
+              this.captchaDemo = el;
+            }}
+            size="normal"
+            data-theme="dark"
+            render="explicit"
+            sitekey="6Ld_j5wUAAAAAJKGxKli9PdUu83G_z9IPC8bGtJL"
+            verifyCallback={this.verifyCallback}
+          />
           <div className="form-group">
             <button type="submit" className="btn btn-primary">
               Login User
