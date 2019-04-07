@@ -45,8 +45,7 @@
     "extends": "react-app"
   },
   "devDependencies": {
-    "gh-pages": "^1.1.0",
-    "react-scripts": "1.0.17"
+    "gh-pages": "^1.1.0"
   },
   "browserslist": [
     ">0.2%",

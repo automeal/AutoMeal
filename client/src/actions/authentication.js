@@ -4,8 +4,14 @@ import setAuthToken from "../setAuthToken";
 import jwt_decode from "jwt-decode";
 
 export const registerUser = (user, history) => dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
   axios
-    .post("/api/users/register", user)
+    .post("/api/users/register", user, config)
     .then(res => history.push("/login"))
     .catch(err => {
       dispatch({
