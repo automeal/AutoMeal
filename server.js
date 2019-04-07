@@ -1,16 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config();
 const path = require('path');
+const passport = require('passport');
+require('dotenv').config();
 const recipes = require('./routes/api/recipes');
 const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
 const ingredientSearch = require('./routes/recipeAPI/ingredientSearch');
 
 const app = express();
-
-// Bodyparser Middleware
-app.use(express.json());
 
 // Connect to MongoDB
 mongoose
@@ -21,8 +19,12 @@ mongoose
   .then(() => console.log('MongoDB connected...'))
   .catch(err => console.log(err));
 
-// Body parser middleware
+// Bodyparser Middleware
 app.use(express.json());
+// Passport Authentication Middleware
+app.use(passport.initialize());
+// Passport Configuration
+require('./config/passport')(passport);
 
 // API to mongoDB
 app.use('/api/recipes', recipes);

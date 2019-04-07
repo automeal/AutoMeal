@@ -1,12 +1,18 @@
-import axios from "axios";
-import { GET_ERRORS, SET_CURRENT_USER } from "./types";
-import setAuthToken from "../setAuthToken";
-import jwt_decode from "jwt-decode";
+import axios from 'axios';
+import { GET_ERRORS, SET_CURRENT_USER } from './types';
+import setAuthToken from '../setAuthToken';
+import jwt_decode from 'jwt-decode';
 
 export const registerUser = (user, history) => dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+
   axios
-    .post("/api/users/register", user)
-    .then(res => history.push("/login"))
+    .post('/api/users/register', user, config)
+    .then(res => history.push('/login'))
     .catch(err => {
       dispatch({
         type: GET_ERRORS,
@@ -17,10 +23,10 @@ export const registerUser = (user, history) => dispatch => {
 
 export const loginUser = user => dispatch => {
   axios
-    .post("/api/users/login", user)
+    .post('/api/users/login', user)
     .then(res => {
       const { token } = res.data;
-      localStorage.setItem("jwtToken", token);
+      localStorage.setItem('jwtToken', token);
       setAuthToken(token);
       const decoded = jwt_decode(token);
       dispatch(setCurrentUser(decoded));
@@ -41,8 +47,8 @@ export const setCurrentUser = decoded => {
 };
 
 export const logoutUser = history => dispatch => {
-  localStorage.removeItem("jwtToken");
+  localStorage.removeItem('jwtToken');
   setAuthToken(false);
   dispatch(setCurrentUser({}));
-  history.push("/login");
+  history.push('/login');
 };
