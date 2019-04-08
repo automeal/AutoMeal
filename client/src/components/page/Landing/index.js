@@ -1,6 +1,7 @@
 import React from "react";
 import "./Landing.css";
 import Button from "../../shared/Button";
+// import SearchBox from "../../shared/Search";
 
 const Landing = props => (
   <div className="Landing">
@@ -34,6 +35,7 @@ const Landing = props => (
             Login
           </Button>
         </div>
+        {/* <SearchBox route="ingredientSearch" /> */}
       </div>
     </div>
   </div>
