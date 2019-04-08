@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../../actions/authentication";
-import classnames from "classnames";
-// import Nav from "../../shared/Nav";
+import { Message, Button, Form } from "semantic-ui-react";
+import "./Login.css";
 
 class Login extends Component {
   constructor() {
@@ -52,45 +52,33 @@ class Login extends Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="container" style={{ marginTop: "50px", width: "700px" }}>
-        <h2 style={{ marginBottom: "40px" }}>Login</h2>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <input
-              type="email"
-              placeholder="Email"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.email
-              })}
-              name="email"
-              onChange={this.handleInputChange}
-              value={this.state.email}
-            />
-            {errors.email && (
-              <div className="invalid-feedback">{errors.email}</div>
-            )}
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="Password"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.password
-              })}
-              name="password"
-              onChange={this.handleInputChange}
-              value={this.state.password}
-            />
-            {errors.password && (
-              <div className="invalid-feedback">{errors.password}</div>
-            )}
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary">
-              Login User
-            </button>
-          </div>
-        </form>
+      <div className="center-screen">
+        <Form className="attached fluid segment" onSubmit={this.handleSubmit}>
+          <Form.Input
+            icon="user"
+            iconPosition="left"
+            placeholder="Email"
+            name="email"
+            onChange={this.handleInputChange}
+            error={errors.email !== undefined}
+          />
+          <Form.Input
+            icon="lock"
+            iconPosition="left"
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={this.handleInputChange}
+            error={errors.password !== undefined}
+          />
+          <Message size="mini" hidden={!errors.email && !errors.password}>
+            Incorrect email or password
+          </Message>
+          <Button content="Login" primary onClick={this.handleSubmit} />
+        </Form>
+        <Message attached="bottom" warning>
+          New AutoChef?&nbsp;&nbsp;<a href="/Register">Sign up here!</a>
+        </Message>
       </div>
     );
   }
