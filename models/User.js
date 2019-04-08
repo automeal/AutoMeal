@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Create Schema
@@ -41,7 +41,7 @@ const UserSchema = new Schema({
   // Data users provide and we store create a more personal experience
   pantry: {
     type: Array,
-    default: ["salt", "oil", "lettuce", "pepper", "goya", "milk", "ice cream"]
+    default: ['salt', 'oil', 'lettuce', 'pepper', 'goya', 'milk', 'ice cream']
   },
   dietary_restrictions: {
     type: Array,
@@ -53,7 +53,7 @@ const UserSchema = new Schema({
   }
 });
 
-module.exports = User = mongoose.model("users", UserSchema);
+module.exports = User = mongoose.model('users', UserSchema);
 
 // Additional fields
 // dietary pref (vegan/kosher)
