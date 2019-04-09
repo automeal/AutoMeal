@@ -1,7 +1,7 @@
-import React from "react";
-import "./Landing.css";
-import Button from "../../shared/Button";
-// import SearchBox from "../../shared/Search";
+import React from 'react';
+import './Landing.css';
+import Button from '../../shared/Button';
+import SearchBox from '../../shared/Search';
 
 const Landing = props => (
   <div className="Landing">
@@ -16,26 +16,16 @@ const Landing = props => (
           <li>Organize Your Meals Around Your Pantry Items</li>
         </ul>
         <div>
-          <Button
-            type="accent"
-            link={true}
-            path="/register"
-            className="Landing__data__button"
-          >
+          <Button type="accent" link={true} path="/register" className="Landing__data__button">
             Register
           </Button>
         </div>
         <div>
-          <Button
-            type="accent"
-            link={true}
-            path="/login"
-            className="Landing_data_button"
-          >
+          <Button type="accent" link={true} path="/login" className="Landing_data_button">
             Login
           </Button>
         </div>
-        {/* <SearchBox route="ingredientSearch" /> */}
+        <SearchBox route="ingredientSearch" />
       </div>
     </div>
   </div>
