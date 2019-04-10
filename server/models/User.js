@@ -43,6 +43,7 @@ const UserSchema = new Schema({
   pantry: {
     type: Array,
     default: ['salt', 'oil', 'lettuce', 'pepper', 'goya', 'milk', 'ice cream']
+    // have this be an object with the array and creation date so that we may refresh weekly
   },
   dietary_restrictions: {
     type: Array,
