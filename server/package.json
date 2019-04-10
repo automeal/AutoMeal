@@ -2,15 +2,15 @@
   "name": "automeal",
   "version": "1.0.0",
   "description": "Generate meals based on ingredients you already have",
-  "main": "server/server.js",
+  "main": "server.js",
   "scripts": {
-    "i": "npm i && npm i --prefix server && npm i --prefix client",
-    "start": "node server/server",
-    "server": "nodemon server --prefix server",
-    "client": "npm start --prefix client",
+    "i": "npm i && npm i ../client",
+    "start": "node server",
+    "server": "nodemon server",
+    "client": "npm start ../client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install ../client && npm run build ../client",
-    "test": "echo no tests... yet"
+    "test": "NODE_ENV=test jest"
   },
   "repository": {
     "type": "git",
@@ -23,14 +23,17 @@
   },
   "homepage": "https://github.com/automeal/AutoMeal#readme",
   "devDependencies": {
+    "eslint": "^5.3.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
+    "jest": "^24.7.1",
     "nodemon": "^1.18.10",
-    "prettier": "^1.16.4"
+    "prettier": "^1.16.4",
+    "supertest": "^4.0.2"
   },
   "husky": {
     "hooks": {
@@ -44,10 +47,17 @@
     ]
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "concurrently": "^4.1.0",
     "dotenv": "^6.2.0",
-    "eslint-plugin-jest": "^22.4.1",
+    "express": "^4.16.4",
     "husky": "^1.3.1",
-    "lint-staged": "^8.1.5"
+    "jsonwebtoken": "^8.5.1",
+    "lint-staged": "^8.1.5",
+    "mongoose": "^5.4.19",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "unirest": "^0.6.0",
+    "validator": "^10.11.0"
   }
 }
