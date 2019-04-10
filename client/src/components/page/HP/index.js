@@ -1,12 +1,9 @@
-import Nav from '../../shared/Nav';
-import React from 'react';
+import React from "react";
 //import './Landing.css';
 
-
-const HomePage = (props) => (
+const HomePage = props => (
   <div className="Login">
-    <div className="Login__banner">
-    </div>
+    <div className="Login__banner" />
     <div className="Login__data">
       <div className="Login__data__content">
         <h1>Welcome to AutoMeal</h1>

@@ -1,12 +1,9 @@
-import Nav from '../../shared/Nav';
-import React from 'react';
+import React from "react";
 //import './Landing.css';
 
-
-const MealPlan = (props) => (
+const MealPlan = props => (
   <div className="Login">
-    <div className="Login__banner">
-    </div>
+    <div className="Login__banner" />
     <div className="Login__data">
       <div className="Login__data__content">
         <h1>Weekly Meal Plan</h1>
@@ -14,7 +11,9 @@ const MealPlan = (props) => (
           <li>Meal Plan for each day of the week will go here</li>
           <li>Need to fix up backend, but some logic is there</li>
           <li>7 days of week, based on survey data</li>
-          <li>Nutrition Info Displayed with each meal (based on survey data)</li>
+          <li>
+            Nutrition Info Displayed with each meal (based on survey data)
+          </li>
         </ul>
       </div>
     </div>
