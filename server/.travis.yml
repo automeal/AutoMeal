@@ -2,10 +2,13 @@ language: node_js
 node_js:
   - lts/*
 install:
-  - npm ci
-cache:
-  directories:
-    - '$HOME/.npm'
+  - npm install
+before_script:
+  - rm -rf ./node_modules ./server/node_modules ./client/node_modules
+  - rm -rf ./package-lock.json ./server/package-lock.json ./client/package-lock.json
+  - npm run i
+script:
+  - npm test
 before_deploy:
   - gem install mime-types -v 2.6.2
 deploy:
