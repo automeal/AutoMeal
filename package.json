@@ -5,12 +5,12 @@
   "main": "server/server.js",
   "scripts": {
     "i": "npm i && npm i --prefix server && npm i --prefix client",
-    "start": "node server/server",
+    "start": "node server --prefix server",
     "server": "nodemon server --prefix server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install ../client && npm run build ../client",
-    "test": "echo no tests... yet"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "test": "npm run test --prefix server"
   },
   "repository": {
     "type": "git",
