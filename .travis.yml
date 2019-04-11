@@ -2,10 +2,7 @@ language: node_js
 node_js:
   - lts/*
 install:
-  - npm ci
-cache:
-  directories:
-    - node_modules
+  - npm install
 before_deploy:
   - gem install mime-types -v 2.6.2
 deploy:
