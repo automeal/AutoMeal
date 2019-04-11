@@ -3,9 +3,7 @@ node_js:
   - lts/*
 install:
   - npm ci
-cache:
-  directories:
-    - '$HOME/.npm'
+cache: npm
 before_deploy:
   - gem install mime-types -v 2.6.2
 deploy:

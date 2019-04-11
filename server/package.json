@@ -10,7 +10,7 @@
     "client": "npm start ../client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install ../client && npm run build ../client",
-    "test": "NODE_ENV=test jest"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,14 @@
     "nodemon": "^1.18.10",
     "prettier": "^1.16.4",
     "supertest": "^4.0.2"
+  },
+  "jest": {
+    "roots": [
+      "spec/javascript"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ]
   },
   "husky": {
     "hooks": {

@@ -33,6 +33,14 @@
     "nodemon": "^1.18.10",
     "prettier": "^1.16.4"
   },
+  "jest": {
+    "roots": [
+      "spec/javascript"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
