@@ -3,6 +3,7 @@ node_js:
   - lts/*
 install:
   - npm ci
+cache:
   directories:
     - '$HOME/.npm'
 before_deploy:
