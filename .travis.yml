@@ -1,6 +1,13 @@
 language: node_js
 node_js:
-  - node
+  - lts/*
+install:
+  - npm ci
+cache:
+  directories:
+    - node_modules
+before_deploy:
+  - gem install mime-types -v 2.6.2
 deploy:
   provider: heroku
   api_key:
