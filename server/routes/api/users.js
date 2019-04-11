@@ -1,9 +1,10 @@
 const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+
+const router = express.Router();
 
 // Validators
 const validateRegisterInput = require('../../validation/register');
@@ -64,11 +65,11 @@ router.post('/register', (req, res) => {
 // @access  Public
 router.post('/login', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
+  const { email, password } = req.body;
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  const email = req.body.email;
-  const password = req.body.password;
+
   User.findOne({ email }).then(user => {
     // look up email
     if (!user) {
