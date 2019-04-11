@@ -33,7 +33,7 @@ app.use(express.json());
 // Passport Authentication Middleware
 app.use(passport.initialize());
 // Passport Configuration
-require('./config/passport')(passport);
+require('./validation/passport')(passport);
 
 // API to mongoDB
 app.use('/api/recipes', recipes);
