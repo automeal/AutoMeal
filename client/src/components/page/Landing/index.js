@@ -1,120 +1,100 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import { Container, Grid, Header, Icon, Image, Segment } from 'semantic-ui-react';
 
-import {
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Header,
-  Image,
-  Segment
-} from "semantic-ui-react";
-
-import DesktopContainer from "./DesktopContainer";
-import MobileContainer from "./MobileContainer";
-
-import food from "./food.jpg";
-
-const ResponsiveContainer = ({ children }) => (
-  <div>
-    <DesktopContainer>{children}</DesktopContainer>
-    <MobileContainer>{children}</MobileContainer>
-  </div>
-);
-
-ResponsiveContainer.propTypes = {
-  children: PropTypes.node
-};
+import food from '../../image/food.jpg';
 
 function Landing() {
   return (
-    <ResponsiveContainer>
-      <Segment style={{ padding: "8em 0em" }} vertical>
+    <div>
+      <Segment style={{ padding: '8em 0em' }} vertical>
         <Container text>
-          <Header as="h3" style={{ fontSize: "2em" }}>
-            Us vs. Them
+          <Header as="h3" textAlign="center" style={{ fontSize: '2em' }}>
+            Features
           </Header>
-          <p style={{ fontSize: "1.33em" }}>
-            Instead of focusing on content creation and hard work, we have
-            learned how to master the art of doing nothing by providing massive
-            amounts of whitespace and generic content that can seem massive,
-            monolithic and worth your attention.
-          </p>
-          <Button as="a" size="large">
-            Read More
-          </Button>
-          <Divider
-            as="h4"
-            className="header"
-            horizontal
-            style={{ margin: "3em 0em", textTransform: "uppercase" }}
-          >
-            <a href="#">Case Studies</a>
-          </Divider>
-          <Header as="h3" style={{ fontSize: "2em" }}>
-            Did We Tell You About Our Bananas?
-          </Header>
-          <p style={{ fontSize: "1.33em" }}>
-            Yes I know you probably disregarded the earlier boasts as
-            non-sequitur filler content, but it's really true. It took years of
-            gene splicing and combinatory DNA research, but our bananas can
-            really dance.
-          </p>
-          <Button as="a" size="large">
-            I'm Still Quite Interested
-          </Button>
         </Container>
+        <Segment style={{ padding: '5em 0em' }} vertical>
+          <Grid container stackable verticalAlign="middle" columns="equal" textAlign="center">
+            <Grid.Row>
+              <Grid.Column>
+                <Icon name="utensils" size="massive" />
+                <Header as="h4" style={{ fontSize: '1.66em' }}>
+                  Customizable Pantry
+                </Header>
+                <p style={{ fontSize: '1.33em' }}>
+                  Store the ingredients you have at home in a virtual pantry.
+                </p>
+              </Grid.Column>
+              <Grid.Column>
+                <Icon name="calendar" size="massive" />
+                <Header as="h4" style={{ fontSize: '1.66em' }}>
+                  Daily or Weekly Meal Planning
+                </Header>
+                <p style={{ fontSize: '1.33em' }}>
+                  Meal plan for the long-term or just on a day-to-day basis.
+                </p>
+              </Grid.Column>
+              <Grid.Column>
+                <Icon name="users" size="massive" />
+                <Header as="h4" style={{ fontSize: '1.66em' }}>
+                  Individual or Family Planning
+                </Header>
+                <p style={{ fontSize: '1.33em' }}>
+                  Organize meal plans for yourself or for your whole family.
+                </p>
+              </Grid.Column>
+              <Grid.Column>
+                <Icon name="weight" size="massive" />
+                <Header as="h4" style={{ fontSize: '1.66em' }}>
+                  Nutrition Tracking
+                </Header>
+                <p style={{ fontSize: '1.33em' }}>
+                  Track your nutrition info with the meals you prepare.
+                </p>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
       </Segment>
-      <Segment style={{ padding: "8em 0em" }} vertical>
+      <Segment style={{ padding: '8em 0em' }} vertical>
         <Grid container stackable verticalAlign="middle">
           <Grid.Row>
             <Grid.Column width={8}>
-              <Header as="h3" style={{ fontSize: "2em" }}>
+              <Header as="h3" style={{ fontSize: '2em' }}>
                 Helping the average person make the meals they want to create.
               </Header>
-              <p style={{ fontSize: "1.33em" }}>
-                Not only can we help you plan out your meals, your calorie
-                intake and nutrition information will be tracked for the meals
-                you decide to make. Explore and search new recipes and organize
-                your meals around your pantry items.
+              <p style={{ fontSize: '1.33em' }}>
+                Not only can we help you plan out your meals, your calorie intake and nutrition
+                information will be tracked for the meals you decide to make. Explore and search new
+                recipes and organize your meals around your pantry items.
               </p>
             </Grid.Column>
             <Grid.Column floated="right" width={6}>
               <Image bordered rounded size="large" src={food} />
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row>
-            <Grid.Column textAlign="center">
-              <Button size="huge">Check Them Out</Button>
-            </Grid.Column>
-          </Grid.Row>
         </Grid>
       </Segment>
-      <Segment style={{ padding: "0em" }} vertical>
+      <Segment style={{ padding: '0em' }} vertical>
         <Grid celled="internally" columns="equal" stackable>
           <Grid.Row textAlign="center">
-            <Grid.Column style={{ paddingBottom: "5em", paddingTop: "5em" }}>
-              <Header as="h3" style={{ fontSize: "2em" }}>
-                "What a Company"
+            <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+              <Header as="h3" style={{ fontSize: '2em' }}>
+                "It's so straight-forward!"
               </Header>
-              <p style={{ fontSize: "1.33em" }}>
-                That is what they all say about us
-              </p>
+              <p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
             </Grid.Column>
-            <Grid.Column style={{ paddingBottom: "5em", paddingTop: "5em" }}>
-              <Header as="h3" style={{ fontSize: "2em" }}>
-                "I shouldn't have gone with their competitor."
+            <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+              <Header as="h3" style={{ fontSize: '2em' }}>
+                "Trying out new recipes has never been easier."
               </Header>
-              <p style={{ fontSize: "1.33em" }}>
-                <Image avatar src="/images/avatar/large/nan.jpg" />
-                <b>Nan</b> Chief Fun Officer Acme Toys
+              <p style={{ fontSize: '1.33em' }}>
+                <b>Henry</b>
               </p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </Segment>
-    </ResponsiveContainer>
+    </div>
   );
 }
 

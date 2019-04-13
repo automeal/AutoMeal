@@ -1,8 +1,8 @@
-import Nav from "../../shared/Nav";
-import React from "react";
+import Nav from '../../shared/Nav';
+import React from 'react';
 //import './Landing.css';
-import { Button, Icon, Grid, Image } from "semantic-ui-react";
-import food from "./food.png";
+import { Button, Card, Icon, Grid, Image } from 'semantic-ui-react';
+import food from './food.png';
 
 class HomePage extends React.Component {
   render() {
@@ -39,6 +39,26 @@ class HomePage extends React.Component {
                   </Button>
                   <ul>
                     <li>Recipes You've Liked</li>
+                    <Card.Group>
+                      <Card
+                        image="/images/avatar/large/elliot.jpg"
+                        header="Elliot Baker"
+                        meta="Friend"
+                        description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
+                      />
+                      <Card
+                        image="/images/avatar/large/elliot.jpg"
+                        header="Elliot Baker"
+                        meta="Friend"
+                        description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
+                      />
+                      <Card
+                        image="/images/avatar/large/elliot.jpg"
+                        header="Elliot Baker"
+                        meta="Friend"
+                        description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
+                      />
+                    </Card.Group>
                     <li>Recipes to Try</li>
                     <li>Recently Searched Items</li>
                     <li>Other Home Page Stuff</li>
