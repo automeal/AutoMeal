@@ -17,6 +17,7 @@ import HP from "./components/page/HP";
 import Register from "./components/page/Register";
 import Footer from "./components/shared/Footer";
 import Login from "./components/page/Login";
+import Pantry from "./components/page/Pantry";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -43,6 +44,7 @@ class App extends Component {
             <Route path="/meal-plan" component={Plan} />
             <Route path="/home-page" component={HP} />
             <Route path="/login" component={Login} />
+            <Route path="/pantry" component={Pantry} />
             <Footer />
           </div>
         </Router>
