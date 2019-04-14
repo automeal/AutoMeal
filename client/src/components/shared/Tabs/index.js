@@ -43,15 +43,15 @@ export default class Tabs extends Component {
 }
 export const Tab = props => (
   <li className={`Tab ${props.className}`}>
-    <a
-      className={`Tab__link ${props.active ? 'Tab__active' : ''}`}
+    <href
+      className={`Tab__link ${props.active ? "Tab__active" : ""}`}
       onClick={e => {
         e.preventDefault();
         props.onClick(props.index);
       }}
     >
       <span>{props.heading}</span>
-    </a>
+    </href>
   </li>
 );
 

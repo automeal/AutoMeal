@@ -82,7 +82,11 @@ router.post('/login', (req, res) => {
       // if passwords match
       if (isMatch) {
         // copy user info
-        const payload = { id: user.id, name: user.name, avatar: user.avatar };
+        const payload = {
+          id: user.id,
+          full_name: user.full_name,
+          email: user.email
+        };
         // sign the data with secret and set TTL
         // return user token
         jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
@@ -162,6 +166,7 @@ router.delete('/:id', (req, res) => {
 // @route   GET api/users/current
 // @desc    Return current user
 // @access  Private
+<<<<<<< Updated upstream:server/routes/api/users.js
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) =>
   res.json({
     id: req.user.id,
@@ -171,6 +176,17 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     dietary_restrictions: req.user.dietary_restrictions,
     allergies: req.user.allergies
   })
+=======
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) =>
+    res.json({
+      id: req.user.id,
+      full_name: req.user.full_name,
+      email: req.user.email
+    })
+>>>>>>> Stashed changes:routes/api/users.js
 );
 
 module.exports = router;
