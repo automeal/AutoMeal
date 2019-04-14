@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Proptypes from "prop-types";
-import "./Tabs.css";
+import React, { Component } from 'react';
+import Proptypes from 'prop-types';
+import './Tabs.css';
 
 export default class Tabs extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ export default class Tabs extends Component {
 export const Tab = props => (
   <li className={`Tab ${props.className}`}>
     <a
-      className={`Tab__link ${props.active ? "Tab__active" : ""}`}
+      className={`Tab__link ${props.active ? 'Tab__active' : ''}`}
       onClick={e => {
         e.preventDefault();
         props.onClick(props.index);

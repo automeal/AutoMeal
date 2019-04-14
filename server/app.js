@@ -9,14 +9,23 @@ const auth = require('./routes/api/auth');
 const ingredientSearch = require('./routes/recipeAPI/ingredientSearch');
 
 const app = express();
+const nodeEnv = process.env.NODE_ENV || 'development';
+
+// if (nodeEnv !== 'production') {
+//   require('dotenv').config();
+// }
+
+const db =
+  nodeEnv === 'test'
+    ? process.env.TEST_MONGODB_URI
+    : nodeEnv === 'development'
+    ? process.env.DEV_MONGODB_URI
+    : process.env.PRODUCTION_MONGODB_URI;
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useCreateIndex: true
-  })
-  .then(() => console.log('MongoDB connected...'))
+  .connect(db, { useNewUrlParser: true, useCreateIndex: true })
+  .then(() => console.log(`MongoDB(${nodeEnv}) connected...`))
   .catch(err => console.log(err));
 
 // Bodyparser Middleware
@@ -24,7 +33,7 @@ app.use(express.json());
 // Passport Authentication Middleware
 app.use(passport.initialize());
 // Passport Configuration
-require('./config/passport')(passport);
+require('./validation/passport')(passport);
 
 // API to mongoDB
 app.use('/api/recipes', recipes);
@@ -44,6 +53,4 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server is up and running on port: ${PORT}`));
+module.exports = { app, mongoose };

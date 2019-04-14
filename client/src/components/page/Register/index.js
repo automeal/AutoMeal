@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { registerUser } from '../../../actions/authentication';
 import classnames from 'classnames';
 // import Nav from "../../shared/Nav";
+import { Button, Form, Grid, Header, Image } from 'semantic-ui-react';
+import Logo from '../../../Resources/logo.png';
 
 class Register extends Component {
   constructor() {
@@ -57,24 +59,43 @@ class Register extends Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="container" style={{ marginTop: '50px', width: '700px' }}>
-        <h2 style={{ marginBottom: '40px' }}>Registration</h2>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <input
+      <div className="register-form">
+        {/*
+      Heads up! The styles below are necessary for the correct render of this example.
+      You can do same with CSS, the main idea is that all the elements up to the `Grid`
+      below must have a height of 100%.
+    */}
+        <style>
+          {`
+      body > div,
+      body > div > div,
+      body > div > div > div.login-form {
+        height: 100%;
+      }
+    `}
+        </style>
+        <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
+          <Grid.Column style={{ maxWidth: 450 }}>
+            <Image src={Logo} size="huge" />
+            <Header as="h2" color="teal" textAlign="center">
+              AutoMeal Register
+            </Header>
+            <Form.Input
+              icon="user"
+              iconPosition="left"
               type="text"
               placeholder="Name"
               className={classnames('form-control form-control-lg', {
-                'is-invalid': errors.full_name
+                'is-invalid': errors.email
               })}
               name="full_name"
               onChange={this.handleInputChange}
               value={this.state.full_name}
             />
             {errors.full_name && <div className="invalid-feedback">{errors.full_name}</div>}
-          </div>
-          <div className="form-group">
-            <input
+            <Form.Input
+              icon="lock"
+              iconPosition="left"
               type="email"
               placeholder="Email"
               className={classnames('form-control form-control-lg', {
@@ -85,9 +106,9 @@ class Register extends Component {
               value={this.state.email}
             />
             {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-          </div>
-          <div className="form-group">
-            <input
+            <Form.Input
+              icon="lock"
+              iconPosition="left"
               type="password"
               placeholder="Password"
               className={classnames('form-control form-control-lg', {
@@ -98,9 +119,9 @@ class Register extends Component {
               value={this.state.password}
             />
             {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-          </div>
-          <div className="form-group">
-            <input
+            <Form.Input
+              icon="lock"
+              iconPosition="left"
               type="password"
               placeholder="Confirm Password"
               className={classnames('form-control form-control-lg', {
@@ -113,13 +134,9 @@ class Register extends Component {
             {errors.confirm_password && (
               <div className="invalid-feedback">{errors.confirm_password}</div>
             )}
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary">
-              Register User
-            </button>
-          </div>
-        </form>
+            <Button content="Register" primary onClick={this.handleSubmit} />
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }

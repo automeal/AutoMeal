@@ -1,9 +1,10 @@
 const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+
+const router = express.Router();
 
 // Validators
 const validateRegisterInput = require('../../validation/register');
@@ -64,11 +65,11 @@ router.post('/register', (req, res) => {
 // @access  Public
 router.post('/login', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
+  const { email, password } = req.body;
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  const email = req.body.email;
-  const password = req.body.password;
+
   User.findOne({ email }).then(user => {
     // look up email
     if (!user) {
@@ -100,6 +101,8 @@ router.post('/login', (req, res) => {
 // @desc    update user
 // @access  Private
 router.patch('/:id', (req, res) => {
+  console.log('backend patch user endpoint');
+  console.log(req.body);
   const { errors, isValid } = validateUpdateInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
@@ -141,6 +144,7 @@ router.patch('/:id', (req, res) => {
   // If no password pushed push other data
   else {
     User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
+      console.log('tries to update');
       err ? res.send(err) : res.send(raw);
     });
   }
@@ -161,8 +165,11 @@ router.delete('/:id', (req, res) => {
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) =>
   res.json({
     id: req.user.id,
-    name: req.user.full_name,
-    email: req.user.email
+    full_name: req.user.full_name,
+    email: req.user.email,
+    pantry: req.user.pantry,
+    dietary_restrictions: req.user.dietary_restrictions,
+    allergies: req.user.allergies
   })
 );
 

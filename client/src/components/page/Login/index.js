@@ -1,46 +1,45 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { loginUser } from "../../../actions/authentication";
-import classnames from "classnames";
-// import Nav from "../../shared/Nav";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Button, Form, Grid, Header, Image, Message } from 'semantic-ui-react';
+import { loginUser } from '../../../actions/authentication';
+import Logo from '../../../Resources/logo.png';
+import './Login.css';
 
 class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       errors: {}
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputChange(e) {
+  handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     const user = {
       email: this.state.email,
       password: this.state.password
     };
     this.props.loginUser(user);
-  }
+  };
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/");
+      this.props.history.push('/dashboard#/');
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/");
+      this.props.history.push('/dashboard#/');
     }
     if (nextProps.errors) {
       this.setState({
@@ -52,45 +51,55 @@ class Login extends Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="container" style={{ marginTop: "50px", width: "700px" }}>
-        <h2 style={{ marginBottom: "40px" }}>Login</h2>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <input
-              type="email"
-              placeholder="Email"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.email
-              })}
-              name="email"
-              onChange={this.handleInputChange}
-              value={this.state.email}
-            />
-            {errors.email && (
-              <div className="invalid-feedback">{errors.email}</div>
-            )}
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="Password"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.password
-              })}
-              name="password"
-              onChange={this.handleInputChange}
-              value={this.state.password}
-            />
-            {errors.password && (
-              <div className="invalid-feedback">{errors.password}</div>
-            )}
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary">
-              Login User
-            </button>
-          </div>
-        </form>
+      <div className="login-form">
+        {/*
+      Heads up! The styles below are necessary for the correct render of this example.
+      You can do same with CSS, the main idea is that all the elements up to the `Grid`
+      below must have a height of 100%.
+    */}
+        <style>
+          {`
+      body > div,
+      body > div > div,
+      body > div > div > div.login-form {
+        height: 100%;
+      }
+    `}
+        </style>
+        <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
+          <Grid.Column style={{ maxWidth: 450 }}>
+            <Image src={Logo} size="huge" />
+            <Header as="h2" color="teal" textAlign="center">
+              AutoMeal Login
+            </Header>
+            <Form className="attached fluid segment" onSubmit={this.handleSubmit}>
+              <Form.Input
+                icon="user"
+                iconPosition="left"
+                placeholder="Email"
+                name="email"
+                onChange={this.handleInputChange}
+                error={errors.email !== undefined}
+              />
+              <Form.Input
+                icon="lock"
+                iconPosition="left"
+                type="password"
+                name="password"
+                placeholder="Password"
+                onChange={this.handleInputChange}
+                error={errors.password !== undefined}
+              />
+              <Message size="mini" hidden={!errors.email && !errors.password}>
+                Incorrect email or password
+              </Message>
+              <Button content="Login" primary onClick={this.handleSubmit} />
+            </Form>
+            <Message attached="bottom" warning>
+              New AutoChef?&nbsp;&nbsp;<a href="/Register">Sign up here!</a>
+            </Message>
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }
