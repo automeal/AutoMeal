@@ -1,4 +1,5 @@
-import React from "react";
+// import Nav from '../../shared/Nav';
+import React from 'react';
 //import './Landing.css';
 
 const HomePage = props => (

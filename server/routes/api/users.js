@@ -1,22 +1,23 @@
-const express = require("express");
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
+
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const passport = require("passport");
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
 
 // Validators
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
-const validateUpdateInput = require("../../validation/update");
+const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
+const validateUpdateInput = require('../../validation/update');
 
 // User Model
-const User = require("../../models/User");
+const User = require('../../models/User');
 
 // @route   POST api/users/register
 // @desc    Register new user
 // @access  Public
-router.post("/register", (req, res) => {
+router.post('/register', (req, res) => {
   const { full_name, email, password } = req.body;
   const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
@@ -27,7 +28,7 @@ router.post("/register", (req, res) => {
   User.findOne({ email }).then(user => {
     if (user) {
       errors.email = `Email ${email} already exists`;
-      return res.status(400).json({ email: "Invalid " });
+      return res.status(400).json({ email: 'Invalid ' });
     }
 
     const newUser = new User({
@@ -42,22 +43,17 @@ router.post("/register", (req, res) => {
         if (err) throw err;
         newUser.password = hash;
         newUser.save().then(user => {
-          jwt.sign(
-            { id: user.id },
-            process.env.JWT_SECRET,
-            { expiresIn: 3600 },
-            (err, token) => {
-              if (err) throw err;
-              res.json({
-                token,
-                user: {
-                  id: user.id,
-                  full_name: user.full_name,
-                  email: user.email
-                }
-              });
-            }
-          );
+          jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
+            if (err) throw err;
+            res.json({
+              token,
+              user: {
+                id: user.id,
+                full_name: user.full_name,
+                email: user.email
+              }
+            });
+          });
         });
       });
     });
@@ -67,17 +63,17 @@ router.post("/register", (req, res) => {
 // @route   POST api/users/login
 // @desc    Login as user and return JWT
 // @access  Public
-router.post("/login", (req, res) => {
+router.post('/login', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
+  const { email, password } = req.body;
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  const email = req.body.email;
-  const password = req.body.password;
+
   User.findOne({ email }).then(user => {
     // look up email
     if (!user) {
-      errors.email = "User not found";
+      errors.email = 'User not found';
       return res.status(404).json(errors);
     }
 
@@ -89,17 +85,12 @@ router.post("/login", (req, res) => {
         const payload = { id: user.id, name: user.name, avatar: user.avatar };
         // sign the data with secret and set TTL
         // return user token
-        jwt.sign(
-          payload,
-          process.env.JWT_SECRET,
-          { expiresIn: 3600 },
-          (err, token) => {
-            res.json({ success: true, token: `Bearer ${token}` });
-          }
-        );
+        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
+          res.json({ success: true, token: `Bearer ${token}` });
+        });
       } else {
         // if passwords DO NOT match
-        errors.password = "Incorrect password";
+        errors.password = 'Incorrect password';
         return res.status(400).json(errors);
       }
     });
@@ -109,7 +100,9 @@ router.post("/login", (req, res) => {
 // @route   PATCH api/users/
 // @desc    update user
 // @access  Private
-router.patch("/:id", (req, res) => {
+router.patch('/:id', (req, res) => {
+  console.log('backend patch user endpoint');
+  console.log(req.body);
   const { errors, isValid } = validateUpdateInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
@@ -119,18 +112,17 @@ router.patch("/:id", (req, res) => {
     User.findById(req.params.id)
       .then(user => {
         if (!user) {
-          errors.email = "User not found";
+          errors.email = 'User not found';
           return res.status(404).json(errors);
         }
 
         // if found check password
         bcrypt.compare(req.body.password, user.password).then(isMatch => {
-          console.log("gave new password");
+          console.log('gave new password');
           // if passwords match don't bother
           if (isMatch) {
-            errors.password =
-              "Password cannot be the same as previous password.";
-            console.log("gave old password");
+            errors.password = 'Password cannot be the same as previous password.';
+            console.log('gave old password');
             return res.status(400).json(errors);
           } else {
             // if new password given,
@@ -152,6 +144,7 @@ router.patch("/:id", (req, res) => {
   // If no password pushed push other data
   else {
     User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
+      console.log('tries to update');
       err ? res.send(err) : res.send(raw);
     });
   }
@@ -160,7 +153,7 @@ router.patch("/:id", (req, res) => {
 // @route   DELETE api/users/
 // @desc    delete user
 // @access  Private
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
   User.findById(req.params.id)
     .then(user => user.remove().then(() => res.json({ success: true })))
     .catch(err => res.status(404).json({ success: false }));
@@ -169,15 +162,15 @@ router.delete("/:id", (req, res) => {
 // @route   GET api/users/current
 // @desc    Return current user
 // @access  Private
-router.get(
-  "/current",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) =>
-    res.json({
-      id: req.user.id,
-      name: req.user.full_name,
-      email: req.user.email
-    })
+router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) =>
+  res.json({
+    id: req.user.id,
+    full_name: req.user.full_name,
+    email: req.user.email,
+    pantry: req.user.pantry,
+    dietary_restrictions: req.user.dietary_restrictions,
+    allergies: req.user.allergies
+  })
 );
 
 module.exports = router;

@@ -1,4 +1,5 @@
-import React from "react";
+// import Nav from '../../shared/Nav';
+import React from 'react';
 //import './Landing.css';
 
 const MealPlan = props => (
@@ -11,9 +12,7 @@ const MealPlan = props => (
           <li>Meal Plan for each day of the week will go here</li>
           <li>Need to fix up backend, but some logic is there</li>
           <li>7 days of week, based on survey data</li>
-          <li>
-            Nutrition Info Displayed with each meal (based on survey data)
-          </li>
+          <li>Nutrition Info Displayed with each meal (based on survey data)</li>
         </ul>
       </div>
     </div>

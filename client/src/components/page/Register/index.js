@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { registerUser } from "../../../actions/authentication";
-import classnames from "classnames";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { registerUser } from '../../../actions/authentication';
+import classnames from 'classnames';
 // import Nav from "../../shared/Nav";
-import { Button, Form, Grid, Header, Image } from "semantic-ui-react";
-import Logo from "../../../Resources/logo.png";
+import { Button, Form, Grid, Header, Image } from 'semantic-ui-react';
+import Logo from '../../../Resources/logo.png';
 
 class Register extends Component {
   constructor() {
     super();
     this.state = {
-      full_name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
+      full_name: '',
+      email: '',
+      password: '',
+      confirm_password: '',
       errors: {}
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -41,7 +41,7 @@ class Register extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/");
+      this.props.history.push('/');
     }
     if (nextProps.errors) {
       this.setState({
@@ -52,7 +52,7 @@ class Register extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/");
+      this.props.history.push('/');
     }
   }
 
@@ -74,11 +74,7 @@ class Register extends Component {
       }
     `}
         </style>
-        <Grid
-          textAlign="center"
-          style={{ height: "100%" }}
-          verticalAlign="middle"
-        >
+        <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
             <Image src={Logo} size="huge" />
             <Header as="h2" color="teal" textAlign="center">
@@ -89,53 +85,47 @@ class Register extends Component {
               iconPosition="left"
               type="text"
               placeholder="Name"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.email
+              className={classnames('form-control form-control-lg', {
+                'is-invalid': errors.email
               })}
               name="full_name"
               onChange={this.handleInputChange}
               value={this.state.full_name}
             />
-            {errors.full_name && (
-              <div className="invalid-feedback">{errors.full_name}</div>
-            )}
+            {errors.full_name && <div className="invalid-feedback">{errors.full_name}</div>}
             <Form.Input
               icon="lock"
               iconPosition="left"
               type="email"
               placeholder="Email"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.email
+              className={classnames('form-control form-control-lg', {
+                'is-invalid': errors.email
               })}
               name="email"
               onChange={this.handleInputChange}
               value={this.state.email}
             />
-            {errors.email && (
-              <div className="invalid-feedback">{errors.email}</div>
-            )}
+            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
             <Form.Input
               icon="lock"
               iconPosition="left"
               type="password"
               placeholder="Password"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.password
+              className={classnames('form-control form-control-lg', {
+                'is-invalid': errors.password
               })}
               name="password"
               onChange={this.handleInputChange}
               value={this.state.password}
             />
-            {errors.password && (
-              <div className="invalid-feedback">{errors.password}</div>
-            )}
+            {errors.password && <div className="invalid-feedback">{errors.password}</div>}
             <Form.Input
               icon="lock"
               iconPosition="left"
               type="password"
               placeholder="Confirm Password"
-              className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.confirm_password
+              className={classnames('form-control form-control-lg', {
+                'is-invalid': errors.confirm_password
               })}
               name="confirm_password"
               onChange={this.handleInputChange}

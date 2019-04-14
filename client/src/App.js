@@ -1,22 +1,25 @@
-import React, { Component } from "react";
-import "font-awesome/css/font-awesome.css";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import 'font-awesome/css/font-awesome.css';
 
-import "./global.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./store";
-import jwt_decode from "jwt-decode";
-import setAuthToken from "./setAuthToken";
-import { setCurrentUser, logoutUser } from "./actions/authentication";
+import './global.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import jwt_decode from 'jwt-decode';
+import setAuthToken from './setAuthToken';
+import { setCurrentUser, logoutUser } from './actions/authentication';
 
-import Navbar from "./components/shared/Nav";
-import Landing from "./components/page/Landing";
-import Survey from "./components/page/Survey";
-import Plan from "./components/page/Plan";
-import HP from "./components/page/HP";
-import Register from "./components/page/Register";
-import Footer from "./components/shared/Footer";
-import Login from "./components/page/Login";
+import Navbar from './components/shared/Nav';
+import Landing from './components/page/Landing';
+import Survey from './components/page/Survey';
+import Plan from './components/page/Plan';
+import HP from './components/page/HP';
+import Register from './components/page/Register';
+import Footer from './components/shared/Footer';
+import Login from './components/page/Login';
+import Dashboard from './components/page/Dashboard';
+import PrivateRoute from './utils/PrivateRoute';
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -26,7 +29,7 @@ if (localStorage.jwtToken) {
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
     store.dispatch(logoutUser());
-    window.location.href = "/login";
+    window.location.href = '/login';
   }
 }
 
@@ -43,6 +46,7 @@ class App extends Component {
             <Route path="/meal-plan" component={Plan} />
             <Route path="/home-page" component={HP} />
             <Route path="/login" component={Login} />
+            <PrivateRoute path="/dashboard" component={Dashboard} />
             <Footer />
           </div>
         </Router>
@@ -51,4 +55,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

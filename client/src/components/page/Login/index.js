@@ -1,47 +1,45 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { loginUser } from "../../../actions/authentication";
-import { Button, Form, Grid, Header, Image, Message } from "semantic-ui-react";
-import "./Login.css";
-import Logo from "../../../Resources/logo.png";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Button, Form, Grid, Header, Image, Message } from 'semantic-ui-react';
+import { loginUser } from '../../../actions/authentication';
+import Logo from '../../../Resources/logo.png';
+import './Login.css';
 
 class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       errors: {}
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputChange(e) {
+  handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     const user = {
       email: this.state.email,
       password: this.state.password
     };
     this.props.loginUser(user);
-  }
+  };
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/home-page");
+      this.props.history.push('/dashboard#/');
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/home-page");
+      this.props.history.push('/dashboard#/');
     }
     if (nextProps.errors) {
       this.setState({
@@ -68,20 +66,13 @@ class Login extends Component {
       }
     `}
         </style>
-        <Grid
-          textAlign="center"
-          style={{ height: "100%" }}
-          verticalAlign="middle"
-        >
+        <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
             <Image src={Logo} size="huge" />
             <Header as="h2" color="teal" textAlign="center">
               AutoMeal Login
             </Header>
-            <Form
-              className="attached fluid segment"
-              onSubmit={this.handleSubmit}
-            >
+            <Form className="attached fluid segment" onSubmit={this.handleSubmit}>
               <Form.Input
                 icon="user"
                 iconPosition="left"
@@ -105,7 +96,7 @@ class Login extends Component {
               <Button content="Login" primary onClick={this.handleSubmit} />
             </Form>
             <Message attached="bottom" warning>
-              New to AutoMeal?&nbsp;&nbsp;<a href="/Register">Sign up here!</a>
+              New AutoChef?&nbsp;&nbsp;<a href="/Register">Sign up here!</a>
             </Message>
           </Grid.Column>
         </Grid>
