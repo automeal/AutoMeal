@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Search, Grid, Label } from "semantic-ui-react";
-import PropTypes from "prop-types";
-import axios from "axios";
+import React, { Component } from 'react';
+import { Search, Grid, Label } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 
 const resultRenderer = ({ name }) => <Label content={name} />;
 
@@ -14,23 +14,22 @@ class SearchBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      word: "",
-      searchText: "",
+      word: '',
+      searchText: '',
       searchResults: [],
       isLoading: false
     };
   }
 
-  handleChange = event => {
+  handleChanger = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.value]: event.target.value
     });
-    axios
-      .get(`/recipeAPI/${this.props.route}?search=${event.target.value}`)
-      .then(res => {
-        this.setState({ searchResults: res.data });
-        console.log(this.state.searchResults);
-      });
+    this.props.onChange(event);
+    axios.get(`/recipeAPI/${this.props.route}?search=${event.target.value}`).then(res => {
+      this.setState({ searchResults: res.data });
+      console.log(this.state.searchResults);
+    });
   };
 
   handleSubmit = async event => {
@@ -41,11 +40,12 @@ class SearchBox extends Component {
     this.resetComponent();
   }
 
-  resetComponent = () =>
-    this.setState({ isLoading: false, searchResults: [], searchText: "" });
+  resetComponent = () => this.setState({ isLoading: false, searchResults: [], searchText: '' });
 
-  handleResultSelect = (e, { result }) =>
+  handleResultSelect = (prop, e, result) => {
     this.setState({ searchText: result.name });
+    this.props.handleResult(prop, result);
+  };
 
   render() {
     return (
@@ -53,12 +53,14 @@ class SearchBox extends Component {
         <Grid.Column width={6}>
           <Search
             loading={this.state.isLoading}
-            onResultSelect={this.handleResultSelect}
-            onSearchChange={this.handleChange}
+            onResultSelect={(e, { result }) => this.handleResultSelect(this.props.name, e, result)}
+            onSearchChange={this.handleChanger}
             results={this.state.searchResults}
-            value={this.state.searchText}
-            name="searchText"
+            placeholder={this.props.placeholder}
+            value={this.props.value}
+            name={this.props.name}
             resultRenderer={resultRenderer}
+            onSubmit={this.props.onSubmit}
           />
         </Grid.Column>
       </Grid>

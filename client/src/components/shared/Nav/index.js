@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { logoutUser } from '../../../actions/authentication';
 import { withRouter } from 'react-router-dom';
 import './Nav.css';
+
 class Navbar extends Component {
   onLogout(e) {
     e.preventDefault();
