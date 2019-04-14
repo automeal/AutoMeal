@@ -30,7 +30,8 @@ class Dashboard extends Component {
   };
 
   handleSubmit = async event => {
-    const { list, newItem } = event.target[0];
+    const list = event.target[0].name;
+    const newItem = event.target[0].value;
     console.log(`currUser: ${this.state.currUser}`);
     console.log(`list: ${list}, newItem: ${newItem}`);
     event.preventDefault();
