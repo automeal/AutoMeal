@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button, Container, Icon, Menu, Responsive, Segment, Sidebar } from 'semantic-ui-react';
 import { Router, Link } from 'react-router-dom';
 
-import Head from '../../shared/Head';
+import Head from '../../shared/HomeHead';
 import Footer from '../../shared/Footer';
 
 const getWidth = () => {
@@ -84,7 +84,7 @@ class MobileContainer extends Component {
 }
 
 MobileContainer.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export default MobileContainer;
