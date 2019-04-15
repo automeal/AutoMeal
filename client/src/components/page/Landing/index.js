@@ -25,7 +25,7 @@ const Landing = props => (
             Login
           </Button>
         </div>
-        <SearchBox route="ingredientSearch" />
+        <SearchBox route="ingredients" />
       </div>
     </div>
   </div>
