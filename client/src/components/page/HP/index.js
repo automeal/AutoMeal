@@ -1,7 +1,7 @@
 // import Nav from '../../shared/Nav';
 import React from 'react';
 // import './Landing.css';
-import { Button, Card, Icon, Grid, Image } from 'semantic-ui-react';
+import { Button, Icon, Grid, Image } from 'semantic-ui-react';
 import food from './food.png';
 
 class HomePage extends React.Component {

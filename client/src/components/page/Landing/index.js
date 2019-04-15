@@ -3,12 +3,12 @@ import { Container, Grid, Header, Icon, Image, Segment } from 'semantic-ui-react
 import SearchBox from '../../shared/Search';
 
 import food from '../../image/food.jpg';
-import Head from '../../shared/Head';
+import LandingHead from '../../shared/LandingHead';
 
 function Landing() {
   return (
     <div>
-      <Head />
+      <LandingHead />
       <Segment style={{ padding: '8em 0em' }} vertical>
         <Container text>
           <Header as="h3" textAlign="center" style={{ fontSize: '2em' }}>

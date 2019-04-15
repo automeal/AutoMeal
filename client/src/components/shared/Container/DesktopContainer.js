@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { Responsive, Visibility, Segment, Menu, Container, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logoutUser } from '../../../actions/authentication';
+import { withRouter } from 'react-router-dom';
 
 import Footer from '../../shared/Footer';
 import food3 from '../../image/food3.jpg';
+//import './Nav.css';
 
 /* Heads up!
  * Neither Semantic UI nor Semantic UI React offer a responsive navbar, however, it can be implemented easily.
@@ -30,44 +34,76 @@ class DesktopContainer extends Component {
   render() {
     const { children } = this.props;
     const { fixed } = this.state;
-    //const { isAuthenticated, user } = this.props.auth;
+    const { isAuthenticated, user } = this.props.auth;
 
-    /*const authLinks = (
-      <ul className="navbar-nav ml-auto">
-        <a href="" className="nav-link" onClick={this.onLogout.bind(this)}>
-          <a
-            alt={user.name}
-            title={user.name}
-            className="rounded-circle"
-            style={{ width: '25px', marginRight: '5px' }}
-          />
-          Logout
-        </a>
-      </ul>
-  );*/
+    const authLinks = (
+      <Menu
+        fixed={fixed ? 'top' : null}
+        inverted={!fixed}
+        pointing={!fixed}
+        secondary={!fixed}
+        size="large"
+      >
+        <Container>
+          <Link to="/home-page" onClick={this.forceUpdate}>
+            <Menu.Item as="a">Home</Menu.Item>
+          </Link>
+          <Link to="/dashboard" onClick={this.forceUpdate}>
+            <Menu.Item as="a">Dashboard</Menu.Item>
+          </Link>
+          <Link to="/meal-plan" onClick={this.forceUpdate}>
+            <Menu.Item as="a">Meal Plan</Menu.Item>
+          </Link>
+          <Link to="/survey" onClick={this.forceUpdate}>
+            <Menu.Item as="a">Survey</Menu.Item>
+          </Link>
+          <Menu.Item position="right">
+            <Link to="/login">
+              <Button
+                as="a"
+                inverted={!fixed}
+                primary={fixed}
+                style={{ marginLeft: '0.5em' }}
+                onClick={this.onLogout.bind(this)}
+              >
+                Log Out
+              </Button>
+            </Link>
+          </Menu.Item>
+        </Container>
+      </Menu>
+    );
 
-    /*const guestLinks = (
-      <ul className="navbar-nav ml-auto">
-        <Button className="Nav__button" link={true} path="/" type="transparent">
-          Home
-        </Button>
-        <Button className="Nav__button" link={true} path="/register" type="transparent">
-          Register
-        </Button>
-        <Button className="Nav__button" link={true} path="/login" type="transparent">
-          Login
-        </Button>
-        <Button className="Nav__button" link={true} path="/survey" type="transparent">
-          Survey
-        </Button>
-        <Button className="Nav__button" link={true} path="/meal-plan" type="transparent">
-          Meal Plan
-        </Button>
-        <Button className="Nav__button" link={true} path="/pantry" type="transparent">
-          Pantry
-        </Button>
-      </ul>
-  );*/
+    const guestLinks = (
+      <Menu
+        fixed={fixed ? 'top' : null}
+        inverted={!fixed}
+        pointing={!fixed}
+        secondary={!fixed}
+        size="large"
+      >
+        <Container>
+          <Link to="/" onClick={this.forceUpdate}>
+            <Menu.Item as="a">Home</Menu.Item>
+          </Link>
+          <Link to="/how-it-works" onClick={this.forceUpdate}>
+            <Menu.Item as="a">How It Works</Menu.Item>
+          </Link>
+          <Menu.Item position="right">
+            <Link to="/login" onClick={this.forceUpdate}>
+              <Button as="a" inverted={!fixed}>
+                Log in
+              </Button>
+            </Link>
+            <Link to="/register" onClick={this.forceUpdate}>
+              <Button as="a" inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
+                Sign Up
+              </Button>
+            </Link>
+          </Menu.Item>
+        </Container>
+      </Menu>
+    );
 
     return (
       <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -89,41 +125,9 @@ class DesktopContainer extends Component {
             vertical
             color="yellow"
           >
-            <Menu
-              fixed={fixed ? 'top' : null}
-              inverted={!fixed}
-              pointing={!fixed}
-              secondary={!fixed}
-              size="large"
-            >
-              <Container>
-                <Link to="/">
-                  <Menu.Item as="a" active>
-                    Home
-                  </Menu.Item>
-                </Link>
-                <Link to="/how-it-works">
-                  <Menu.Item as="a">How It Works</Menu.Item>
-                </Link>
-                <Menu.Item position="right">
-                  <Link to="/login">
-                    <Button as="a" inverted={!fixed}>
-                      Log in
-                    </Button>
-                  </Link>
-                  <Link to="/register">
-                    <Button
-                      as="a"
-                      inverted={!fixed}
-                      primary={fixed}
-                      style={{ marginLeft: '0.5em' }}
-                    >
-                      Sign Up
-                    </Button>
-                  </Link>
-                </Menu.Item>
-              </Container>
-            </Menu>
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+              {isAuthenticated ? authLinks : guestLinks}
+            </div>
           </Segment>
         </Visibility>
 
@@ -135,7 +139,16 @@ class DesktopContainer extends Component {
 }
 
 DesktopContainer.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
-export default DesktopContainer;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(withRouter(DesktopContainer));
