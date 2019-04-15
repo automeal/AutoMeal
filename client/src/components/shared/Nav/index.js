@@ -15,17 +15,27 @@ class Navbar extends Component {
     const { isAuthenticated, user } = this.props.auth;
     const authLinks = (
       <ul className="navbar-nav ml-auto">
-        <Button onClick={this.onLogout.bind(this)}>
-          <href
+        <a href="" className="nav-link" onClick={this.onLogout.bind(this)}>
+          <a
             alt={user.name}
             title={user.name}
             className="rounded-circle"
             style={{ width: '25px', marginRight: '5px' }}
-          />{' '}
+          />
           Logout
-        </Button>
-        <Button className="Nav__button" link={true} path="/dashboard" type="transparent">
+        </a>
+      </ul>
+    );
+    const guestLinks = (
+      <ul className="navbar-nav ml-auto">
+        <Button className="Nav__button" link={true} path="/" type="transparent">
           Home
+        </Button>
+        <Button className="Nav__button" link={true} path="/register" type="transparent">
+          Register
+        </Button>
+        <Button className="Nav__button" link={true} path="/login" type="transparent">
+          Login
         </Button>
         <Button className="Nav__button" link={true} path="/survey" type="transparent">
           Survey
@@ -35,13 +45,6 @@ class Navbar extends Component {
         </Button>
         <Button className="Nav__button" link={true} path="/pantry" type="transparent">
           Pantry
-        </Button>
-      </ul>
-    );
-    const guestLinks = (
-      <ul className="navbar-nav ml-auto">
-        <Button className="Nav_button" link={true} path="/" type="transparent">
-          Home Page
         </Button>
       </ul>
     );
