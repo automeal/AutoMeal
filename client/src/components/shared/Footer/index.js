@@ -12,6 +12,7 @@ const Footer = ({ mobile }) => (
             <List link inverted>
               <List.Item as="a">About AutoMeal</List.Item>
               <List.Item as="a">Contact Us</List.Item>
+              <List.Item as="a">How it Works</List.Item>
             </List>
           </Grid.Column>
           <Grid.Column width={3}>

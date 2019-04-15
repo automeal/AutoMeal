@@ -1,20 +1,13 @@
-import Nav from '../../shared/Nav';
+// import Nav from '../../shared/Nav';
 import React from 'react';
-//import './Landing.css';
+// import './Landing.css';
 import { Button, Card, Icon, Grid, Image } from 'semantic-ui-react';
 import food from './food.png';
 
 class HomePage extends React.Component {
   render() {
     return (
-      <Grid
-        columns="equal"
-        verticalAlign="middle"
-        textAlign="center"
-        divided
-        stretched
-        stackable={true}
-      >
+      <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
         <Grid.Row>
           <Grid.Column width={8}>
             <Image src={food} />

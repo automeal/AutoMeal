@@ -1,12 +1,10 @@
-import Nav from '../../shared/Nav';
+// import Nav from '../../shared/Nav';
 import React from 'react';
 //import './Landing.css';
 
-
-const MealPlan = (props) => (
+const MealPlan = props => (
   <div className="Login">
-    <div className="Login__banner">
-    </div>
+    <div className="Login__banner" />
     <div className="Login__data">
       <div className="Login__data__content">
         <h1>Weekly Meal Plan</h1>

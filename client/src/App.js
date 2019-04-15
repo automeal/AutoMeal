@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 
 import './global.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './store';
 import jwt_decode from 'jwt-decode';
+import PropTypes from 'prop-types';
+import { Button, Container, Divider, Grid, Header, Icon, Image, Segment } from 'semantic-ui-react';
+import store from './store';
 import setAuthToken from './setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authentication';
 
@@ -19,12 +22,11 @@ import Footer from './components/shared/Footer';
 import Login from './components/page/Login';
 import Pantry from './components/page/Pantry';
 
-import PropTypes from 'prop-types';
-
-import { Button, Container, Divider, Grid, Header, Icon, Image, Segment } from 'semantic-ui-react';
-
 import DesktopContainer from './components/shared/Container/DesktopContainer';
 import MobileContainer from './components/shared/Container/MobileContainer';
+
+import Dashboard from './components/page/Dashboard';
+import PrivateRoute from './utils/PrivateRoute';
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -53,8 +55,8 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <ResponsiveContainer>
-          <Router>
+        <Router>
+          <ResponsiveContainer>
             <div>
               {/* <Navbar /> */}
               <Route exact path="/" component={Landing} />
@@ -63,13 +65,13 @@ class App extends Component {
               <Route path="/meal-plan" component={Plan} />
               <Route path="/home-page" component={HP} />
               <Route path="/login" component={Login} />
-              <Route path="/pantry" component={Pantry} />
+              <PrivateRoute path="/dashboard" component={Dashboard} />
             </div>
-          </Router>
-        </ResponsiveContainer>
+          </ResponsiveContainer>
+        </Router>
       </Provider>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
