@@ -41,7 +41,7 @@
   },
   "proxy": "http://localhost:5000",
   "eslintConfig": {
-    "extends": "airbnb"
+    "extends": "react-app"
   },
   "devDependencies": {
     "gh-pages": "^1.1.0"

@@ -90,7 +90,7 @@ function Landing() {
               <Header as="h3" style={{ fontSize: '2em' }}>
                 "Trying out new recipes has never been easier."
               </Header>
-              <p style={{ fontSize: '1.33em' }}>
+              <p style={{ fontSize: '1.33em', textAlign: 'center' }}>
                 <SearchBox route="ingredientSearch" />
               </p>
             </Grid.Column>

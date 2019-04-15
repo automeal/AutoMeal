@@ -21,10 +21,11 @@ class SearchBox extends Component {
     };
   }
 
-  handleChange = event => {
+  handleChanger = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.value]: event.target.value
     });
+    this.props.onChange(event);
     axios.get(`/recipeAPI/${this.props.route}?search=${event.target.value}`).then(res => {
       this.setState({ searchResults: res.data });
       console.log(this.state.searchResults);
@@ -41,7 +42,10 @@ class SearchBox extends Component {
 
   resetComponent = () => this.setState({ isLoading: false, searchResults: [], searchText: '' });
 
-  handleResultSelect = (e, { result }) => this.setState({ searchText: result.name });
+  handleResultSelect = (prop, e, result) => {
+    this.setState({ searchText: result.name });
+    this.props.handleResult(prop, result);
+  };
 
   render() {
     return (
@@ -49,12 +53,14 @@ class SearchBox extends Component {
         <Grid.Column width={6}>
           <Search
             loading={this.state.isLoading}
-            onResultSelect={this.handleResultSelect}
-            onSearchChange={this.handleChange}
+            onResultSelect={(e, { result }) => this.handleResultSelect(this.props.name, e, result)}
+            onSearchChange={this.handleChanger}
             results={this.state.searchResults}
-            value={this.state.searchText}
-            name="searchText"
+            placeholder={this.props.placeholder}
+            value={this.props.value}
+            name={this.props.name}
             resultRenderer={resultRenderer}
+            onSubmit={this.props.onSubmit}
           />
         </Grid.Column>
       </Grid>
