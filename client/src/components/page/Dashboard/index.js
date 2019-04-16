@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { List } from 'semantic-ui-react';
+import { List, Checkbox, Dropdown } from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 
 class Dashboard extends Component {
@@ -11,11 +11,14 @@ class Dashboard extends Component {
       pantry: '',
       allergies: '',
       dietary_restrictions: '',
-      fieldsToUpdate: {}
+      cuisine: [],
+      includePantry: true,
+      filterDietaryRestrictions: true,
+      filterAlergies: true
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     axios
       .get('/api/users/current', { Authorization: localStorage.getItem('jwtToken') })
       .then(user => {
@@ -31,28 +34,37 @@ class Dashboard extends Component {
   };
 
   handleResultSelect = (prop, result) => {
-    this.setState({
-      [prop]: result.name,
-      [this.state.currUser[prop]]: [...this.state.currUser[prop], result.name]
-    });
-    console.log(`curr list: ${this.state.currUser}`);
-    this.handleSubmit({ target: [{ name: prop, value: result.name }] });
-  };
-
-  handleSubmit = async event => {
-    const list = event.target[0].name;
-    const newItem = event.target[0].value;
-    console.log(`currUser: ${this.state.currUser}`);
-    console.log(`list: ${list}, newItem: ${newItem}`);
-    // If pantry item already present do not add again
+    const list = prop;
+    const newItem = result.name;
     if (this.state.currUser[list].includes(newItem)) {
       console.log('Item already present');
       return;
     }
+    console.log(`curr list: ${this.state.currUser.dietary_restrictions}`);
+    console.log(`currUser: ${this.state.currUser}`);
+    console.log(`list: ${list}, newItem: ${newItem}`);
+
+    let user = this.state.currUser;
+    let userList = user[list];
+    userList = [...userList, newItem];
+    user[list] = userList;
+    // If pantry item already present do not add again
+    axios
+      .patch(`/api/users/${this.state.currUser.id}`, {
+        [list]: userList
+      })
+      .then(() => {
+        this.setState({
+          [list]: '',
+          currUser: user
+        });
+      });
     console.log(`Hello, field: ${this.state.currUser[list]}, this.state[newItem]: ${newItem}`);
-    axios.patch(`/api/users/${this.state.currUser.id}`, {
-      [list]: [...this.state.currUser[list], newItem]
-    });
+  };
+
+  handleCheck = event => {
+    console.log(event.target.name);
+    this.setState({ [event.target.name]: !this.state[event.target.name] });
   };
 
   render() {
@@ -77,7 +89,7 @@ class Dashboard extends Component {
             }
           />
           <SearchBox
-            route="ingredientSearch"
+            route="ingredients"
             onChange={this.handleChange.bind(this)}
             handleResult={this.handleResultSelect.bind(this)}
             placeholder="Add new item to pantry"
@@ -96,7 +108,7 @@ class Dashboard extends Component {
             }
           />
           <SearchBox
-            route="ingredientSearch"
+            route="ingredients"
             placeholder="Add new item to dietary restrictions"
             value={this.state.dietary_restrictions}
             name="dietary_restrictions"
@@ -114,7 +126,7 @@ class Dashboard extends Component {
             }
           />
           <SearchBox
-            route="ingredientSearch"
+            route="ingredients"
             handleResult={this.handleResultSelect.bind(this)}
             placeholder="Add new item to allergies"
             value={this.state.allergies}
@@ -127,6 +139,101 @@ class Dashboard extends Component {
           allow them to disable certain items for the current search
           warn when disabling anything allergy related
          */}
+        <br />
+        <br />
+        Complex Recipe Search
+        <br />
+        <br />
+        <Checkbox
+          name="includePantry"
+          // value={this.state.includePantry}
+          // checked={this.state.includePantry}
+          // onClick={this.handleCheck.bind(this)}
+          toggle
+          label="Include pantry"
+        />
+        <br />
+        <Checkbox
+          name="filterDietaryRestrictions"
+          // value={this.state.filterDietaryRestrictions}
+          // checked={this.state.filterDietaryRestrictions}
+          // onClick={this.handleCheck.bind(this)}
+          toggle
+          label="Filter out recipes that include dietary restrictions"
+        />
+        <br />
+        <Checkbox
+          name="filterAlergies"
+          // value={this.state.filterAlergies}
+          // checked={this.state.filterAlergies}
+          // onClick={this.handleCheck.bind(this)}
+          toggle
+          label="Filter out recipes that include allergies"
+        />
+        <br />
+        <br />
+        Additional Items to Use:
+        <br />
+        <SearchBox
+          route="ingredients"
+          handleResult={this.handleResultSelect.bind(this)}
+          placeholder="Add new item to allergies"
+          value={this.state.allergies}
+          name="allergies"
+          onChange={this.handleChange.bind(this)}
+        />
+        <br />
+        Additional Items to Exclude:
+        <br />
+        <SearchBox
+          route="ingredients"
+          handleResult={this.handleResultSelect.bind(this)}
+          placeholder="Add new item to allergies"
+          value={this.state.allergies}
+          name="allergies"
+          onChange={this.handleChange.bind(this)}
+        />
+        <br />
+        <Dropdown
+          onChange={this.state.handleCuisineChange}
+          value={this.state.cuisine}
+          name="cuisine"
+          placeholder="Cuisine"
+          multiple
+          search
+          selection
+          options={[
+            { key: 'African', value: 'African', text: 'African' },
+            { key: 'American', value: 'American', text: 'American' },
+            { key: 'British', value: 'British', text: 'British' },
+            { key: 'Cajun', value: 'Cajun', text: 'Cajun' },
+            { key: 'Caribbean', value: 'Caribbean', text: 'Caribbean' },
+            { key: 'Chinese', value: 'Chinese', text: 'Chinese' },
+            { key: 'Eastern', value: 'Eastern', text: 'Eastern' },
+            { key: 'European', value: 'European', text: 'European' },
+            { key: 'French', value: 'French', text: 'French' },
+            { key: 'German', value: 'German', text: 'German' },
+            { key: 'Greek', value: 'Greek', text: 'Greek' },
+            { key: 'Halal', value: 'Halal', text: 'Halal' },
+            { key: 'Indian', value: 'Indian', text: 'Indian' },
+            { key: 'Irish', value: 'Irish', text: 'Irish' },
+            { key: 'Italian', value: 'Italian', text: 'Italian' },
+            { key: 'Japanese', value: 'Japanese', text: 'Japanese' },
+            { key: 'Jewish', value: 'Jewish', text: 'Jewish' },
+            { key: 'Korean', value: 'Korean', text: 'Korean' },
+            { key: 'Kosher', value: 'Kosher', text: 'Kosher' },
+            { key: 'Latin American', value: 'Latin American', text: 'Latin American' },
+            { key: 'Mexican', value: 'Mexican', text: 'Mexican' },
+            { key: 'Middle Eastern', value: 'Middle Eastern', text: 'Middle Eastern' },
+            { key: 'Nordic', value: 'Nordic', text: 'Nordic' },
+            { key: 'Southern', value: 'Southern', text: 'Southern' },
+            { key: 'Spanish', value: 'Spanish', text: 'Spanish' },
+            { key: 'Thai', value: 'Thai', text: 'Thai' },
+            { key: 'Vietnamese', value: 'Vietnamese', text: 'Vietnamese' }
+          ]}
+        />
+        <br />
+        <div route={'s'} number={'s'} ranking={'s'} ignorePantry={'s'} ingredients={'s'} />
       </div>
     );
   }

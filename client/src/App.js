@@ -53,16 +53,16 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <ResponsiveContainer>
-            <div>
-              {/* <Navbar /> */}
-              <Route exact path="/" component={Landing} />
-              <Route path="/register" component={Register} />
-              <Route path="/survey" component={Survey} />
-              <Route path="/meal-plan" component={Plan} />
-              <Route path="/home-page" component={HP} />
-              <Route path="/login" component={Login} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
-            </div>
+            {/* <div> */}
+            {/* <Navbar /> */}
+            <Route exact path="/" component={Landing} />
+            <Route path="/register" component={Register} />
+            <Route path="/survey" component={Survey} />
+            <Route path="/meal-plan" component={Plan} />
+            <Route path="/home-page" component={HP} />
+            <Route path="/login" component={Login} />
+            <PrivateRoute path="/dashboard" component={Dashboard} />
+            {/* </div> */}
           </ResponsiveContainer>
         </Router>
       </Provider>
