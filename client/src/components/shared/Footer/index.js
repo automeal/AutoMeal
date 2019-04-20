@@ -23,13 +23,27 @@ const Footer = ({ mobile }) => (
             </List>
           </Grid.Column>
           <Grid.Column width={7}>
-            <Header as="h4" inverted>
-              AutoMeal Meal Plan Generator
-            </Header>
-            <p>
-              Find recipes based on ingredients you already have at home. Join a community of
-              enthusiastic home cooks. Make your daily plans to cook easier. Choose AutoMeal.
-            </p>
+            <Grid.Column width={7}>
+              <Header as="h4" inverted>
+                AutoMeal Meal Plan Generator
+              </Header>
+              <p>
+                Find recipes based on ingredients you already have at home. Join a community of
+                enthusiastic home cooks. Make your daily plans to cook easier. Choose AutoMeal.
+              </p>
+            </Grid.Column>
+          </Grid.Column>
+          <Grid.Column width={3}>
+            <Grid.Column width={3}>
+              <Header as="h4" inverted>
+                Contribute
+              </Header>
+              <List link inverted>
+                <List.Item as="a" href="https://github.com/automeal/AutoMeal" target="_blank">
+                  Find us on GitHub!
+                </List.Item>
+              </List>
+            </Grid.Column>
           </Grid.Column>
         </Grid.Row>
       </Grid>
