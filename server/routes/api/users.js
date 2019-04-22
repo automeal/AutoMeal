@@ -82,11 +82,7 @@ router.post('/login', (req, res) => {
       // if passwords match
       if (isMatch) {
         // copy user info
-        const payload = {
-          id: user.id,
-          full_name: user.full_name,
-          email: user.email
-        };
+        const payload = { id: user.id, full_name: user.full_name, password: user.password };
         // sign the data with secret and set TTL
         // return user token
         jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {

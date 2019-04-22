@@ -16,24 +16,27 @@ class Navbar extends Component {
 
     const authLinks = (
       <ul className="navbar-nav ml-auto">
-        <Button onClick={this.onLogout.bind(this)}>
-          <href
-            alt={user.id}
+        <a href="" className="nav-link" onClick={this.onLogout.bind(this)}>
+          <a
+            alt={user.name}
             title={user.name}
             className="rounded-circle"
             style={{ width: '25px', marginRight: '5px' }}
-          />{' '}
+          />
           Logout
-        </Button>
-        <h1>Your email: {user.email}</h1>
-        <h1>Your name: {user.full_name}</h1>
-        <Button
-          className="Nav__button"
-          link={true}
-          path="/home-page"
-          type="transparent"
-        >
+        </a>
+      </ul>
+    );
+    const guestLinks = (
+      <ul className="navbar-nav ml-auto">
+        <Button className="Nav__button" link={true} path="/" type="transparent">
           Home
+        </Button>
+        <Button className="Nav__button" link={true} path="/register" type="transparent">
+          Register
+        </Button>
+        <Button className="Nav__button" link={true} path="/login" type="transparent">
+          Login
         </Button>
         <Button className="Nav__button" link={true} path="/survey" type="transparent">
           Survey
@@ -51,13 +54,6 @@ class Navbar extends Component {
           type="transparent"
         >
           User Profile
-        </Button>
-      </ul>
-    );
-    const guestLinks = (
-      <ul className="navbar-nav ml-auto">
-        <Button className="Nav_button" link={true} path="/" type="transparent">
-          Home Page
         </Button>
       </ul>
     );

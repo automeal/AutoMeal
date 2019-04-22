@@ -3,10 +3,11 @@ const mongoose = require('mongoose');
 const path = require('path');
 const passport = require('passport');
 require('dotenv').config();
-const recipes = require('./routes/api/recipes');
+// const recipes = require('./routes/api/recipes');
 const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
-const ingredientSearch = require('./routes/recipeAPI/ingredientSearch');
+const ingredients = require('./routes/recipeAPI/ingredients');
+const recipes = require('./routes/recipeAPI/recipes');
 
 const app = express();
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -36,12 +37,13 @@ app.use(passport.initialize());
 require('./validation/passport')(passport);
 
 // API to mongoDB
-app.use('/api/recipes', recipes);
+// app.use('/api/recipes', recipes);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 
 // API to rapidAPI
-app.use('/recipeAPI/ingredientSearch', ingredientSearch);
+app.use('/recipeAPI/ingredients', ingredients);
+app.use('/recipeAPI/recipes', recipes);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
