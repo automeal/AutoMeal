@@ -41,7 +41,7 @@ class Register extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/');
+      this.props.history.push('/survey');
     }
     if (nextProps.errors) {
       this.setState({
@@ -52,7 +52,7 @@ class Register extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/');
+      this.props.history.push('/survey');
     }
   }
 
@@ -152,7 +152,9 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(
-  mapStateToProps,
-  { registerUser }
-)(withRouter(Register));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { registerUser }
+  )(Register)
+);
