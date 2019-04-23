@@ -17,6 +17,7 @@
     "react": "^16.8.3",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.8.3",
+    "react-leaf-carousel": "^1.2.2",
     "react-native-elements": "^1.0.0-beta8",
     "react-native-search-bar": "^3.4.2",
     "react-redux": "^5.0.7",

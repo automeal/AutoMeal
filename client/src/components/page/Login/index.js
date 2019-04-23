@@ -33,13 +33,13 @@ class Login extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard#/');
+      this.props.history.push('/home-page');
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/dashboard#/');
+      this.props.history.push('/home-page');
     }
     if (nextProps.errors) {
       this.setState({

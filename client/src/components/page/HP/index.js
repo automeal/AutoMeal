@@ -3,6 +3,7 @@ import React from 'react';
 // import './Landing.css';
 import { Button, Icon, Grid, Image } from 'semantic-ui-react';
 import food from './food.png';
+import Carousel from '../../shared/Carousel';
 
 class HomePage extends React.Component {
   render() {
@@ -35,6 +36,8 @@ class HomePage extends React.Component {
                     <li>Recipes to Try</li>
                     <li>Recently Searched Items</li>
                     <li>Other Home Page Stuff</li>
+                    <li>Food Recipe Library</li>
+                    <Carousel />
                   </ul>
                 </div>
               </div>

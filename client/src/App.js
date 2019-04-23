@@ -20,6 +20,7 @@ import Login from './components/page/Login';
 
 import DesktopContainer from './components/shared/Container/DesktopContainer';
 import MobileContainer from './components/shared/Container/MobileContainer';
+import Footer from './components/shared/Footer';
 
 import Dashboard from './components/page/Dashboard';
 import PrivateRoute from './utils/PrivateRoute';
@@ -52,7 +53,8 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <ResponsiveContainer>
+          <div>
+            <ResponsiveContainer />
             {/* <div> */}
             {/* <Navbar /> */}
             <Route exact path="/" component={Landing} />
@@ -63,7 +65,8 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             {/* </div> */}
-          </ResponsiveContainer>
+            <Footer />
+          </div>
         </Router>
       </Provider>
     );

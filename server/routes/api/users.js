@@ -162,7 +162,6 @@ router.delete('/:id', (req, res) => {
 // @route   GET api/users/current
 // @desc    Return current user
 // @access  Private
-<<<<<<< Updated upstream:server/routes/api/users.js
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) =>
   res.json({
     id: req.user.id,
@@ -172,17 +171,6 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     dietary_restrictions: req.user.dietary_restrictions,
     allergies: req.user.allergies
   })
-=======
-router.get(
-  "/current",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) =>
-    res.json({
-      id: req.user.id,
-      full_name: req.user.full_name,
-      email: req.user.email
-    })
->>>>>>> Stashed changes:routes/api/users.js
 );
 
 module.exports = router;

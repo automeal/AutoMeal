@@ -18,8 +18,8 @@ class Navbar extends Component {
       <ul className="navbar-nav ml-auto">
         <a href="" className="nav-link" onClick={this.onLogout.bind(this)}>
           <a
-            alt={user.name}
-            title={user.name}
+            alt={user.full_name}
+            title={user.full_name}
             className="rounded-circle"
             style={{ width: '25px', marginRight: '5px' }}
           />
@@ -47,12 +47,7 @@ class Navbar extends Component {
         <Button className="Nav__button" link={true} path="/pantry" type="transparent">
           Pantry
         </Button>
-        <Button
-          className="Nav__button"
-          link={true}
-          path="/profile"
-          type="transparent"
-        >
+        <Button className="Nav__button" link={true} path="/profile" type="transparent">
           User Profile
         </Button>
       </ul>
