@@ -52,7 +52,7 @@ class Dashboard extends Component {
     // If pantry item already present do not add again
     axios
       .patch(`/api/users/${this.state.currUser.id}`, {
-        [list]: userList
+        [list]: newItem,
       })
       .then(() => {
         this.setState({

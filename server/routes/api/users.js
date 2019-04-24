@@ -143,16 +143,73 @@ router.patch('/:id', (req, res) => {
   }
   // If no password pushed push other data
   else {
-    console.log('TO DB:', req.body);
-    User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
-      console.log('tries to update');
-      if (err) {
-        console.log(err);
-        res.send(err);
-      } else {
-        res.send(raw);
+    console.log('other1');
+
+    var toCheck = ['pantry', 'mealplans', 'allergies'];
+
+    for (var prop in req.body) {
+      console.log('Property', prop);
+      if (toCheck.includes(prop)) {
+        var toSave = req.body[prop];
+        console.log('Propery Value', toSave);
+        delete req.body[prop];
+
+        User.updateOne({ _id: req.params.id }, { $push: { [prop]: toSave } }, (err, raw) => {
+          console.log('Append to', prop);
+          if (err) {
+            console.log(err);
+            //res.send(err);
+          } else {
+            //res.send(raw);
+          }
+        });
       }
-    });
+    }
+
+    /*
+    if (req.body.pantry && req.body.pantry.constructor !== Array){
+      var pantry = req.body.pantry;
+      delete req.body.pantry;
+      console.log("Are we good??", pantry);
+
+      User.updateOne({ _id: req.params.id }, { $push : {'pantry': pantry} }, (err, raw) => {
+        console.log('Append pantry');
+        if (err) {
+          console.log(err);
+          //res.send(err);
+        } else {
+          //res.send(raw);
+        }
+      });      
+    }
+
+    if (req.body.mealPlans && req.body.mealPlans.constructor !== Array){
+      var mealPlans = req.body.mealPlans;
+      delete req.body.mealPlans;
+      User.updateOne({ _id: req.params.id }, { $push : {'mealPlans':mealPlans} }, (err, raw) => {
+        console.log('Append Mealplans');
+        if (err) {
+          console.log(err);
+          //res.send(err);
+        } else {
+          //res.send(raw);
+        }
+      });      
+    }
+    */
+
+    if (req.body) {
+      console.log('TO DB:', req.body);
+      User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
+        console.log('tries to update');
+        if (err) {
+          console.log(err);
+          res.send(err);
+        } else {
+          res.send(raw);
+        }
+      });
+    }
   }
 });
 
