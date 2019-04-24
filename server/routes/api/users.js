@@ -143,9 +143,15 @@ router.patch('/:id', (req, res) => {
   }
   // If no password pushed push other data
   else {
+    console.log('TO DB:', req.body);
     User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
       console.log('tries to update');
-      err ? res.send(err) : res.send(raw);
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        res.send(raw);
+      }
     });
   }
 });

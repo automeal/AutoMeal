@@ -10,7 +10,7 @@ class Dashboard extends Component {
       currUser: {},
       pantry: '',
       allergies: '',
-      dietaryRestrictions: '',
+      dietary_restrictions: '',
       cuisine: [],
       includePantry: true,
       filterDietaryRestrictions: true,
@@ -73,7 +73,7 @@ class Dashboard extends Component {
         Hello{' '}
         {this.state.currUser.display_name
           ? this.state.currUser.display_name
-          : this.state.currUser.fullName}
+          : this.state.currUser.full_name}
         <a href="/home-page#/">
           <sup>edit</sup>
         </a>
@@ -97,7 +97,7 @@ class Dashboard extends Component {
             name="pantry"
           />
         </div>
-        <div style={{ display: 'inline-block' }} className="dietaryRestrictions">
+        <div style={{ display: 'inline-block' }} className="dietary_restrictions">
           <List.Header>Your Dietary Restrictions</List.Header>
           <List
             items={
@@ -110,8 +110,8 @@ class Dashboard extends Component {
           <SearchBox
             route="ingredients"
             placeholder="Add new item to dietary restrictions"
-            value={this.state.dietaryRestrictions}
-            name="dietaryRestrictions"
+            value={this.state.dietary_restrictions}
+            name="dietary_restrictions"
             onChange={this.handleChange.bind(this)}
             handleResult={this.handleResultSelect.bind(this)}
           />

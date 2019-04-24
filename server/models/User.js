@@ -2,14 +2,22 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const MealSchema = new Schema({
+  planType: Number,
+  calories: Object,
+  personCount: Number,
+  mealCount: Number,
+  recipes: Array
+});
+
 // Create Schema
 const UserSchema = new Schema({
   // Credentials/Authorization/Metadata
-  full_name: {
+  fullName: {
     type: String,
     required: true
   },
-  display_name: {
+  displayName: {
     type: String
   },
   email: {
@@ -21,18 +29,14 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  registration_date: {
+  registrationDate: {
     type: Date,
     default: Date.now
   },
-  // last_updated: {
-  //   type: Date,
-  //   default: Date.now
-  // },
-  // last_full_name_update: {
-  //   type: Date,
-  //   default: Date.now
-  // },
+  lastUpdated: {
+    type: Date,
+    default: Date.now
+  },
   // last_password_update: {
   //   type: Date,
   //   default: Date.now
@@ -42,17 +46,18 @@ const UserSchema = new Schema({
   // Data users provide and we store create a more personal experience
   pantry: {
     type: Array,
-    default: ['salt', 'oil', 'lettuce', 'pepper', 'goya', 'milk', 'ice cream']
+    default: ['salt', 'pepper', 'oil', 'lettuce', 'milk', 'ice cream']
     // have this be an object with the array and creation date so that we may refresh weekly
   },
-  dietary_restrictions: {
+  dietaryRestrictions: {
     type: Array,
     default: []
   },
   allergies: {
     type: Array,
     default: []
-  }
+  },
+  mealPlans: [MealSchema]
 });
 
 module.exports = User = mongoose.model('users', UserSchema);

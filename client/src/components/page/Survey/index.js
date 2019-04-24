@@ -148,11 +148,43 @@ export default class Survey extends Component {
     } = this.state;
     const { activeIndex } = this.state.diet;
 
+    var dietaryRestrictions = [];
+    for (var prop in healthPreferences) {
+        if (healthPreferences.hasOwnProperty(prop)  ) {
+            dietaryRestrictions.push(prop);
+        }
+    }
+
+    var allergies = [];
+    for (var prop in intolerances) {
+        if (intolerances.hasOwnProperty(prop)  ) {
+            allergies.push(prop);
+        }
+    }    
+
+    var updateObj = {
+      'dietaryRestrictions': dietaryRestrictions,
+      'allergies':allergies,
+      'mealPlans':[{
+        'planType':planType,
+        'calories':calories,
+        //'personCount':personCount,
+        'mealCount':mealCount,
+      }],
+    };
+
+    console.log("FROM SURVEY", updateObj);
     // PATCH THE DATA
-    // axios.patch(`/api/users/${this.state.currUser.id}`, {}).then(() => {});
+    axios.patch(`/api/users/${this.state.currUser.id}`, updateObj)
+      .then(() => {})
+      .catch(err => {
+        console.log(err.response) 
+      });
 
     // GO TO DASHBOARD
     console.log(`finished!`);
+   
+
     this.props.history.push('/dashboard');
   };
 
