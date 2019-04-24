@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { registerUser } from '../../../actions/authentication';
+import { registerUser, loginUser } from '../../../actions/authentication';
 import classnames from 'classnames';
 // import Nav from "../../shared/Nav";
 import { Button, Form, Grid, Header, Image } from 'semantic-ui-react';
@@ -36,7 +36,9 @@ class Register extends Component {
       password: this.state.password,
       confirm_password: this.state.confirm_password
     };
-    this.props.registerUser(user, this.props.history);
+    this.props
+      .registerUser(user, this.props.history)
+      .then(() => this.props.loginUser({ email: user.email, password: user.password }));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -144,7 +146,9 @@ class Register extends Component {
 
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -155,6 +159,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { registerUser }
+    { registerUser, loginUser }
   )(Register)
 );
