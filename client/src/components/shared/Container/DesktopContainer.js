@@ -148,7 +148,9 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(
-  mapStateToProps,
-  { logoutUser }
-)(withRouter(DesktopContainer));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { logoutUser }
+  )(DesktopContainer)
+);
