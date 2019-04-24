@@ -15,6 +15,7 @@ export const registerUser = (user, history) => dispatch => {
       type: GET_ERRORS,
       payload: err.response.data
     });
+    throw err;
   });
 };
 
