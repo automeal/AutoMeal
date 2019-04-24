@@ -10,15 +10,12 @@ export const registerUser = (user, history) => dispatch => {
     }
   };
 
-  axios
-    .post('/api/users/register', user, config)
-    .then(res => history.push('/login#/'))
-    .catch(err => {
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+  return axios.post('/api/users/register', user, config).catch(err => {
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
     });
+  });
 };
 
 export const loginUser = user => dispatch => {

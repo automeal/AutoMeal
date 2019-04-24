@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button, Form, Grid, Header, Image, Message } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 import { loginUser } from '../../../actions/authentication';
 import Logo from '../../../Resources/logo.png';
 import './Login.css';
@@ -33,13 +34,13 @@ class Login extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/home-page');
+      this.props.history.push('/dashboard');
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/home-page');
+      this.props.history.push('/dashboard');
     }
     if (nextProps.errors) {
       this.setState({
@@ -116,7 +117,9 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(
-  mapStateToProps,
-  { loginUser }
-)(Login);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { loginUser }
+  )(Login)
+);

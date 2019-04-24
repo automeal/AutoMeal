@@ -51,10 +51,9 @@ ResponsiveContainer.propTypes = {
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <Router>
-          <div>
-            <ResponsiveContainer />
+      <Router>
+        <Provider store={store}>
+          <ResponsiveContainer>
             {/* <div> */}
             {/* <Navbar /> */}
             <Route exact path="/" component={Landing} />
@@ -65,10 +64,9 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             {/* </div> */}
-            <Footer />
-          </div>
-        </Router>
-      </Provider>
+          </ResponsiveContainer>
+        </Provider>
+      </Router>
     );
   }
 }
