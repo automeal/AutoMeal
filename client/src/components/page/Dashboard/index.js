@@ -10,7 +10,7 @@ class Dashboard extends Component {
       currUser: {},
       pantry: '',
       allergies: '',
-      dietary_restrictions: '',
+      dietaryRestrictions: '',
       cuisine: [],
       includePantry: true,
       filterDietaryRestrictions: true,
@@ -35,6 +35,7 @@ class Dashboard extends Component {
 
   handleResultSelect = (prop, result) => {
     const list = prop;
+    console.log(list);
     const newItem = result.name;
     if (this.state.currUser[list].includes(newItem)) {
       console.log('Item already present');
@@ -73,7 +74,7 @@ class Dashboard extends Component {
         Hello{' '}
         {this.state.currUser.display_name
           ? this.state.currUser.display_name
-          : this.state.currUser.full_name}
+          : this.state.currUser.fullName}
         <a href="/home-page#/">
           <sup>edit</sup>
         </a>
@@ -97,7 +98,7 @@ class Dashboard extends Component {
             name="pantry"
           />
         </div>
-        <div style={{ display: 'inline-block' }} className="dietary_restrictions">
+        <div style={{ display: 'inline-block' }} className="dietaryRestrictions">
           <List.Header>Your Dietary Restrictions</List.Header>
           <List
             items={
@@ -110,8 +111,8 @@ class Dashboard extends Component {
           <SearchBox
             route="ingredients"
             placeholder="Add new item to dietary restrictions"
-            value={this.state.dietary_restrictions}
-            name="dietary_restrictions"
+            value={this.state.dietaryRestrictions}
+            name="dietaryRestrictions"
             onChange={this.handleChange.bind(this)}
             handleResult={this.handleResultSelect.bind(this)}
           />
