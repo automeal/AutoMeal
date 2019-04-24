@@ -5,19 +5,19 @@ module.exports = function validateRegisterInput(data) {
   let errors = {};
 
   // check for whitespace only strings
-  data.full_name = !isEmpty(data.full_name) ? data.full_name : '';
+  data.fullName = !isEmpty(data.fullName) ? data.fullName : '';
   data.email = !isEmpty(data.email) ? data.email : '';
   data.password = !isEmpty(data.password) ? data.password : '';
   data.confirm_password = !isEmpty(data.confirm_password) ? data.confirm_password : '';
 
   // NAME
   // INCORRECT NAME LENGTH
-  if (!Validator.isLength(data.full_name, { min: 2, max: 30 })) {
-    errors.full_name = 'Name must be between 2 and 30 characters.';
+  if (!Validator.isLength(data.fullName, { min: 2, max: 30 })) {
+    errors.fullName = 'Name must be between 2 and 30 characters.';
   }
   // NAME FIELD EMPTY
-  if (Validator.isEmpty(data.full_name)) {
-    errors.full_name = 'Name field is required.';
+  if (Validator.isEmpty(data.fullName)) {
+    errors.fullName = 'Name field is required.';
   }
 
   // EMAIL
