@@ -41,6 +41,10 @@ class Dashboard extends Component {
       console.log('Item already present');
       return;
     }
+    if (list === 'pantry' && this.state.currUser.allergies.includes(newItem)) {
+      console.log('DANGER: Item considered an allergy!');
+      return;
+    }
     console.log(`curr list: ${this.state.currUser.dietaryRestrictions}`);
     console.log(`currUser: ${this.state.currUser}`);
     console.log(`list: ${list}, newItem: ${newItem}`);
@@ -95,6 +99,7 @@ class Dashboard extends Component {
             handleResult={this.handleResultSelect.bind(this)}
             placeholder="Add new item to pantry"
             value={this.state.pantry}
+            // intolerances={this.state.allergies}
             name="pantry"
           />
         </div>
