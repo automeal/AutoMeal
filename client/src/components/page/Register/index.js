@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { registerUser } from '../../../actions/authentication';
+import { registerUser, loginUser } from '../../../actions/authentication';
 import classnames from 'classnames';
 // import Nav from "../../shared/Nav";
 import { Button, Form, Grid, Header, Image } from 'semantic-ui-react';
@@ -12,7 +12,7 @@ class Register extends Component {
   constructor() {
     super();
     this.state = {
-      full_name: '',
+      fullName: '',
       email: '',
       password: '',
       confirm_password: '',
@@ -31,17 +31,19 @@ class Register extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const user = {
-      full_name: this.state.full_name,
+      fullName: this.state.fullName,
       email: this.state.email,
       password: this.state.password,
       confirm_password: this.state.confirm_password
     };
-    this.props.registerUser(user, this.props.history);
+    this.props
+      .registerUser(user, this.props.history)
+      .then(() => this.props.loginUser({ email: user.email, password: user.password }));
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/');
+      this.props.history.push('/survey');
     }
     if (nextProps.errors) {
       this.setState({
@@ -52,7 +54,7 @@ class Register extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/');
+      this.props.history.push('/survey');
     }
   }
 
@@ -88,11 +90,11 @@ class Register extends Component {
               className={classnames('form-control form-control-lg', {
                 'is-invalid': errors.email
               })}
-              name="full_name"
+              name="fullName"
               onChange={this.handleInputChange}
-              value={this.state.full_name}
+              value={this.state.fullName}
             />
-            {errors.full_name && <div className="invalid-feedback">{errors.full_name}</div>}
+            {errors.fullName && <div className="invalid-feedback">{errors.fullName}</div>}
             <Form.Input
               icon="lock"
               iconPosition="left"
@@ -144,7 +146,9 @@ class Register extends Component {
 
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -152,7 +156,9 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(
-  mapStateToProps,
-  { registerUser }
-)(withRouter(Register));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { registerUser, loginUser }
+  )(Register)
+);
