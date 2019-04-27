@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 //import { Redirect } from 'react-router'
+//import {withRouter} from 'react-router-dom';
+import PropTypes from 'prop-types'
 
 import Select from '../../shared/Form/Select';
 import { CheckboxGroup } from '../../shared/Form/Checkbox';
@@ -14,14 +16,23 @@ import { getSurveyData } from '../../../utils/data';
 import './Survey.css';
 import axios from 'axios';
 
-export default class Survey extends Component {
+
+class Survey extends Component {
+
+  //Try redirecting with the router? 's history object to avoid errors when using it in .then() in axios calls in this component
+  //Same error
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
   componentWillMount() {
     axios
       .get('/api/users/current', { Authorization: localStorage.getItem('jwtToken') })
       .then(user => {
         this.setState({ currUser: user.data });
-        console.log('survey component');
+        console.log('survey component', this.state.currUser);
       });
+
     this.data = getSurveyData();
     const count = this.data.selectOpt.mealCount[0].val;
     const plan = this.data.selectOpt.planType[0].val;
@@ -137,6 +148,16 @@ export default class Survey extends Component {
     });
   };
 
+  /*
+  History object should be called *after* the axios call to patch the DB, but 
+  doing that causes errors such as 
+
+  Proxy error: Could not proxy request /api/users/abc123456879xyz from localhost:3000 to http://localhost:5000.
+  See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNRESET).
+
+  As it is now, sometimes you will not see updates to the DB when redirected to the dashboard, even though they do happen
+  Depends if the axios call patches the DB before the client finishes redirecting to the dashboard
+  */
   BackendCall = e => {
     const {
       mealCount,
@@ -175,17 +196,31 @@ export default class Survey extends Component {
 
     console.log("FROM SURVEY", updateObj);
     // PATCH THE DATA
-    axios.patch(`/api/users/${this.state.currUser.id}`, updateObj)
-      .then(() => {})
-      .catch(err => {
-        console.log(err.response) 
-      });
 
-    // GO TO DASHBOARD
-    console.log(`finished!`);
-   
+    /*
+    fetch(`/api/users/${this.state.currUser.id}`, {
+      _method: 'PATCH',
+    }).then( () => {this.props.history.push('/dashboard');} )
+    */
+    
+    axios.patch(`/api/users/${this.state.currUser.id}`, updateObj)
+    .then( (res) => {
+        //this.props.history.push('/dashboard');
+        //this.props.history.replace('/dashboard');
+        //this.context.router.history.push(`/dashboard`);
+        //setTimeout( () => {this.props.history.push(`/dashboard`)}, 1000);
+        //this.context.history.push('/dashboard')
+        //this.context.history.replace('/dashboard')
+        console.log(`Sucessfullly patched from survey!`);        
+      }
+    )
+    .catch(err => {
+        console.log("err?",err.response) 
+      }
+    );
 
     this.props.history.push('/dashboard');
+    
   };
 
   render() {
@@ -362,3 +397,6 @@ export default class Survey extends Component {
     );
   }
 }
+
+export default Survey;
+//export default withRouter(Survey);

@@ -37,6 +37,7 @@ class Dashboard extends Component {
     const list = prop;
     console.log(list);
     const newItem = result.name;
+    // If pantry item already present do not add again
     if (this.state.currUser[list].includes(newItem)) {
       console.log('Item already present');
       return;
@@ -53,7 +54,7 @@ class Dashboard extends Component {
     let userList = user[list];
     userList = [...userList, newItem];
     user[list] = userList;
-    // If pantry item already present do not add again
+    
     axios
       .patch(`/api/users/${this.state.currUser.id}`, {
         [list]: newItem,

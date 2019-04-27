@@ -100,23 +100,34 @@ router.post('/login', (req, res) => {
 // @route   PATCH api/users/
 // @desc    update user
 // @access  Private
-// NOTE: About what and how to patch our data
-// - PANTRY is always only updated one item at a time via the DASHBOARD
-// - DIETARY RESTRICTIONS and ALLERGIES are updated by SURVEY
-// and then only one at a time via DASHBOARD
-// - MEAL PLANS must be appended to, on patches (for meal plan history)
-// - PASSWORD must be checked against current
-// Check for these and patch accordingly.
-// This call needs clean up and validation
+/*
+ NOTE: About what and how to patch our data
+ - PANTRY is always (should be) only updated one item at a time via the DASHBOARD
+ - DIETARY RESTRICTIONS and ALLERGIES are replaced by SURVEY
+ and then (should) only one at a time via DASHBOARD
+ - MEAL PLANS must be appended to, on patches (for meal plan history), but may be replaced for whatever 
+reason if passed as an array
+ - PASSWORD must be checked against current
+ Check for these and patch accordingly.
+ This call needs clean up and validation
+
+ Some functionality would be better served as a different api call, but for now, can use patch to replace any fields 
+ in the DB for a user, or append to array fields in the DB when given one value for those fields.
+
+ ie. Suppose I want to remove a dietary restriction, this single patch would append that data instead of remove,
+ no way of differentiating if it's something that should be removed instead
+*/
 router.patch('/:id', (req, res) => {
-  console.log('backend patch user endpoint');
-  console.log(req.body);
+  //console.log('backend patch user endpoint');
+  //console.log(req.body);
+
   const { errors, isValid } = validateUpdateInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
   }
   // If the user wishes to update their password we must hash it first
   if (req.body.password) {
+    console.log('Password patching');
     User.findById(req.params.id)
       .then(user => {
         if (!user) {
@@ -148,79 +159,89 @@ router.patch('/:id', (req, res) => {
         });
       })
       .catch(err => console.log(err));
-  }
-  // THIS IS NOT WORKING
-  // IT APPENDS THE DIET OPTIONS AS AN OBJECT WITH TRUE VALUES FOR CHECKED BOXES
-  // DOES NOT APPEND AS NEW ITEMS
-  // BELOW IMPLEMENATATION WORKS
-  // If no password pushed push other data
-  // else {
-  // console.log('other1');
+  } else {
+    /*
+    For any of the following keys in our data (req.body), append the values of those keys to our database 
+    instead of overwriting the field (default patch behaviour)
+    ie.
+      if 
+        req.body['allergies'] = 'walnuts'  
+        
+        Append 'walnuts' to Database (allergies array)
 
-  // var toCheck = ['pantry', 'mealplans', 'allergies'];
+      if 
+        req.body['allergies'] = ['walnuts','peanuts','cashews']
 
-  // for (var prop in req.body) {
-  //   console.log('Property', prop);
-  //   if (toCheck.includes(prop)) {
-  //     var toSave = req.body[prop];
-  //     console.log('Propery Value', toSave);
-  //     delete req.body[prop];
+        Overwrite Database (allergies array)
 
-  //     User.updateOne({ _id: req.params.id }, { $push: { [prop]: toSave } }, (err, raw) => {
-  //       console.log('Append to', prop);
-  //       if (err) {
-  //         console.log(err);
-  //         //res.send(err);
-  //       } else {
-  //         //res.send(raw);
-  //       }
-  //     });
-  //   }
-  // }
+    This would probably be better served as a different api call imo,
+    implemented as
 
-  if (req.body.pantry && req.body.pantry.constructor !== Array) {
-    var pantry = req.body.pantry;
-    delete req.body.pantry;
-    console.log('Are we good??', pantry);
+      router.patch('/append/:id'), (req, res) => { .... }
 
-    User.updateOne({ _id: req.params.id }, { $push: { pantry: pantry } }, (err, raw) => {
-      console.log('Append pantry');
+    and the used in the client as 
+
+      axios.patch(`/api/users/append/${this.state.currUser.id}` ....
+
+    So that if you want to explicitly append data to a field you call that, the disadvantage is that some actions may require more 
+    than one api call.
+
+    */
+
+    //Summary
+    //If the prop (key) in our data (req.body) is an array type in our DB (userDBFields, a custom export from User.js),
+    //then append the data (value of key in req.body) to the DB instead of overwriting it if it's just a single value (not array)
+
+    //var toCheck = ['pantry', 'mealplans', 'allergies', 'dietaryrestrictions'];
+    var db_commands = {};
+    var data = req.body;
+    for (var prop in data) {
+      if (User.arrayDBFields.includes(prop.toLowerCase()) && data[prop].constructor !== Array) {
+        var temp = data[prop];
+        delete data[prop];
+
+        if (!('$push' in db_commands)) db_commands['$push'] = {};
+
+        db_commands['$push'][prop] = temp;
+        /*
+        User.updateOne({ _id: req.params.id }, { '$push': { [prop]: toSave } }, (err, raw) => {   
+           if (err) {
+              console.log(err);
+           } else {
+            console.log('Append value:', toSave,' to Property :',prop,'in Database.');
+           }
+         });
+       */
+      }
+    }
+
+    //Only overwrite data if something is there, will throw if there's nothing for operator $set to use in the DB anyway
+    if (Object.keys(data).length > 0) db_commands['$set'] = data;
+
+    /*
+    Additional Notes:
+
+    It's possible to use async so that await keyword can be used to make the flow easier, but since it already works,
+    and also consolidated it to one database call, no reason other than readaibility to change this function to async now. 
+
+    Won't fix errors with the history object in React anyway, have tried immediately returning res.send("any string");
+    to see if it was calls to DB causing errors when using the history object after an axios call, but no difference so
+    it's not this call or any part of this function that seems to be the cause of communication errors between React
+    and Express when using React's history object after an axios (or any http lib for that matter it seems) call is finished
+    via callbacks.
+
+    */
+    User.updateOne({ _id: req.params.id }, db_commands, (err, raw) => {
       if (err) {
-        console.log(err);
-        //res.send(err);
+        console.log('ERR:', err);
+        return res.send(err);
       } else {
-        //res.send(raw);
+        console.log('DB patch successful');
+        //console.log('RAW', raw);
+        return res.send(raw);
       }
     });
   }
-
-  if (req.body.mealPlans && req.body.mealPlans.constructor !== Array) {
-    var mealPlans = req.body.mealPlans;
-    delete req.body.mealPlans;
-    User.updateOne({ _id: req.params.id }, { $push: { mealPlans: mealPlans } }, (err, raw) => {
-      console.log('Append Mealplans');
-      if (err) {
-        console.log(err);
-        //res.send(err);
-      } else {
-        //res.send(raw);
-      }
-    });
-  }
-
-  if (req.body) {
-    console.log('TO DB:', req.body);
-    User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
-      console.log('tries to update');
-      if (err) {
-        console.log(err);
-        res.send(err);
-      } else {
-        res.send(raw);
-      }
-    });
-  }
-  // }
 });
 
 // @route   DELETE api/users/
