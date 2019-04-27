@@ -192,11 +192,11 @@ router.patch('/:id', (req, res) => {
     //If the prop (key) in our data (req.body) is an array type in our DB (userDBFields, a custom export from User.js),
     //then append the data (value of key in req.body) to the DB instead of overwriting it if it's just a single value (not array)
 
-    //var toCheck = ['pantry', 'mealplans', 'allergies', 'dietaryrestrictions'];
+    //var toCheck = ['pantry', 'mealPlans', 'allergies', 'dietaryrestrictions'];
     var db_commands = {};
     var data = req.body;
     for (var prop in data) {
-      if (User.arrayDBFields.includes(prop.toLowerCase()) && data[prop].constructor !== Array) {
+      if (User.arrayDBFields.includes(prop) && data[prop].constructor !== Array) {
         var temp = data[prop];
         delete data[prop];
 

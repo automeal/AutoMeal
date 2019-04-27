@@ -141,6 +141,13 @@ for (path in UserSchema.paths) {
     arrayDBFields.push(path);
   }
 }
+const arrayDBFieldsLower = [];
+for (path in UserSchema.paths) {
+  //console.log(path, UserSchema.paths[path] instanceof mongoose.Schema.Types.Array);
+  if (UserSchema.paths[path] instanceof mongoose.Schema.Types.Array) {
+    arrayDBFields.push(path.toLowerCase());
+  }
+}
 //console.log(arrayDBFields);
 
 //Callback ver. but want to cache fields before being imported, not after
@@ -152,6 +159,8 @@ var User = mongoose.model('users', UserSchema);
 module.exports = User;
 //Monkeypatch arrayDBFields to User/module.exports, probably better ways to do this but will not change existing import code
 module.exports.arrayDBFields = arrayDBFields;
+//Case insensitive cache of arrayDBFields, probably not neccessary though
+module.exports.arrayDBFieldsLower = arrayDBFieldsLower;
 
 // Additional fields
 // dietary pref (vegan/kosher)
