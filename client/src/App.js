@@ -17,6 +17,7 @@ import Plan from './components/page/Plan';
 import HP from './components/page/HP';
 import Register from './components/page/Register';
 import Login from './components/page/Login';
+import RecipeResults from './components/page/RecipeResults';
 
 import DesktopContainer from './components/shared/Container/DesktopContainer';
 import MobileContainer from './components/shared/Container/MobileContainer';
@@ -61,6 +62,7 @@ class App extends Component {
             <Route path="/meal-plan" component={Plan} />
             <Route path="/home-page" component={HP} />
             <Route path="/login" component={Login} />
+            <Route path="/recipe-results" component={RecipeResults} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             {/* </div> */}
           </ResponsiveContainer>
