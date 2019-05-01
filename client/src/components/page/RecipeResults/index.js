@@ -11,6 +11,7 @@ class RecipeResults extends Component {
       recipes: recipeData
     };
   }
+
   render() {
     const recipeItems = this.state.recipes.map(item => <RecipeCard key={item.id} item={item} />);
     return (
