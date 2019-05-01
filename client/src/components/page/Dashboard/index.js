@@ -89,7 +89,10 @@ class Dashboard extends Component {
   }
 
   render() {
-    //const pantryItems = this.state.currUser.pantry.map(item => <PantryItem item={item} />);
+    const pantryItems =
+      !this.state.currUser.pantry || !this.state.currUser.pantry.length
+        ? ['Pantry is empty']
+        : this.state.currUser.pantry.map(item => <PantryItem item={item} />);
     return (
       <div>
         <br />
@@ -113,12 +116,11 @@ class Dashboard extends Component {
             </Segment>
             <Segment attached="bottom">
               <p>
-                <PantryItem item="peas" />
                 <List
                   items={
                     !this.state.currUser.pantry || !this.state.currUser.pantry.length
                       ? ['Pantry is empty']
-                      : this.state.currUser.pantry
+                      : pantryItems
                   }
                 />
                 <SearchBox

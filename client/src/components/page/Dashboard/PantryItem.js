@@ -11,16 +11,20 @@ class PantryItem extends Component {
   }
 
   render() {
+    const divStyle = {
+      padding: '5px'
+    };
     return (
-      <Label size="large">
-        <Icon name="delete" onClick={this.handleDelete} />
-        {'  '}
-        {this.props.item}
-        {'  '}
-        <Label.Detail>
-          <Icon name="angle double right" onClick={this.handleMove} />
-        </Label.Detail>
-      </Label>
+      <div style={divStyle}>
+        <Label color="green" size="large" textAlign="center">
+          <Icon name="delete" onClick={this.handleDelete} />
+          {'  '} {'  '}
+          {this.props.item}
+          <Label.Detail>
+            <Icon name="angle double right" onClick={this.handleMove} />
+          </Label.Detail>
+        </Label>
+      </div>
     );
   }
 }
