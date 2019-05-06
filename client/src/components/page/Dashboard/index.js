@@ -98,7 +98,9 @@ class Dashboard extends Component {
             // .concat(this.state.currUser.pantry)
             .join('%2C+')}` +
           `&excludeIngredients=${this.state.excludeAdditionalIngredients.join('%2C+')}` +
-          `&intolerances=${this.state.currUser.allergies.join('%2C+')})`
+          `&intolerances=${
+            this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
+          })`
       )
       .then(res => console.log(res))
       .catch(err => console.log(err));
@@ -225,6 +227,18 @@ class Dashboard extends Component {
         />
         <br />
         <br />
+        <br />
+        The Type of Meal You Want to Have (i.e. 'burger', 'soup', 'bottle of wine')
+        <br />
+        Not working right now
+        <SearchBox
+          route="ingredients"
+          handleResult={this.handleAdditionalIngredients.bind(this)}
+          placeholder="Include ingredient"
+          value={this.state.addIngredient}
+          name="addIngredient"
+          onChange={this.handleChange.bind(this)}
+        />
         <br />
         <List.Header>Additional Ingredients to Use:</List.Header>
         <List
