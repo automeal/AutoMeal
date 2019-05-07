@@ -28,6 +28,7 @@ const Footer = ({ mobile }) => (
             <Header inverted as="h4" content="Services" />
             <List link inverted>
               <List.Item>Meal Planning</List.Item>
+              <List.Item>Nutrition Tracking</List.Item>
               <List.Item>Recipe Discovery</List.Item>
             </List>
           </Grid.Column>

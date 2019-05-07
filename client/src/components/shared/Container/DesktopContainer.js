@@ -10,10 +10,6 @@ import Footer from '../../shared/Footer';
 import food3 from '../../image/food3.jpg';
 //import './Nav.css';
 
-/* Heads up!
- * Neither Semantic UI nor Semantic UI React offer a responsive navbar, however, it can be implemented easily.
- * It can be more complicated, but you can create really flexible markup.
- */
 const getWidth = () => {
   const isSSR = typeof window === 'undefined';
 
@@ -36,6 +32,7 @@ class DesktopContainer extends Component {
     const { fixed } = this.state;
     const { isAuthenticated, user } = this.props.auth;
 
+    // NavBar for an authorized user
     const authLinks = (
       <Menu
         fixed={fixed ? 'top' : null}
@@ -45,17 +42,14 @@ class DesktopContainer extends Component {
         size="large"
       >
         <Container>
-          <Link to="/home-page" onClick={this.forceUpdate}>
+          <Link to="/home-page">
             <Menu.Item as="a">Home</Menu.Item>
           </Link>
-          <Link to="/dashboard" onClick={this.forceUpdate}>
+          <Link to="/dashboard">
             <Menu.Item as="a">Dashboard</Menu.Item>
           </Link>
-          <Link to="/meal-plan" onClick={this.forceUpdate}>
+          <Link to="/meal-plan">
             <Menu.Item as="a">Meal Plan</Menu.Item>
-          </Link>
-          <Link to="/survey" onClick={this.forceUpdate}>
-            <Menu.Item as="a">Survey</Menu.Item>
           </Link>
           <Menu.Item position="right">
             <Link to="/login">
@@ -74,6 +68,7 @@ class DesktopContainer extends Component {
       </Menu>
     );
 
+    // NavBar for unauthorized users
     const guestLinks = (
       <Menu
         fixed={fixed ? 'top' : null}

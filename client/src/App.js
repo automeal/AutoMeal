@@ -57,8 +57,6 @@ class App extends Component {
       <Router>
         <Provider store={store}>
           <ResponsiveContainer>
-            {/* <div> */}
-            {/* <Navbar /> */}
             <Route exact path="/" component={Landing} />
             <Route path="/register" component={Register} />
             <Route path="/survey" component={Survey} />
@@ -70,7 +68,6 @@ class App extends Component {
             <Route path="/how-it-works" component={HowItWorks} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
-            {/* </div> */}
           </ResponsiveContainer>
         </Provider>
       </Router>
