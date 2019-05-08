@@ -88,7 +88,7 @@ class Dashboard extends Component {
   getRecipe = () => {
     axios
       .get(
-        `/recipeAPI/recipes/?query=burger` +
+        `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
           `&cuisine=${this.state.cuisine.join('%2C+')}` +
           `&diet=${this.state.currUser.dietaryRestrictions.join('%2C+')}` +
           `&includeIngredients=${this.state.includeAdditionalIngredients
@@ -100,7 +100,7 @@ class Dashboard extends Component {
           `&excludeIngredients=${this.state.excludeAdditionalIngredients.join('%2C+')}` +
           `&intolerances=${
             this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
-          })`
+          }`
       )
       .then(res => console.log(res))
       .catch(err => console.log(err));
@@ -117,8 +117,6 @@ class Dashboard extends Component {
         ? { includeAdditionalIngredients: [...this.state.includeAdditionalIngredients, newItem] }
         : { excludeAdditionalIngredients: [...this.state.excludeAdditionalIngredients, newItem] }
     );
-    // const { list, newValue } = event.target;
-    // this.setState({ [list]: [...[list], newValue] });
   };
 
   render() {
@@ -188,17 +186,11 @@ class Dashboard extends Component {
             onChange={this.handleChange.bind(this)}
           />
         </div>
-        {/* Generate recipe
-          Checkboxes: "Must have pantry items", "Filter out dietary restrictions", "Filter out allergies"
-          allow them to disable certain items for the current search
-          warn when disabling anything allergy related
-         */}
         <br />
         <br />
         Complex Recipe Search
         <br />
         <br />
-        {/* <form onSubmit={this.getRecipe.bind(this)}> */}
         <Checkbox
           name="includePantry"
           value={this.state.includePantry}
@@ -230,13 +222,12 @@ class Dashboard extends Component {
         <br />
         The Type of Meal You Want to Have (i.e. 'burger', 'soup', 'bottle of wine')
         <br />
-        Not working right now
         <SearchBox
-          route="ingredients"
-          handleResult={this.handleAdditionalIngredients.bind(this)}
-          placeholder="Include ingredient"
-          value={this.state.addIngredient}
-          name="addIngredient"
+          route="recipes/recipeAutocomplete/"
+          handleResult={(name, value) => this.setState({ [name]: [value.title] })}
+          placeholder="'burger', 'soup', etc"
+          value={this.state.desiredMeal}
+          name="desiredMeal"
           onChange={this.handleChange.bind(this)}
         />
         <br />
@@ -318,13 +309,9 @@ class Dashboard extends Component {
         />
         <br />
         <br />
-        {/* A submit button??
-        <br />
-        <br /> */}
         <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
         <br />
         <br />
-        {/* </form> */}
       </div>
     );
   }
