@@ -1,22 +1,44 @@
 // import Nav from '../../shared/Nav';
 import React from 'react';
+import { Button, Icon, Grid, Image } from 'semantic-ui-react';
+import { Tab } from 'semantic-ui-react';
 //import './Landing.css';
 
 const MealPlan = props => (
-  <div className="Login">
-    <div className="Login__banner" />
-    <div className="Login__data">
-      <div className="Login__data__content">
-        <h1>Weekly Meal Plan</h1>
-        <ul>
-          <li>Meal Plan for each day of the week will go here</li>
-          <li>Need to fix up backend, but some logic is there</li>
-          <li>7 days of week, based on survey data</li>
-          <li>Nutrition Info Displayed with each meal (based on survey data)</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
+    <Grid.Row>
+      <Grid.Column width={8} />
+      <Grid.Column width={8}>
+        <div className="Login">
+          <div className="Login__banner" />
+          <div className="Login__data">
+            <div className="Login__data__content">
+              <h1>Welcome to AutoMeal Mealplan You can select the day here</h1>
+              <Button href="/daily_mealplan" color="green" size="huge" animated>
+                <Button.Content visible>Daily Meal Plan</Button.Content>
+                <Button.Content hidden>
+                  <Icon name="arrow right" />
+                </Button.Content>
+              </Button>
+              <Button href="/weekly_mealplan" color="green" size="huge" animated>
+                <Button.Content visible>Weekly Meal Plan</Button.Content>
+                <Button.Content hidden>
+                  <Icon name="arrow right" />
+                </Button.Content>
+              </Button>
+
+              <ul>
+                <li>Meal Plan for each day of the week will go here</li>
+                <li>Need to fix up backend, but some logic is there</li>
+                <li>7 days of week, based on survey data</li>
+                <li>Nutrition Info Displayed with each meal (based on survey data)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Grid.Column>
+    </Grid.Row>
+  </Grid>
 );
 export default MealPlan;
 /*import React from 'react';

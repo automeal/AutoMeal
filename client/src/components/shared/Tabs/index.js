@@ -44,7 +44,7 @@ export default class Tabs extends Component {
 export const Tab = props => (
   <li className={`Tab ${props.className}`}>
     <href
-      className={`Tab__link ${props.active ? "Tab__active" : ""}`}
+      className={`Tab__link ${props.active ? 'Tab__active' : ''}`}
       onClick={e => {
         e.preventDefault();
         props.onClick(props.index);
