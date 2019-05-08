@@ -6,7 +6,8 @@ const items = [
       'https://img1.southernliving.timeinc.net/sites/default/files/styles/medium_2x/public/image/2015/11/main/2262401_qfsja_232_2.jpg?itok=w1BaM44j',
     extendedIngredients: 'peanuts',
     recipe: 'Leverage agile frameworks to provide a robust synopsis for high level overviews.',
-    readyInMinutes: 45
+    readyInMinutes: 45,
+    instructions: 'Here are some instructions yada yada yada yada'
   },
   {
     id: 2,
@@ -15,7 +16,8 @@ const items = [
       'https://www.tasteofhome.com/wp-content/uploads/2017/10/Healthier-than-Egg-Rolls_EXPS_SDON17_55166_C06_23_6b-696x696.jpg',
     extendedIngredients: 'peanuts',
     recipe: 'Leverage agile frameworks to provide a robust synopsis for high level overviews.',
-    readyInMinutes: 45
+    readyInMinutes: 45,
+    instructions: 'Here are some instructions yada yada yada yada'
   },
   {
     id: 3,
@@ -24,7 +26,8 @@ const items = [
       'https://img1.southernliving.timeinc.net/sites/default/files/styles/medium_2x/public/image/2015/11/main/2262401_qfsja_232_2.jpg?itok=w1BaM44j',
     extendedIngredients: 'peanuts',
     recipe: 'Leverage agile frameworks to provide a robust synopsis for high level overviews.',
-    readyInMinutes: 45
+    readyInMinutes: 45,
+    instructions: 'Here are some instructions yada yada yada yada'
   },
   {
     id: 4,
@@ -33,7 +36,8 @@ const items = [
       'https://img1.southernliving.timeinc.net/sites/default/files/styles/medium_2x/public/image/2015/11/main/2262401_qfsja_232_2.jpg?itok=w1BaM44j',
     extendedIngredients: 'peanuts',
     recipe: 'Leverage agile frameworks to provide a robust synopsis for high level overviews.',
-    readyInMinutes: 45
+    readyInMinutes: 45,
+    instructions: 'Here are some instructions yada yada yada yada'
   },
   {
     id: 5,
@@ -42,7 +46,8 @@ const items = [
       'https://www.tasteofhome.com/wp-content/uploads/2017/10/Healthier-than-Egg-Rolls_EXPS_SDON17_55166_C06_23_6b-696x696.jpg',
     extendedIngredients: 'peanuts',
     recipe: 'Leverage agile frameworks to provide a robust synopsis for high level overviews.',
-    readyInMinutes: 45
+    readyInMinutes: 45,
+    instructions: 'Here are some instructions yada yada yada yada'
   },
   {
     id: 6,
@@ -51,7 +56,8 @@ const items = [
       'https://img1.southernliving.timeinc.net/sites/default/files/styles/medium_2x/public/image/2015/11/main/2262401_qfsja_232_2.jpg?itok=w1BaM44j',
     extendedIngredients: 'peanuts',
     recipe: 'Leverage agile frameworks to provide a robust synopsis for high level overviews.',
-    readyInMinutes: 45
+    readyInMinutes: 45,
+    instructions: 'Here are some instructions yada yada yada yada'
   }
 ];
 

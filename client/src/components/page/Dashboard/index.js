@@ -81,10 +81,12 @@ class Dashboard extends Component {
     this.setState({ [event.target.name]: !this.state[event.target.name] });
   };
 
+  // TO DO: Function to delete item
   handleDelete() {
     console.log('Click!');
   }
 
+  // TO DO: Function to move item from pantry to grocery list
   handleMove() {
     console.log('Click!');
   }
@@ -96,9 +98,22 @@ class Dashboard extends Component {
         ? ['Pantry is empty']
         : this.state.currUser.pantry.map(item => <PantryItem item={item} />);
 
+    // Mapping dietary restrictions to format into components
+    const dietaryItems =
+      !this.state.currUser.dietaryRestrictions || !this.state.currUser.dietaryRestrictions.length
+        ? ['no dietary restrictions']
+        : this.state.currUser.dietaryRestrictions.map(item => <AllergyItem item={item} />);
+
+    // Mapping allergy items to format into components
+    const allergyItems =
+      !this.state.currUser.allergies || !this.state.currUser.allergies.length
+        ? ['no allergies']
+        : this.state.currUser.allergies.map(item => <AllergyItem item={item} />);
+
     return (
       <div>
         <br />
+        {/* HELLO HEADER */}
         <Header as="h1" textAlign="center">
           Hello,{' '}
           {this.state.currUser.display_name
@@ -113,6 +128,7 @@ class Dashboard extends Component {
         <Grid columns="equal">
           <Grid.Row>
             <Grid.Column floated="left">
+              {/*PANTRY COMPONENT*/}
               <Segment attached="top" color="green">
                 <Header as="h2" textAlign="center">
                   Your Pantry
@@ -120,6 +136,7 @@ class Dashboard extends Component {
               </Segment>
               <Segment attached="bottom">
                 <p>
+                  {/*Search component for ingredients*/}
                   <SearchBox
                     route="ingredients"
                     onChange={this.handleChange.bind(this)}
@@ -128,6 +145,7 @@ class Dashboard extends Component {
                     value={this.state.pantry}
                     name="pantry"
                   />
+                  {/*Pantry items*/}
                   <List
                     items={
                       !this.state.currUser.pantry || !this.state.currUser.pantry.length
@@ -139,18 +157,12 @@ class Dashboard extends Component {
               </Segment>
             </Grid.Column>
             <Grid.Column floated="left">
+              {/*DIETARY RESTRICTIOS COMPONENT*/}
               <Segment attached="top" textAlign="center" color="green">
                 <Header as="h1">Your Dietary Restrictions</Header>
               </Segment>
               <Segment attached="bottom">
-                <List
-                  items={
-                    !this.state.currUser.dietaryRestrictions ||
-                    !this.state.currUser.dietaryRestrictions.length
-                      ? ['no dietary restrictions']
-                      : this.state.currUser.dietaryRestrictions
-                  }
-                />
+                {/*Search component for dietary restrictions*/}
                 <SearchBox
                   route="ingredients"
                   placeholder="Add new item to dietary restrictions"
@@ -159,19 +171,22 @@ class Dashboard extends Component {
                   onChange={this.handleChange.bind(this)}
                   handleResult={this.handleResultSelect.bind(this)}
                 />
+                {/*Dietary restrictions*/}
+                <List
+                  items={
+                    !this.state.currUser.dietaryRestrictions ||
+                    !this.state.currUser.dietaryRestrictions.length
+                      ? ['no dietary restrictions']
+                      : dietaryItems
+                  }
+                />
               </Segment>
+              {/*ALLERGIES COMPONENT*/}
               <Segment attached="top" textAlign="center" color="green">
                 <Header as="h1">Your Allergies</Header>
               </Segment>
               <Segment attached="bottom">
-                <AllergyItem item="milk" />
-                <List
-                  items={
-                    !this.state.currUser.allergies || !this.state.currUser.allergies.length
-                      ? ['no allergies']
-                      : this.state.currUser.allergies
-                  }
-                />
+                {/*Search component for allergy items*/}
                 <SearchBox
                   route="ingredients"
                   handleResult={this.handleResultSelect.bind(this)}
@@ -179,6 +194,14 @@ class Dashboard extends Component {
                   value={this.state.allergies}
                   name="allergies"
                   onChange={this.handleChange.bind(this)}
+                />
+                {/*Allergy items*/}
+                <List
+                  items={
+                    !this.state.currUser.allergies || !this.state.currUser.allergies.length
+                      ? ['no allergies']
+                      : allergyItems
+                  }
                 />
               </Segment>
             </Grid.Column>

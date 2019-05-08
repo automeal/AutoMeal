@@ -24,20 +24,24 @@ class Contact extends Component {
           Contact Us
         </Header>
         <Divider />
+        {/*Form for submitting message*/}
         <Form>
           <Form.Group widths="equal">
+            {/*First name input*/}
             <Form.Input
               fluid
               label="First name"
               placeholder="First name"
               value={this.state.firstName}
             />
+            {/*Last name input*/}
             <Form.Input
               fluid
               label="Last name"
               placeholder="Last name"
               value={this.state.lastName}
             />
+            {/*Email input*/}
             <Form.Input
               fluid
               label="E-mail Address"
@@ -45,11 +49,13 @@ class Contact extends Component {
               value={this.state.email}
             />
           </Form.Group>
+          {/*Message input*/}
           <Form.TextArea
             label="Message"
             placeholder="Feel free to let us know any questions/comments/suggestions you may have..."
             value={this.state.message}
           />
+          {/*Submit button*/}
           <Form.Button>Submit</Form.Button>
         </Form>
         <br />
