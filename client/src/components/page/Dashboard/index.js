@@ -1,20 +1,34 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { List, Checkbox, Dropdown } from 'semantic-ui-react';
+import { List, Checkbox, Dropdown, Button } from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // DASHBOARD
+      // user data pulled from our DB
       currUser: {},
+      // New item being searched and/or added to the respected list
       pantry: '',
       allergies: '',
       dietaryRestrictions: '',
-      cuisine: [],
+
+      // MEAL PLAN
+      // Recipe query
+      desiredMeal: '',
+      // Checkboxes
       includePantry: true,
       filterDietaryRestrictions: true,
-      filterAlergies: true
+      filterAllergies: true,
+      // Additional search boxes
+      includeAdditionalIngredients: [],
+      addIngredient: '',
+      excludeAdditionalIngredients: [],
+      ignoreIngredient: '',
+      // Cuisine choice
+      cuisine: []
     };
   }
 
@@ -62,9 +76,47 @@ class Dashboard extends Component {
     console.log(`Hello, field: ${this.state.currUser[list]}, this.state[newItem]: ${newItem}`);
   };
 
-  handleCheck = event => {
-    console.log(event.target.name);
-    this.setState({ [event.target.name]: !this.state[event.target.name] });
+  handleCheck = (event, result) => {
+    this.setState({ [result.name]: !result.value });
+  };
+
+  handleCuisine = (event, res) => {
+    this.setState({ cuisine: [...this.state.cuisine, res.value[0]] });
+    console.log(this.state.cuisine);
+  };
+
+  getRecipe = () => {
+    axios
+      .get(
+        `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
+          `&cuisine=${this.state.cuisine.join('%2C+')}` +
+          `&diet=${this.state.currUser.dietaryRestrictions.join('%2C+')}` +
+          `&includeIngredients=${this.state.includeAdditionalIngredients
+            // DO NOT concat on call (call at end of this comment block)
+            // concat on react side and have includeAdditionalIngredients store all ingredients to be included
+            // this allows users to temporarily exclude items that live in their pantry
+            // .concat(this.state.currUser.pantry)
+            .join('%2C+')}` +
+          `&excludeIngredients=${this.state.excludeAdditionalIngredients.join('%2C+')}` +
+          `&intolerances=${
+            this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
+          }`
+      )
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+  };
+
+  handleAdditionalIngredients = (name, value) => {
+    console.log('name:');
+    console.log(name);
+    console.log('value:');
+    console.log(value);
+    const newItem = value.name;
+    this.setState(
+      name === 'addIngredient'
+        ? { includeAdditionalIngredients: [...this.state.includeAdditionalIngredients, newItem] }
+        : { excludeAdditionalIngredients: [...this.state.excludeAdditionalIngredients, newItem] }
+    );
   };
 
   render() {
@@ -134,11 +186,6 @@ class Dashboard extends Component {
             onChange={this.handleChange.bind(this)}
           />
         </div>
-        {/* Generate recipe
-          Checkboxes: "Must have pantry items", "Filter out dietary restrictions", "Filter out allergies"
-          allow them to disable certain items for the current search
-          warn when disabling anything allergy related
-         */}
         <br />
         <br />
         Complex Recipe Search
@@ -146,62 +193,90 @@ class Dashboard extends Component {
         <br />
         <Checkbox
           name="includePantry"
-          // value={this.state.includePantry}
-          // checked={this.state.includePantry}
-          // onClick={this.handleCheck.bind(this)}
+          value={this.state.includePantry}
+          defaultChecked={this.state.includePantry}
+          onChange={this.handleCheck.bind(this)}
           toggle
           label="Include pantry"
         />
         <br />
         <Checkbox
           name="filterDietaryRestrictions"
-          // value={this.state.filterDietaryRestrictions}
-          // checked={this.state.filterDietaryRestrictions}
-          // onClick={this.handleCheck.bind(this)}
+          value={this.state.filterDietaryRestrictions}
+          defaultChecked={this.state.filterDietaryRestrictions}
+          onChange={this.handleCheck.bind(this)}
           toggle
           label="Filter out recipes that include dietary restrictions"
         />
         <br />
         <Checkbox
-          name="filterAlergies"
-          // value={this.state.filterAlergies}
-          // checked={this.state.filterAlergies}
-          // onClick={this.handleCheck.bind(this)}
+          name="filterAllergies"
+          value={this.state.filterAllergies}
+          defaultChecked={this.state.filterAllergies}
+          onChange={this.handleCheck.bind(this)}
           toggle
           label="Filter out recipes that include allergies"
         />
         <br />
         <br />
-        Additional Items to Use:
+        <br />
+        The Type of Meal You Want to Have (i.e. 'burger', 'soup', 'bottle of wine')
         <br />
         <SearchBox
-          route="ingredients"
-          handleResult={this.handleResultSelect.bind(this)}
-          placeholder="Add new item to allergies"
-          value={this.state.allergies}
-          name="allergies"
+          route="recipes/recipeAutocomplete/"
+          handleResult={(name, value) => this.setState({ [name]: [value.title] })}
+          placeholder="'burger', 'soup', etc"
+          value={this.state.desiredMeal}
+          name="desiredMeal"
           onChange={this.handleChange.bind(this)}
         />
         <br />
-        Additional Items to Exclude:
-        <br />
+        <List.Header>Additional Ingredients to Use:</List.Header>
+        <List
+          items={
+            !this.state.includeAdditionalIngredients ||
+            !this.state.includeAdditionalIngredients.length
+              ? ['no additional ingredients to include']
+              : this.state.includeAdditionalIngredients
+          }
+        />
         <SearchBox
           route="ingredients"
-          handleResult={this.handleResultSelect.bind(this)}
-          placeholder="Add new item to allergies"
-          value={this.state.allergies}
-          name="allergies"
+          handleResult={this.handleAdditionalIngredients.bind(this)}
+          placeholder="Include ingredient"
+          value={this.state.addIngredient}
+          name="addIngredient"
+          onChange={this.handleChange.bind(this)}
+        />
+        <br />
+        <List.Header>Additional Ingredients to Exclude:</List.Header>
+        <List
+          items={
+            !this.state.excludeAdditionalIngredients ||
+            !this.state.excludeAdditionalIngredients.length
+              ? ['no additional ingredients to exclude']
+              : this.state.excludeAdditionalIngredients
+          }
+        />
+        <SearchBox
+          route="ingredients"
+          handleResult={this.handleAdditionalIngredients.bind(this)}
+          placeholder="Exclude ingredient"
+          value={this.state.ignoreIngredient}
+          name="ignoreIngredient"
           onChange={this.handleChange.bind(this)}
         />
         <br />
         <Dropdown
-          onChange={this.state.handleCuisineChange}
+          onChange={this.handleCuisine.bind(this)}
           value={this.state.cuisine}
           name="cuisine"
           placeholder="Cuisine"
+          clearable
           multiple
           search
           selection
+          fluid
           options={[
             { key: 'African', value: 'African', text: 'African' },
             { key: 'American', value: 'American', text: 'American' },
@@ -233,7 +308,10 @@ class Dashboard extends Component {
           ]}
         />
         <br />
-        <div route={'s'} number={'s'} ranking={'s'} ignorePantry={'s'} ingredients={'s'} />
+        <br />
+        <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
+        <br />
+        <br />
       </div>
     );
   }
