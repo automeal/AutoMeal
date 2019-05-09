@@ -100,6 +100,9 @@ router.post('/login', (req, res) => {
 // @route   PATCH api/users/
 // @desc    update user
 // @access  Private
+
+//This patch call either replaces or appends to fields in the DB
+
 /*
  NOTE: About what and how to patch our data
  - PANTRY is always (should be) only updated one item at a time via the DASHBOARD
@@ -110,16 +113,9 @@ reason if passed as an array
  - PASSWORD must be checked against current
  Check for these and patch accordingly.
  This call needs clean up and validation
-
- Some functionality would be better served as a different api call, but for now, can use patch to replace any fields 
- in the DB for a user, or append to array fields in the DB when given one value for those fields.
-
- ie. Suppose I want to remove a dietary restriction, this single patch would append that data instead of remove,
- no way of differentiating if it's something that should be removed instead
 */
 router.patch('/:id', (req, res) => {
-  //console.log('backend patch user endpoint');
-  //console.log(req.body);
+  console.log('Patch /:id route');
 
   const { errors, isValid } = validateUpdateInput(req.body);
   if (!isValid) {
@@ -192,7 +188,6 @@ router.patch('/:id', (req, res) => {
     //If the prop (key) in our data (req.body) is an array type in our DB (userDBFields, a custom export from User.js),
     //then append the data (value of key in req.body) to the DB instead of overwriting it if it's just a single value (not array)
 
-    //var toCheck = ['pantry', 'mealPlans', 'allergies', 'dietaryrestrictions'];
     var db_commands = {};
     var data = req.body;
     for (var prop in data) {
@@ -203,15 +198,6 @@ router.patch('/:id', (req, res) => {
         if (!('$push' in db_commands)) db_commands['$push'] = {};
 
         db_commands['$push'][prop] = temp;
-        /*
-        User.updateOne({ _id: req.params.id }, { '$push': { [prop]: toSave } }, (err, raw) => {   
-           if (err) {
-              console.log(err);
-           } else {
-            console.log('Append value:', toSave,' to Property :',prop,'in Database.');
-           }
-         });
-       */
       }
     }
 
@@ -242,6 +228,97 @@ router.patch('/:id', (req, res) => {
       }
     });
   }
+});
+
+// @route   DELETE api/users/deleteFromArray
+// @desc    Enter in name of DB field as a key, and the values what to delete from the DB field. Only for DB fields that are arrays.
+// @access  Private
+router.delete('/:id/deleteFromArray', (req, res) => {
+  var db_commands = {
+    $pull: {},
+    $pullAll: {}
+  };
+  var data = req.body;
+
+  console.log('data', data);
+
+  for (var prop in data) {
+    if (User.arrayDBFields.includes(prop)) {
+      var temp = data[prop];
+
+      if (data[prop].constructor !== Array) {
+        db_commands['$pull'][prop] = temp;
+      } else {
+        db_commands['$pullAll'][prop] = temp;
+      }
+    }
+  }
+
+  for (key in db_commands) {
+    if (Object.keys(db_commands[key]).length < 1) {
+      delete db_commands[key];
+    }
+  }
+
+  User.updateOne({ _id: req.params.id }, db_commands, (err, raw) => {
+    if (err) {
+      return res.send(err);
+    } else {
+      console.log('DB patch (delete) successful');
+      return res.send(raw);
+    }
+  });
+  //res.send("Route = delete field from user ");
+});
+
+// @route   DELETE api/users/deleteEntireField
+// @desc    To delete a field in the DB, enter in the name such as example.data.array as a string in an array,
+// or a key in an object (any value). Some fields won't be deleted.
+// @access  Private
+router.delete('/:id/deleteEntireField', (req, res) => {
+  var db_commands = { $unset: {} };
+  var data = req.body;
+
+  if (data.constructor === Array) {
+    for (var i = 0; i < data.length; i++) {
+      db_commands['$unset'][data[i]] = 1;
+    }
+  } else {
+    for (var element in data) {
+      data[element] = 1;
+    }
+    db_commands['$unset'] = data;
+  }
+
+  console.log('Delete field', db_commands);
+
+  var dontDelete = ['mealplans', 'fullname', 'email', 'password', 'username', 'registrationdate'];
+
+  if (data.constructor === Array) {
+    for (var i = 0; i < data.length; i++) {
+      if (dontDelete.includes(data[i].toLowerCase())) {
+        console.log({ error: 'Field ' + data[i] + ' is not an allowable field to delete' });
+        return res.send({ error: 'Field ' + data[i] + ' is not an allowable field to delete' });
+      }
+    }
+  } else {
+    for (var prop in data) {
+      if (dontDelete.includes(prop.toLowerCase())) {
+        console.log({ error: 'Field ' + prop + ' is not an allowable field to delete' });
+        return res.send({ error: 'Field ' + prop + ' is not an allowable field to delete' });
+      }
+    }
+  }
+
+  User.updateOne({ _id: req.params.id }, db_commands, (err, raw) => {
+    if (err) {
+      return res.send(err);
+    } else {
+      res.send(raw);
+      return raw;
+    }
+  });
+  //res.send("Route = delete field from user ");
 });
 
 // @route   DELETE api/users/
