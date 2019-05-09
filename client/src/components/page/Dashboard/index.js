@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {
-  Container,
-  Grid,
-  Header,
-  Icon,
-  Label,
-  List,
-  Checkbox,
-  Dropdown,
-  Segment,
-  Button
-} from 'semantic-ui-react';
+import { Grid, Header, List, Checkbox, Dropdown, Segment, Button } from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 import PantryItem from './PantryItem';
 import AllergyItem from './AllergyItem';
@@ -163,7 +152,7 @@ class Dashboard extends Component {
         : this.state.currUser.allergies.map(item => <AllergyItem item={item} />);
 
     return (
-      <div>
+      <div style={{ padding: '0px 30px' }}>
         <br />
         {/* HELLO HEADER */}
         <Header as="h1" textAlign="center">
@@ -383,23 +372,12 @@ class Dashboard extends Component {
                     { key: 'Vietnamese', value: 'Vietnamese', text: 'Vietnamese' }
                   ]}
                 />{' '}
+                <br />
+                <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
               </Segment>
             </Grid.Column>
           </Grid.Row>
         </Grid>
-
-        {/* Generate recipe
-          Checkboxes: "Must have pantry items", "Filter out dietary restrictions", "Filter out allergies"
-          allow them to disable certain items for the current search
-          warn when disabling anything allergy related
-         */}
-        <br />
-        <br />
-        <br />
-        <br />
-        <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
-        <br />
-        <br />
       </div>
     );
   }
