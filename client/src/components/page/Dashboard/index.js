@@ -16,7 +16,6 @@ class Dashboard extends Component {
       pantry: '',
       allergies: '',
       dietaryRestrictions: '',
-
       // MEAL PLAN
       // Recipe query
       desiredMeal: '',
