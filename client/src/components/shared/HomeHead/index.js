@@ -20,7 +20,7 @@ const HomeHead = ({ mobile }) => (
       <Container text textAlign="center">
         <Header
           as="h1"
-          content="AutoMeal"
+          content="Welcome to AutoMeal"
           style={{
             fontSize: mobile ? '2em' : '4em',
             fontWeight: 'normal',
@@ -28,20 +28,20 @@ const HomeHead = ({ mobile }) => (
             marginTop: mobile ? '1.5em' : '3em'
           }}
         />
-        <Header
-          as="h2"
-          content="A custom meal plan generator based on your preferences."
-          style={{
-            fontSize: mobile ? '1.5em' : '1.7em',
-            fontWeight: 'normal'
-          }}
-        />
-        <Link to="/register" onClick={() => window.location.refresh()}>
-          <Button size="massive" color="orange">
-            Register
-            <Icon name="right arrow" />
-          </Button>
-        </Link>
+        <br />
+        <br />
+        <Button color="teal" size="huge" animated>
+          <Button.Content visible>Generate Recipes</Button.Content>
+          <Button.Content hidden>
+            <Icon name="arrow right" />
+          </Button.Content>
+        </Button>
+        <Button color="teal" size="huge" animated>
+          <Button.Content visible>Start New Search</Button.Content>
+          <Button.Content hidden>
+            <Icon name="arrow right" />
+          </Button.Content>
+        </Button>
       </Container>
     </div>
   </div>
