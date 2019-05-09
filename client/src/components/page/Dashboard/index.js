@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {
-  Container,
-  Grid,
-  Header,
-  Icon,
-  Label,
-  List,
-  Checkbox,
-  Dropdown,
-  Segment
-} from 'semantic-ui-react';
+import { Grid, Header, List, Checkbox, Dropdown, Segment } from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 
 import PantryItem from './PantryItem';
@@ -146,17 +136,16 @@ class Dashboard extends Component {
                     name="pantry"
                   />
                   {/*Pantry items*/}
-                  <List
-                    items={
-                      !this.state.currUser.pantry || !this.state.currUser.pantry.length
-                        ? ['Pantry is empty']
-                        : pantryItems
-                    }
-                  />
+                  <List items={pantryItems} />
                 </p>
               </Segment>
             </Grid.Column>
             <Grid.Column floated="left">
+              {/* OTHER INFO */}
+              <Segment attached="top" textAlign="center" color="green">
+                <Header as="h1">User Information</Header>
+              </Segment>
+              <Segment attached="bottom">Here is some info! Yay!</Segment>
               {/*DIETARY RESTRICTIOS COMPONENT*/}
               <Segment attached="top" textAlign="center" color="green">
                 <Header as="h1">Your Dietary Restrictions</Header>
@@ -172,14 +161,7 @@ class Dashboard extends Component {
                   handleResult={this.handleResultSelect.bind(this)}
                 />
                 {/*Dietary restrictions*/}
-                <List
-                  items={
-                    !this.state.currUser.dietaryRestrictions ||
-                    !this.state.currUser.dietaryRestrictions.length
-                      ? ['no dietary restrictions']
-                      : dietaryItems
-                  }
-                />
+                <List items={dietaryItems} />
               </Segment>
               {/*ALLERGIES COMPONENT*/}
               <Segment attached="top" textAlign="center" color="green">
@@ -196,13 +178,7 @@ class Dashboard extends Component {
                   onChange={this.handleChange.bind(this)}
                 />
                 {/*Allergy items*/}
-                <List
-                  items={
-                    !this.state.currUser.allergies || !this.state.currUser.allergies.length
-                      ? ['no allergies']
-                      : allergyItems
-                  }
-                />
+                <List items={allergyItems} />
               </Segment>
             </Grid.Column>
             <Grid.Column floated="left">

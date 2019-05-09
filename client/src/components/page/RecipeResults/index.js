@@ -15,7 +15,7 @@ class RecipeResults extends Component {
   render() {
     const recipeItems = this.state.recipes.map(item => <RecipeCard key={item.id} item={item} />);
     return (
-      <div>
+      <div style={{ paddingLeft: '30px', paddingRight: '30px' }}>
         <br />
         <Header as="h1" textAlign="center">
           Recipe Results
