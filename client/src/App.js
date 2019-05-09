@@ -17,6 +17,10 @@ import Plan from './components/page/Plan';
 import HP from './components/page/HP';
 import Register from './components/page/Register';
 import Login from './components/page/Login';
+import RecipeResults from './components/page/RecipeResults';
+import HowItWorks from './components/page/HowItWorks';
+import About from './components/page/About';
+import Contact from './components/page/Contact';
 
 import DesktopContainer from './components/shared/Container/DesktopContainer';
 import MobileContainer from './components/shared/Container/MobileContainer';
@@ -50,22 +54,23 @@ ResponsiveContainer.propTypes = {
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <Router>
+      <Router>
+        <Provider store={store}>
           <ResponsiveContainer>
-            {/* <div> */}
-            {/* <Navbar /> */}
             <Route exact path="/" component={Landing} />
             <Route path="/register" component={Register} />
             <Route path="/survey" component={Survey} />
             <Route path="/meal-plan" component={Plan} />
             <Route path="/home-page" component={HP} />
             <Route path="/login" component={Login} />
+            <Route path="/recipe-results" component={RecipeResults} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
-            {/* </div> */}
+            <Route path="/how-it-works" component={HowItWorks} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={Contact} />
           </ResponsiveContainer>
-        </Router>
-      </Provider>
+        </Provider>
+      </Router>
     );
   }
 }

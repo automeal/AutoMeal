@@ -1,20 +1,27 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 //import { Redirect } from 'react-router'
 
-import Select from "../../shared/Form/Select";
-import { CheckboxGroup } from "../../shared/Form/Checkbox";
-import RadioGroup, { Radio } from "../../shared/Form/Radio";
-import Button from "../../shared/Button";
-import Tabs, { Tab } from "../../shared/Tabs";
+import Select from '../../shared/Form/Select';
+import { CheckboxGroup } from '../../shared/Form/Checkbox';
+import RadioGroup, { Radio } from '../../shared/Form/Radio';
+import Button from '../../shared/Button';
+import Tabs, { Tab } from '../../shared/Tabs';
 
 //api related
-import getPlan from "../../../utils/mealPlan";
-import { getSurveyData } from "../../../utils/data";
+import getPlan from '../../../utils/mealPlan';
+import { getSurveyData } from '../../../utils/data';
 
-import "./Survey.css";
+import './Survey.css';
+import axios from 'axios';
 
 export default class Survey extends Component {
   componentWillMount() {
+    axios
+      .get('/api/users/current', { Authorization: localStorage.getItem('jwtToken') })
+      .then(user => {
+        this.setState({ currUser: user.data });
+        console.log('survey component');
+      });
     this.data = getSurveyData();
     const count = this.data.selectOpt.mealCount[0].val;
     const plan = this.data.selectOpt.planType[0].val;
@@ -24,7 +31,7 @@ export default class Survey extends Component {
     };
     const calories = {
       activeIndex: 0,
-      selected: "rec",
+      selected: 'rec',
       min: this.data.calories.min,
       max: this.data.calories.max
     };
@@ -42,9 +49,7 @@ export default class Survey extends Component {
 
   handleHealth = name => {
     this.setState(prevState => {
-      let value = prevState.healthPreferences[name]
-        ? !prevState.healthPreferences[name]
-        : true;
+      let value = prevState.healthPreferences[name] ? !prevState.healthPreferences[name] : true;
       return {
         healthPreferences: { ...prevState.healthPreferences, [name]: value }
       };
@@ -53,9 +58,7 @@ export default class Survey extends Component {
 
   handleIntolerances = name => {
     this.setState(prevState => {
-      let value = prevState.intolerances[name]
-        ? !prevState.intolerances[name]
-        : true;
+      let value = prevState.intolerances[name] ? !prevState.intolerances[name] : true;
       return { intolerances: { ...prevState.intolerances, [name]: value } };
     });
   };
@@ -66,7 +69,7 @@ export default class Survey extends Component {
   };
 
   handleCalories = index => {
-    let selected = parseInt(index, 10) === 1 ? "custom" : "rec";
+    let selected = parseInt(index, 10) === 1 ? 'custom' : 'rec';
     this.setState({
       calories: {
         ...this.state.calories,
@@ -100,10 +103,10 @@ export default class Survey extends Component {
     e.preventDefault();
     const Tabs = this.tabs;
     switch (e.target.name) {
-      case "next":
+      case 'next':
         Tabs.handleClick(Tabs.state.activeIndex + 1);
         break;
-      case "back":
+      case 'back':
         Tabs.handleClick(Tabs.state.activeIndex - 1);
         break;
       default:
@@ -113,14 +116,7 @@ export default class Survey extends Component {
 
   getMealPlan = e => {
     e.preventDefault();
-    const {
-      mealCount,
-      planType,
-      healthPreferences,
-      calories,
-      diet,
-      personCount
-    } = this.state;
+    const { mealCount, planType, healthPreferences, calories, diet, personCount } = this.state;
     // const dietPreference = this.data.dietSpec[diet.activeIndex].name;
     const meals = this.data.mealTypes[mealCount];
     const person = this.data.personType[personCount];
@@ -141,6 +137,25 @@ export default class Survey extends Component {
     });
   };
 
+  BackendCall = e => {
+    const {
+      mealCount,
+      planType,
+      healthPreferences,
+      intolerances,
+      calories,
+      personCount
+    } = this.state;
+    const { activeIndex } = this.state.diet;
+
+    // PATCH THE DATA
+    // axios.patch(`/api/users/${this.state.currUser.id}`, {}).then(() => {});
+
+    // GO TO DASHBOARD
+    console.log(`finished!`);
+    this.props.history.push('/dashboard');
+  };
+
   render() {
     const { selectOpt, dietSpec, healthSpec, intoleranceSpec } = this.data;
     return (
@@ -148,17 +163,12 @@ export default class Survey extends Component {
         {this.state.loading ? (
           <div className="Survey__loading">
             <h1 className="Survey__loading__heading">Chopping those onions</h1>
-            <i
-              className="fa fa-spinner Survey__loading__icon"
-              aria-hidden="true"
-            />
+            <i className="fa fa-spinner Survey__loading__icon" aria-hidden="true" />
           </div>
         ) : (
           <div className="Survey__content">
             <div className="Survey__heading">
-              <h1>
-                Some quick questions to generate that awesome meal plan ..
-              </h1>
+              <h1>Some quick questions to generate that awesome meal plan ..</h1>
             </div>
             <form>
               <Tabs
@@ -177,11 +187,7 @@ export default class Survey extends Component {
                     options={selectOpt.mealCount}
                   />
                   <div className="Survey__goto">
-                    <Button
-                      name="next"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--next"
-                    >
+                    <Button name="next" onClick={this.goTo} className="Survey__goto__button--next">
                       Next
                     </Button>
                   </div>
@@ -196,18 +202,10 @@ export default class Survey extends Component {
                     options={selectOpt.planType}
                   />
                   <div className="Survey__goto">
-                    <Button
-                      name="back"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--back"
-                    >
+                    <Button name="back" onClick={this.goTo} className="Survey__goto__button--back">
                       Back
                     </Button>
-                    <Button
-                      name="next"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--next"
-                    >
+                    <Button name="next" onClick={this.goTo} className="Survey__goto__button--next">
                       Next
                     </Button>
                   </div>
@@ -224,18 +222,10 @@ export default class Survey extends Component {
                     ))}
                   </RadioGroup>
                   <div className="Survey__goto">
-                    <Button
-                      name="back"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--back"
-                    >
+                    <Button name="back" onClick={this.goTo} className="Survey__goto__button--back">
                       Back
                     </Button>
-                    <Button
-                      name="next"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--next"
-                    >
+                    <Button name="next" onClick={this.goTo} className="Survey__goto__button--next">
                       Next
                     </Button>
                   </div>
@@ -249,18 +239,10 @@ export default class Survey extends Component {
                     isCheckedState={this.state.healthPreferences}
                   />
                   <div className="Survey__goto">
-                    <Button
-                      name="back"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--back"
-                    >
+                    <Button name="back" onClick={this.goTo} className="Survey__goto__button--back">
                       Back
                     </Button>
-                    <Button
-                      name="next"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--next"
-                    >
+                    <Button name="next" onClick={this.goTo} className="Survey__goto__button--next">
                       Next
                     </Button>
                   </div>
@@ -273,18 +255,10 @@ export default class Survey extends Component {
                     isCheckedState={this.state.intolerances}
                   />
                   <div className="Survey__goto">
-                    <Button
-                      name="back"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--back"
-                    >
+                    <Button name="back" onClick={this.goTo} className="Survey__goto__button--back">
                       Back
                     </Button>
-                    <Button
-                      name="next"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--next"
-                    >
+                    <Button name="next" onClick={this.goTo} className="Survey__goto__button--next">
                       Next
                     </Button>
                   </div>
@@ -298,7 +272,7 @@ export default class Survey extends Component {
                     <Radio>Go with recommended</Radio>
                     <Radio>Choose custom values</Radio>
                   </RadioGroup>
-                  {this.state.calories.selected === "custom" ? (
+                  {this.state.calories.selected === 'custom' ? (
                     <div className="Survey__input--custom">
                       <input
                         placeholder="min"
@@ -317,18 +291,10 @@ export default class Survey extends Component {
                     </div>
                   ) : null}
                   <div className="Survey__goto">
-                    <Button
-                      name="back"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--back"
-                    >
+                    <Button name="back" onClick={this.goTo} className="Survey__goto__button--back">
                       Back
                     </Button>
-                    <Button
-                      name="next"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--next"
-                    >
+                    <Button name="next" onClick={this.goTo} className="Survey__goto__button--next">
                       Next
                     </Button>
                   </div>
@@ -342,17 +308,15 @@ export default class Survey extends Component {
                     options={selectOpt.personCount}
                   />
                   <div className="Survey__goto">
-                    <Button
-                      name="back"
-                      onClick={this.goTo}
-                      className="Survey__goto__button--back"
-                    >
+                    <Button name="back" onClick={this.goTo} className="Survey__goto__button--back">
                       Back
                     </Button>
                     <Button
-                      type="accent"
-                      link={true}
-                      path="/home-page"
+                      name="next"
+                      //type="accent"
+                      // link={true}
+                      // path="/home-page"
+                      onClick={this.BackendCall.bind(this)}
                       className="Survey__goto__button--next"
                     >
                       Done
