@@ -31,7 +31,7 @@ class Dashboard extends Component {
       // Cuisine choice
       cuisine: []
     };
-    this.handleDelete = this.handleMove.bind(this);
+    //this.handleDelete = this.handleMove.bind(this);
   }
 
   componentDidMount() {
@@ -50,38 +50,37 @@ class Dashboard extends Component {
   };
 
   handleResultSelect = (prop, result) => {
-    const list = prop;
-    console.log(list);
+    
     const newItem = result.name;
+
     // If pantry item already present do not add again
-    if (this.state.currUser[list].includes(newItem)) {
-      console.log('Item already present');
+    if (this.state.currUser[prop].includes(newItem)) {
+      console.log(newItem, 'already present in', prop);
       return;
     }
-    if (list === 'pantry' && this.state.currUser.allergies.includes(newItem)) {
+    if (prop === 'pantry' && this.state.currUser.allergies.includes(newItem)) {
       console.log('DANGER: Item considered an allergy!');
       return;
     }
-    console.log(`curr list: ${this.state.currUser.dietaryRestrictions}`);
-    console.log(`currUser: ${this.state.currUser}`);
-    console.log(`list: ${list}, newItem: ${newItem}`);
-
-    let user = this.state.currUser;
-    let userList = user[list];
-    userList = [...userList, newItem];
-    user[list] = userList;
     
+    //console.log(`currUser: ${this.state.currUser}`);
+    //console.log(`currProp: ${prop}, newItem: ${newItem}`);
+
+    //Update state immediately, no need to to wait for the DB to update UI
+    this.state.currUser[prop].push(newItem);
+    this.setState({
+      [prop]: '',
+      currUser: this.state.currUser
+    });
+
     axios
       .patch(`/api/users/${this.state.currUser.id}`, {
-        [list]: newItem,
+        [prop]: newItem,
       })
       .then(() => {
-        this.setState({
-          [list]: '',
-          currUser: user
-        });
+        console.log("Database updated",prop,newItem);
       });
-    console.log(`Hello, field: ${this.state.currUser[list]}, this.state[newItem]: ${newItem}`);
+    //console.log(`Hello, field: ${this.state.currUser[list]}, this.state[newItem]: ${newItem}`);
   };
 
   handleCheck = (event, result) => {
@@ -112,6 +111,7 @@ class Dashboard extends Component {
       )
       .then(res => console.log(res))
       .catch(err => console.log(err));
+
   };
 
   handleAdditionalIngredients = (name, value) => {
@@ -128,13 +128,29 @@ class Dashboard extends Component {
   };
 
   // TO DO: Function to delete item
-  handleDelete() {
-    console.log('Click!');
+  handleItemDelete  (item, db_field_name)  {
+    console.log('Sending delete request, for item',item,'from array field in db', item,db_field_name);
+  
+    var delete_command = {
+          [db_field_name] : item,
+        };
+
+    //Don't wait for DB to update, just update state and thus the UI right away
+    this.state.currUser[db_field_name] =  this.state.currUser[db_field_name].filter(function(value, index, arr){
+                return value != item;
+              });
+
+    this.setState( this.state);
+    axios.post(`/api/users/${this.state.currUser.id}/deleteFromArray`, delete_command)
+    .then((res) => {
+        console.log("Deleted", item,"from DATABASE")
+    });
+    
   }
 
-  // TO DO: Function to move item from pantry to grocery list
+  //s TO DO: Function to move item from pantry to grocery list
   handleMove() {
-    console.log('Click!');
+    console.log('B Click!');
   }
 
   render() {
@@ -142,19 +158,19 @@ class Dashboard extends Component {
     const pantryItems =
       !this.state.currUser.pantry || !this.state.currUser.pantry.length
         ? ['Pantry is empty']
-        : this.state.currUser.pantry.map(item => <PantryItem item={item} />);
+        : this.state.currUser.pantry.map(item => <PantryItem db_field_name="pantry" item={item} onIconClick={ this.handleItemDelete.bind(this) }/>);
 
     // Mapping dietary restrictions to format into components
     const dietaryItems =
       !this.state.currUser.dietaryRestrictions || !this.state.currUser.dietaryRestrictions.length
         ? ['no dietary restrictions']
-        : this.state.currUser.dietaryRestrictions.map(item => <AllergyItem item={item} />);
+        : this.state.currUser.dietaryRestrictions.map(item => <AllergyItem db_field_name="dietaryRestrictions" item={item} onIconClick={ this.handleItemDelete.bind(this) } />);
 
     // Mapping allergy items to format into components
     const allergyItems =
       !this.state.currUser.allergies || !this.state.currUser.allergies.length
         ? ['no allergies']
-        : this.state.currUser.allergies.map(item => <AllergyItem item={item} />);
+        : this.state.currUser.allergies.map(item => <AllergyItem db_field_name="allergies" item={item} onIconClick={ this.handleItemDelete.bind(this)} />);
 
     return (
       <div style={{ padding: '0px 30px', paddingBottom: '20px' }}>

@@ -97,26 +97,10 @@ router.post('/login', (req, res) => {
   });
 });
 
-// @route   PATCH api/users/
-// @desc    update user
+// @route   PATCH api/users/:id/changePassword
+// @desc    change passwords
 // @access  Private
-
-//This patch call either replaces or appends to fields in the DB
-
-/*
- NOTE: About what and how to patch our data
- - PANTRY is always (should be) only updated one item at a time via the DASHBOARD
- - DIETARY RESTRICTIONS and ALLERGIES are replaced by SURVEY
- and then (should) only one at a time via DASHBOARD
- - MEAL PLANS must be appended to, on patches (for meal plan history), but may be replaced for whatever 
-reason if passed as an array
- - PASSWORD must be checked against current
- Check for these and patch accordingly.
- This call needs clean up and validation
-*/
-router.patch('/:id', (req, res) => {
-  console.log('Patch /:id route');
-
+router.patch('/:id/changePassword', (req, res) => {
   const { errors, isValid } = validateUpdateInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
@@ -155,6 +139,36 @@ router.patch('/:id', (req, res) => {
         });
       })
       .catch(err => console.log(err));
+  } else {
+    res.send({ error: 'No password to patch' });
+  }
+});
+
+//Basically this patch call either replaces or appends to fields in the DB
+/*
+ NOTE: About what and how to patch our data
+ - PANTRY is always (should be) only updated one item at a time via the DASHBOARD
+ - DIETARY RESTRICTIONS and ALLERGIES are replaced by SURVEY
+ and then (should) only one at a time via DASHBOARD
+ - MEAL PLANS must be appended to, on patches (for meal plan history), but may be replaced for whatever 
+reason if passed as an array
+ - Use PATCH api/users/:id/changePassword route to change passwords
+*/
+// @route   PATCH api/users/
+// @desc    update user
+// @access  Private
+router.patch('/:id', (req, res) => {
+  console.log('Patch /:id route');
+
+  const { errors, isValid } = validateUpdateInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  if (req.body.password) {
+    var msg = 'Do not use PATCH api/users/:id for changing passwords';
+    console.log(msg);
+    return res.send({ error: msg });
   } else {
     /*
     For any of the following keys in our data (req.body), append the values of those keys to our database 
@@ -230,17 +244,17 @@ router.patch('/:id', (req, res) => {
   }
 });
 
-// @route   DELETE api/users/deleteFromArray
+// Note: Can not use "DELETE" HTTP header for this even if it seems intuitive because
+// DELETE requests do not carry data, has to be POST or PATCH to pass req.body
+// @route   POST api/users/deleteFromArray
 // @desc    Enter in name of DB field as a key, and the values what to delete from the DB field. Only for DB fields that are arrays.
 // @access  Private
-router.delete('/:id/deleteFromArray', (req, res) => {
+router.post('/:id/deleteFromArray', (req, res) => {
   var db_commands = {
     $pull: {},
     $pullAll: {}
   };
   var data = req.body;
-
-  console.log('data', data);
 
   for (var prop in data) {
     if (User.arrayDBFields.includes(prop)) {
@@ -260,22 +274,24 @@ router.delete('/:id/deleteFromArray', (req, res) => {
     }
   }
 
+  console.log('Delete From array commands', db_commands);
+
   User.updateOne({ _id: req.params.id }, db_commands, (err, raw) => {
     if (err) {
       return res.send(err);
     } else {
-      console.log('DB patch (delete) successful');
+      console.log('DB (deletef from array) successful');
       return res.send(raw);
     }
   });
-  //res.send("Route = delete field from user ");
 });
 
-// @route   DELETE api/users/deleteEntireField
-// @desc    To delete a field in the DB, enter in the name such as example.data.array as a string in an array,
+// May or may not be needed, probably not
+// @route   POST api/users/deleteEntireField
+// @desc    To delete everything in a field in the DB, enter in the name such as example.data.array as a string in an array,
 // or a key in an object (any value). Some fields won't be deleted.
 // @access  Private
-router.delete('/:id/deleteEntireField', (req, res) => {
+router.post('/:id/deleteEntireField', (req, res) => {
   var db_commands = { $unset: {} };
   var data = req.body;
 
@@ -290,9 +306,15 @@ router.delete('/:id/deleteEntireField', (req, res) => {
     db_commands['$unset'] = data;
   }
 
-  console.log('Delete field', db_commands);
-
-  var dontDelete = ['mealplans', 'fullname', 'email', 'password', 'username', 'registrationdate'];
+  var dontDelete = [
+    'mealplans',
+    'pantry',
+    'fullname',
+    'email',
+    'password',
+    'username',
+    'registrationdate'
+  ];
 
   if (data.constructor === Array) {
     for (var i = 0; i < data.length; i++) {
@@ -310,6 +332,8 @@ router.delete('/:id/deleteEntireField', (req, res) => {
     }
   }
 
+  console.log('Delete field(s)', db_commands);
+
   User.updateOne({ _id: req.params.id }, db_commands, (err, raw) => {
     if (err) {
       return res.send(err);
@@ -318,11 +342,10 @@ router.delete('/:id/deleteEntireField', (req, res) => {
       return raw;
     }
   });
-  //res.send("Route = delete field from user ");
 });
 
 // @route   DELETE api/users/
-// @desc    delete user
+// @desc    delete user, not reccomended to use
 // @access  Private
 router.delete('/:id', (req, res) => {
   User.findById(req.params.id)
@@ -331,7 +354,7 @@ router.delete('/:id', (req, res) => {
 });
 
 // @route   GET api/users/current
-// @desc    Return current user
+// @desc    Return current user (everything, can be more efficient/specific TODO)
 // @access  Private
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) =>
   res.json({
@@ -340,7 +363,8 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     email: req.user.email,
     pantry: req.user.pantry,
     dietaryRestrictions: req.user.dietaryRestrictions,
-    allergies: req.user.allergies
+    allergies: req.user.allergies,
+    mealPlans: req.user.mealPlans
   })
 );
 
