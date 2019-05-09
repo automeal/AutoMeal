@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/` +
         `food/ingredients/autocomplete` +
         `?number=5` +
-        `&intolerances=egg` +
+        `&intolerances=` +
         `&query=${req.query.search}`
     )
     .header('X-RapidAPI-Key', process.env.RAPID_API_KEY)

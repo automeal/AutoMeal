@@ -379,7 +379,8 @@ class Survey extends Component {
                       Back
                     </Button>
                     <Button
-                      type="accent"
+                      name="next"
+                      //type="accent"
                       // link={true}
                       // path="/home-page"
                       onClick={this.BackendCall.bind(this)}

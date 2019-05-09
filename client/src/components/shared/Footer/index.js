@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Header, Segment, Grid, List } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const Footer = ({ mobile }) => (
@@ -10,15 +11,24 @@ const Footer = ({ mobile }) => (
           <Grid.Column width={3}>
             <Header inverted as="h4" content="About" />
             <List link inverted>
-              <List.Item as="a">About AutoMeal</List.Item>
-              <List.Item as="a">Contact Us</List.Item>
-              <List.Item as="a">How it Works</List.Item>
+              <Link to="/about">
+                <List.Item as="a">About AutoMeal</List.Item>
+              </Link>
+              <br />
+              <Link to="/contact">
+                <List.Item as="a">Contact Us</List.Item>
+              </Link>
+              <br />
+              <Link to="/how-it-works">
+                <List.Item as="a">How it Works</List.Item>
+              </Link>
             </List>
           </Grid.Column>
           <Grid.Column width={3}>
             <Header inverted as="h4" content="Services" />
             <List link inverted>
               <List.Item>Meal Planning</List.Item>
+              <List.Item>Nutrition Tracking</List.Item>
               <List.Item>Recipe Discovery</List.Item>
             </List>
           </Grid.Column>

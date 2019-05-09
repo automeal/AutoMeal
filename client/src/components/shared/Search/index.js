@@ -3,11 +3,12 @@ import { Search, Grid, Label } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-const resultRenderer = ({ name }) => <Label content={name} />;
+const resultRenderer = ({ name, title }) => <Label content={name || title} />;
 
 resultRenderer.propTypes = {
   name: PropTypes.string,
-  image: PropTypes.string
+  image: PropTypes.string,
+  id: PropTypes.number
 };
 
 class SearchBox extends Component {
