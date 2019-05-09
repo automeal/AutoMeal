@@ -152,7 +152,7 @@ class Dashboard extends Component {
         : this.state.currUser.allergies.map(item => <AllergyItem item={item} />);
 
     return (
-      <div style={{ padding: '0px 30px' }}>
+      <div style={{ padding: '0px 30px', paddingBottom: '20px' }}>
         <br />
         {/* HELLO HEADER */}
         <Header as="h1" textAlign="center">
