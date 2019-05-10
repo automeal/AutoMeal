@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const router = express.Router();
 
-// NEXT STEP: exclude from allergies and dietaryRestrictions
+// NEXT STEP: exclude from allergies and dietary_restrictions
 // do this by adding these restrictions to the "intolerances" query below
 
 // @route   GET recipeAPI/ingredients/?search=

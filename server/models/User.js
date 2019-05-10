@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 // Create Schema
 const UserSchema = new Schema({
   // Credentials/Authorization/Metadata
-  fullName: {
+  full_name: {
     type: String,
     required: true
   },
@@ -45,7 +45,7 @@ const UserSchema = new Schema({
     default: ['salt', 'oil', 'lettuce', 'pepper', 'goya', 'milk', 'ice cream']
     // have this be an object with the array and creation date so that we may refresh weekly
   },
-  dietaryRestrictions: {
+  dietary_restrictions: {
     type: Array,
     default: []
   },
