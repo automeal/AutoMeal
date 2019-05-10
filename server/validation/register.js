@@ -53,5 +53,9 @@ module.exports = function validateRegisterInput(data) {
     errors.confirm_password = 'Confirm Password field is required.';
   }
 
+  console.log(errors);
+
   return { errors, isValid: isEmpty(errors) };
+
+  // will comments make a difference?
 };
