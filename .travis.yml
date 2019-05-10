@@ -6,6 +6,8 @@ install:
 cache:
   directories:
     - '$HOME/.npm'
+before_script:
+  - npm install --prefix server
 before_deploy:
   - gem install mime-types -v 2.6.2
 deploy:
