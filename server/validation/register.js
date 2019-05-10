@@ -7,7 +7,7 @@ module.exports = function validateRegisterInput(data) {
   let errors = {};
 
   // check for whitespace only strings
-  data.fullName = !isEmpty(data.fullName) ? data.fullName : '';
+  data.fullName = !isEmpty(data.fullName) ? data.fullName : data.full_name ? data.full_name : '';
   data.email = !isEmpty(data.email) ? data.email : '';
   data.password = !isEmpty(data.password) ? data.password : '';
   data.confirm_password = !isEmpty(data.confirm_password) ? data.confirm_password : '';
