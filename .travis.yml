@@ -2,17 +2,18 @@ language: node_js
 node_js:
   - lts/*
 install:
-  - npm install
+  - npm ci
+cache:
+  directories:
+    - '$HOME/.npm'
 before_script:
-  - rm -rf ./server/node_modules
-  - rm -rf ./server/package-lock.json
   - npm install --prefix server
 before_deploy:
   - gem install mime-types -v 2.6.2
 deploy:
   provider: heroku
   api_key:
-    secure: BDzlgJ7uGqSa9dDvDrPNYUJRQM8BVcx0H3IJDeNvQuVSy2KjwP46vA21ViBxkV20IGNva4mqCYXCvvTZ0tZowwmR9M0XvdfneaaSZnHHVj6wZ6MkUMzoKDqeaW+0HDhmbHVhTL8rARaUFx/cnotNaCngvptP5GOIzUq2gbeAkd7MteyKkHFzJQTPy2SFGFBNEFDibdCklJS1JDN+Z1ANjxr3BOedrxC3jmcSiy7WzoZMmrhCQfru0mNYX1pWC9RC8RxnIJpfgHMlR30Fe6HPS45EJlq6kyUXt1MswOyu39fmuyJlds41pZG/cHBVw95nSRHT+Ot04qzeD4UcuxNrzlMhOVf140ryuJkuNaHmiqHTGc5rOQL0uf/wzu482PZYvg+h53ZYXYNuJ7GMv0vFWGVkYFjxmx1zra3PyzODgE8JJk9cSsvjfS78zFZwvVozGUDm8G7EZqnzT/MVVyATnvLF+7p2ZR536ca8KQ2bf39AF+5fZSFp0z+NlIioIYeW0b5w70mMPZh/WiNOhuZfCbsORh7sdLVIeamASzWYxaXTHLP49LIdgxoo5mVNaWONgExSqXuPR4Y7N4qI/5PMIEfpsJ257jOddOXNj9AtTlSezmK9M5QRecQiiWITnBv0PJ1FwJgY/XH4SNxfoeETN0YpARFftnzM6NhY7EAxev0=
+    secure: dFlNljrg0gxyxntZenW5JIYGat6+wwmuhmDtdqCzFFWbgkn1goQcCiju2rnEY/rsgyZb0XKgW4lDV1w/j8fMJRZbiKxHje2fm2Gu2kwyKdCqTDjTv0pfhjIqFvJu0Oxk88Vj+oSEJNhfUy+93V586FvUr8JX1U8hefZjG9UIAiubOWFr5E0cCBTjrIb0QBaYVVvMCwk1zifsnc7eNIL+jdvsWlVk07hc/6xIx9GwrXTa0JhIl+opGeD56o69w0D7MjuXTvRaKJk53I7LVAaPtLgRlpVpp/B9/DrvfGHoLiUYUxOD3nB+spqqqG9+r5FoACyZkHAZA2+NWbn3EFz70CZkACzCB5UNigIdP9Snfq5tzUEfaf4BSYzBCmNqyfSNSoDIQY1TBF1IswCgzXbbsQ1FZ0g++C/xUojU+w3Wh8VgzoaeFyiVDcALjeLyGy6cX6lWgTTHHOgL3wAMh2kcQMiGMTnplxLj7qMB4gS8PZQI3F1E5tgN1CnFcCgQpLK6ouj5MxVxiMRmIPMUchxYvXbNFP6FD8JA1N79jF73z7T0nRggViwbMDHS8Y9YrlWuejs5paziSUe7fJCizl45V/yRnJXVyKdFm8t8eGClb47z00LMkDbOpGg1X2f+PxUr4iFZFMajHqZQDpbn7qwrl8xEdwL/FSmg3jQmlyk8sJk=
   app: automeal
   skip_cleanup: true
   on:
