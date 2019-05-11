@@ -87,9 +87,6 @@ class Register extends Component {
             <Header as="h2" color="teal" textAlign="center">
               AutoMeal Register
             </Header>
-            <Header as="h2" color="teal" textAlign="center">
-              MADE BIG DIFF
-            </Header>
             <Form.Input
               icon="user"
               iconPosition="left"
