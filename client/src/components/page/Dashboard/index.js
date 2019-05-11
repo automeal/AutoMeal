@@ -15,13 +15,13 @@ class Dashboard extends Component {
       // New item being searched and/or added to the respected list
       pantry: '',
       allergies: '',
-      dietaryRestrictions: '',
+      dietary_restrictions: '',
       // MEAL PLAN
       // Recipe query
       desiredMeal: '',
       // Checkboxes
       includePantry: true,
-      filterDietaryRestrictions: true,
+      filterdietary_restrictions: true,
       filterAllergies: true,
       // Additional search boxes
       includeAdditionalIngredients: [],
@@ -56,7 +56,7 @@ class Dashboard extends Component {
       console.log('Item already present');
       return;
     }
-    console.log(`curr list: ${this.state.currUser.dietaryRestrictions}`);
+    console.log(`curr list: ${this.state.currUser.dietary_restrictions}`);
     console.log(`currUser: ${this.state.currUser}`);
     console.log(`list: ${list}, newItem: ${newItem}`);
 
@@ -92,7 +92,7 @@ class Dashboard extends Component {
       .get(
         `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
           `&cuisine=${this.state.cuisine.join('%2C+')}` +
-          `&diet=${this.state.currUser.dietaryRestrictions.join('%2C+')}` +
+          `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
           `&includeIngredients=${this.state.includeAdditionalIngredients
             // DO NOT concat on call (call at end of this comment block)
             // concat on react side and have includeAdditionalIngredients store all ingredients to be included
@@ -140,9 +140,9 @@ class Dashboard extends Component {
 
     // Mapping dietary restrictions to format into components
     const dietaryItems =
-      !this.state.currUser.dietaryRestrictions || !this.state.currUser.dietaryRestrictions.length
+      !this.state.currUser.dietary_restrictions || !this.state.currUser.dietary_restrictions.length
         ? ['no dietary restrictions']
-        : this.state.currUser.dietaryRestrictions.map(item => <AllergyItem item={item} />);
+        : this.state.currUser.dietary_restrictions.map(item => <AllergyItem item={item} />);
 
     // Mapping allergy items to format into components
     const allergyItems =
@@ -158,7 +158,7 @@ class Dashboard extends Component {
           Hello,{' '}
           {this.state.currUser.display_name
             ? this.state.currUser.display_name
-            : this.state.currUser.fullName}
+            : this.state.currUser.full_name}
           <a href="/home-page#/">
             <sup>edit</sup>
           </a>
@@ -206,16 +206,16 @@ class Dashboard extends Component {
                 <SearchBox
                   route="ingredients"
                   placeholder="Add new item to dietary restrictions"
-                  value={this.state.dietaryRestrictions}
-                  name="dietaryRestrictions"
+                  value={this.state.dietary_restrictions}
+                  name="dietary_restrictions"
                   onChange={this.handleChange.bind(this)}
                   handleResult={this.handleResultSelect.bind(this)}
                 />
                 {/*Dietary restrictions*/}
                 <List
                   items={
-                    !this.state.currUser.dietaryRestrictions ||
-                    !this.state.currUser.dietaryRestrictions.length
+                    !this.state.currUser.dietary_restrictions ||
+                    !this.state.currUser.dietary_restrictions.length
                       ? ['no dietary restrictions']
                       : dietaryItems
                   }
@@ -265,9 +265,9 @@ class Dashboard extends Component {
                 />
                 <br />
                 <Checkbox
-                  name="filterDietaryRestrictions"
-                  value={this.state.filterDietaryRestrictions}
-                  defaultChecked={this.state.filterDietaryRestrictions}
+                  name="filterdietary_restrictions"
+                  value={this.state.filterdietary_restrictions}
+                  defaultChecked={this.state.filterdietary_restrictions}
                   onChange={this.handleCheck.bind(this)}
                   toggle
                   label="Filter out recipes that include dietary restrictions"

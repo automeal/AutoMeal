@@ -32,7 +32,7 @@ describe('Register user', () => {
     request(app)
       .post('/api/users/register')
       .send({
-        fullName: 'daniel segarra',
+        full_name: 'daniel segarra',
         email: 'daniel@email.com',
         password: 'password',
         confirm_password: 'password'
