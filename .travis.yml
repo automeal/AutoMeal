@@ -1,19 +1,19 @@
 language: node_js
 node_js:
-  - lts/*
+- lts/*
 install:
-  - npm ci
+- npm ci
 cache:
   directories:
-    - '$HOME/.npm'
+  - "$HOME/.npm"
 before_script:
-  - npm install --prefix server
+- npm install --prefix server
 before_deploy:
-  - gem install mime-types -v 2.6.2
+- gem install mime-types -v 2.6.2
 deploy:
   provider: heroku
   api_key:
-    secure: xjCMCtnznU250jK8SJZkG7hElPd9iqMZooUZQNmOqttBlveRM9+YZYzpeGi+lmrHH5ey8/67EFS+0fbg7oDGQssc1MMY8cXIuBsdnJnJdgBZ3vRB3fUMlxFoQL+YsogWutwRrGMWVTMkwaJnYr9xLWbdEuyN9hZVQsiXrVm7TsyqiA8ZvaSBc5VE+aIp52IUYIyLBB/lshXtWPtnrmjpZGXVC645VOXiR0wV0ZG2N8hzYwYT+TvSgBkAsEpy+2MmLNn1GOorMR8GLtlo49l/GzYrLRHXGt6t49goUHuKXAt/3TmoU3tQcb2v5ucbqOR2LN2R8xH8pRZu4kz0Gmj9actbZPAgk1C7ayinrPjbypRizO5pQtAC/IyqvPoKa5CDUZx08WnZRZ4LOPuahjjrR4a7LcekOPG2fAwGQ43tAiV0Sf4Eo+NwxWqQ8TUSBim9ZkrSfeOYAM+NYJ00dADfaksQMZ/Xh4FSeJzQ1ryE0V7ahpbLcAoYTmCgy5zPk/OnCjqKw1l1gAtJNiDXqkadgiM/BAA3XKA6nbdq7pOzQ4O0vlhICkRQbIAiDZwE4L2Rd1by++Hngnho1TBGS+JXix/rBcs5Uo/ZcwH94f1y24X3nuK5AGJGh8XYokIxgI2CGZujSryBTqFTP6+f7SiiHWpyFRP7kDBOEgBu5X1EMOY=
+    secure: mlTIgxWn0oE8TgBMwj2ExcnNndBLFSdLWOYHFtP/6NN2+G60FvvibDxY9m+iGVqslfdgaCqH8XMt6hzCgI0tVYnOZVmxDhIFxi+kDgRvpz8C5IOTLEtllmHhmADDA9cUkPIB+sfwR6FdS68Hlpf1hfGTQzLDFL98RG/J016A43N4vuGAHKAdC4C+rhGZ4hM5AmZpwZNyp5gwaX9VmuFBfuhKqgWixWDIFY99rfKDw0ZRdKJjwqrxj7gwpFFeb7Ngtg4OWJRSZQ8SIyMnrhujVNVWBsHIv8JpVuNU4iNZIhpHp6Jw2j65w6Z1iytrkoWMr63i04hs6LqIZDIxyYwwK/i6AM4phTiBTCI7LUuNnMjJICYZoSE66uYqUpxBOO+zz2RtUQjcnNwWMZYXkY9Ud+IPDJ7vJzWQbu/7ay+FHfqf3y06fsDAwbKIH5v0g2BmvLK9J7z0GGZ+JdIF5g9dWlf8qi/NmvTrm2WNU3DHKJqCq4JSEvuITEYuLeq7HurWis3QFe0Y1wgY6NaL5IHNLMjR9xWvXAC2Y9lJ2FDyghpBwSdxVGcD4YrPtUiGvq6q7QEAEhjrqGxhPo05SuuOcNfL+t3FdMsctiRzleEJbSGGGC9QWypFkDZ5/uv3S35mc5RRlI6rSUom703ug9PITGeAzQ6MV0z58G5A4zBpeIY=
   app: automeal
   skip_cleanup: true
   on:
