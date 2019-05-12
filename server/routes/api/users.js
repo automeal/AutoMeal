@@ -18,7 +18,7 @@ const User = require('../../models/User');
 // @desc    Register new user
 // @access  Public
 router.post('/register', (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { full_name, email, password } = req.body;
   const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
@@ -32,7 +32,7 @@ router.post('/register', (req, res) => {
     }
 
     const newUser = new User({
-      fullName,
+      full_name,
       email,
       password
     });
@@ -49,7 +49,7 @@ router.post('/register', (req, res) => {
               token,
               user: {
                 id: user.id,
-                fullName: user.fullName,
+                full_name: user.full_name,
                 email: user.email
               }
             });
@@ -82,7 +82,7 @@ router.post('/login', (req, res) => {
       // if passwords match
       if (isMatch) {
         // copy user info
-        const payload = { id: user.id, fullName: user.fullName, password: user.password };
+        const payload = { id: user.id, full_name: user.full_name, password: user.password };
         // sign the data with secret and set TTL
         // return user token
         jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
@@ -165,10 +165,10 @@ router.delete('/:id', (req, res) => {
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) =>
   res.json({
     id: req.user.id,
-    fullName: req.user.fullName,
+    full_name: req.user.full_name,
     email: req.user.email,
     pantry: req.user.pantry,
-    dietaryRestrictions: req.user.dietaryRestrictions,
+    dietary_restrictions: req.user.dietary_restrictions,
     allergies: req.user.allergies
   })
 );
