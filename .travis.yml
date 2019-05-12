@@ -14,7 +14,7 @@ deploy:
   provider: heroku
   api_key:
     secure: xjCMCtnznU250jK8SJZkG7hElPd9iqMZooUZQNmOqttBlveRM9+YZYzpeGi+lmrHH5ey8/67EFS+0fbg7oDGQssc1MMY8cXIuBsdnJnJdgBZ3vRB3fUMlxFoQL+YsogWutwRrGMWVTMkwaJnYr9xLWbdEuyN9hZVQsiXrVm7TsyqiA8ZvaSBc5VE+aIp52IUYIyLBB/lshXtWPtnrmjpZGXVC645VOXiR0wV0ZG2N8hzYwYT+TvSgBkAsEpy+2MmLNn1GOorMR8GLtlo49l/GzYrLRHXGt6t49goUHuKXAt/3TmoU3tQcb2v5ucbqOR2LN2R8xH8pRZu4kz0Gmj9actbZPAgk1C7ayinrPjbypRizO5pQtAC/IyqvPoKa5CDUZx08WnZRZ4LOPuahjjrR4a7LcekOPG2fAwGQ43tAiV0Sf4Eo+NwxWqQ8TUSBim9ZkrSfeOYAM+NYJ00dADfaksQMZ/Xh4FSeJzQ1ryE0V7ahpbLcAoYTmCgy5zPk/OnCjqKw1l1gAtJNiDXqkadgiM/BAA3XKA6nbdq7pOzQ4O0vlhICkRQbIAiDZwE4L2Rd1by++Hngnho1TBGS+JXix/rBcs5Uo/ZcwH94f1y24X3nuK5AGJGh8XYokIxgI2CGZujSryBTqFTP6+f7SiiHWpyFRP7kDBOEgBu5X1EMOY=
-  app: automeal-demo
+  app: automeal
   skip_cleanup: true
   on:
     repo: automeal/AutoMeal
