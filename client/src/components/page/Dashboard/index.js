@@ -229,8 +229,8 @@ class Dashboard extends Component {
         {/* HELLO HEADER */}
         <Header as="h1" textAlign="center">
           Hello,{' '}
-          {this.state.currUser.display_name
-            ? this.state.currUser.display_name
+          {this.state.currUser.full_name
+            ? this.state.currUser.full_name
             : this.state.currUser.full_name}
           <sup onClick={this.show('blurring')}>edit</sup>
         </Header>
@@ -242,10 +242,10 @@ class Dashboard extends Component {
             </Header>
             <Modal.Description>
               <p>
-                <Header as="h3">Current Name: </Header>{' '}
+                <Header as="h3">Current Name: </Header> {this.state.currUser.full_name}
               </p>
               <p>
-                <Header as="h3">Current Email:</Header>
+                <Header as="h3">Current Email:</Header> {this.state.currUser.email}
               </p>
               <Divider />
               <Form>
@@ -296,12 +296,13 @@ class Dashboard extends Component {
               </Segment>
               <Segment attached="bottom">
                 <p>
-                  <Header as="h5">Name: </Header> Name
-                  <Header as="h5">Meals a Day: </Header>
-                  <Header as="h5">Plan Type: </Header>
-                  <Header as="h5">Plan Size: </Header>
-                  <Header as="h5">Dietary Preferences: </Header>
-                  <Header as="h5">Daily Calorie Intake: </Header>
+                  <Header as="h5">Name: </Header> {this.state.currUser.full_name}
+                  <Header as="h5">Email: </Header> {this.state.currUser.email}
+                  {/*<Header as="h5">Meals a Day: </Header>*/}
+                  {/*<Header as="h5">Plan Type: </Header>*/}
+                  {/*<Header as="h5">Plan Size: </Header>*/}
+                  {/*<Header as="h5">Dietary Preferences: </Header>*/}
+                  {/*<Header as="h5">Daily Calorie Intake: </Header>*/}
                 </p>
               </Segment>
               {/*DIETARY RESTRICTIOS COMPONENT*/}
