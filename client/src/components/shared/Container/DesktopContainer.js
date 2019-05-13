@@ -127,7 +127,6 @@ class DesktopContainer extends Component {
         </Visibility>
 
         {children}
-        <Footer />
       </Responsive>
     );
   }
