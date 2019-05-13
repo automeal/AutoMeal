@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Grid, Header, List, Checkbox, Dropdown, Segment, Button } from 'semantic-ui-react';
+import { Grid, Header, List, Checkbox, Dropdown, Segment, Button, Modal } from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 import PantryItem from './PantryItem';
 import AllergyItem from './AllergyItem';
@@ -29,7 +29,9 @@ class Dashboard extends Component {
       excludeAdditionalIngredients: [],
       ignoreIngredient: '',
       // Cuisine choice
-      cuisine: []
+      cuisine: [],
+      // For the popup
+      open: false
     };
     //this.handleDelete = this.handleMove.bind(this);
   }
@@ -159,7 +161,13 @@ class Dashboard extends Component {
     console.log('B Click!');
   }
 
+  //For blurring the popup background
+  show = dimmer => () => this.setState({ dimmer, open: true });
+  close = () => this.setState({ open: false });
+
   render() {
+    // For blurring the popup background
+    const { open, dimmer } = this.state;
     // Mapping pantry items to format into components
     const pantryItems =
       !this.state.currUser.pantry || !this.state.currUser.pantry.length
@@ -205,13 +213,22 @@ class Dashboard extends Component {
           {this.state.currUser.display_name
             ? this.state.currUser.display_name
             : this.state.currUser.full_name}
-          <a href="/home-page#/">
-            <sup>edit</sup>
-          </a>
+          <sup onClick={this.show('blurring')}>edit</sup>
         </Header>
+        {/*Popup to edit user info*/}
+        <Modal dimmer={dimmer} open={open} onClose={this.close} centered={true}>
+          <Modal.Content scrolling>
+            <Header as="h2" textAlign="center">
+              Make Changes to User Information
+            </Header>
+            <Modal.Description>
+              <p>INSERT STUFF</p>
+            </Modal.Description>
+          </Modal.Content>
+        </Modal>
         <br />
         <br />
-        <Grid columns="equal">
+        <Grid columns="equal" stackable>
           <Grid.Row>
             <Grid.Column floated="left">
               {/*PANTRY COMPONENT*/}
@@ -232,17 +249,29 @@ class Dashboard extends Component {
                     name="pantry"
                   />
                   {/*Pantry items*/}
-                  <List
-                    items={
-                      !this.state.currUser.pantry || !this.state.currUser.pantry.length
-                        ? ['Pantry is empty']
-                        : pantryItems
-                    }
-                  />
+                  <List items={pantryItems} />
                 </p>
               </Segment>
             </Grid.Column>
             <Grid.Column floated="left">
+              {/* OTHER INFO */}
+              <Segment attached="top" textAlign="center" color="green">
+                <Header as="h1">User Information</Header>
+              </Segment>
+              <Segment attached="bottom">
+                <p>
+                  <Header as="h5">Name: </Header> Name
+                  <Header as="h5">Meals a Day: </Header>
+                  <br />
+                  <b>Plan Type: </b>
+                  <br />
+                  <b>Plan Size: </b>
+                  <br />
+                  <b>Dietary Preferences: </b>
+                  <br />
+                  <b>Daily Calorie Intake: </b>
+                </p>
+              </Segment>
               {/*DIETARY RESTRICTIOS COMPONENT*/}
               <Segment attached="top" textAlign="center" color="green">
                 <Header as="h1">Your Dietary Restrictions</Header>
@@ -258,14 +287,7 @@ class Dashboard extends Component {
                   handleResult={this.handleResultSelect.bind(this)}
                 />
                 {/*Dietary restrictions*/}
-                <List
-                  items={
-                    !this.state.currUser.dietary_restrictions ||
-                    !this.state.currUser.dietary_restrictions.length
-                      ? ['no dietary restrictions']
-                      : dietaryItems
-                  }
-                />
+                <List items={dietaryItems} />
               </Segment>
               {/*ALLERGIES COMPONENT*/}
               <Segment attached="top" textAlign="center" color="green">
@@ -282,13 +304,7 @@ class Dashboard extends Component {
                   onChange={this.handleChange.bind(this)}
                 />
                 {/*Allergy items*/}
-                <List
-                  items={
-                    !this.state.currUser.allergies || !this.state.currUser.allergies.length
-                      ? ['no allergies']
-                      : allergyItems
-                  }
-                />
+                <List items={allergyItems} />
               </Segment>
             </Grid.Column>
             <Grid.Column floated="left">
