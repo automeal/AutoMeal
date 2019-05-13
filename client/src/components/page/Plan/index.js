@@ -1,20 +1,44 @@
 // import Nav from '../../shared/Nav';
 import React from 'react';
+import { Container, Header, Button, Icon } from 'semantic-ui-react';
+import food5 from '../../../Resources/food5.jpg';
 //import './Landing.css';
 
-const MealPlan = props => (
-  <div className="Login">
-    <div className="Login__banner" />
-    <div className="Login__data">
-      <div className="Login__data__content">
-        <h1>Weekly Meal Plan</h1>
-        <ul>
-          <li>Meal Plan for each day of the week will go here</li>
-          <li>Need to fix up backend, but some logic is there</li>
-          <li>7 days of week, based on survey data</li>
-          <li>Nutrition Info Displayed with each meal (based on survey data)</li>
-        </ul>
-      </div>
+const MealPlan = ({ mobile }) => (
+  <div className="ui fluid image">
+    <img src={food5} alt="" />
+    <div
+      style={{
+        position: 'absolute',
+        bottom: '40%',
+        width: '100%',
+        height: 'auto'
+      }}
+    >
+      <Container text textAlign="center">
+        <Header
+          as="h1"
+          content="Your Meal Plan"
+          style={{
+            fontSize: mobile ? '2em' : '4em',
+            fontWeight: 'normal',
+            marginBottom: 0,
+            marginTop: mobile ? '1.5em' : '3em'
+          }}
+        />
+        <Button href="/daily_mealplan" color="green" size="huge" animated>
+          <Button.Content visible>Daily Meal Plan</Button.Content>
+          <Button.Content hidden>
+            <Icon name="arrow right" />
+          </Button.Content>
+        </Button>
+        <Button href="/weekly_mealplan" color="green" size="huge" animated>
+          <Button.Content visible>Weekly Meal Plan</Button.Content>
+          <Button.Content hidden>
+            <Icon name="arrow right" />
+          </Button.Content>
+        </Button>
+      </Container>
     </div>
   </div>
 );

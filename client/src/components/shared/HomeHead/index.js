@@ -30,14 +30,14 @@ const HomeHead = ({ mobile }) => (
         />
         <br />
         <br />
-        <Button color="teal" size="huge" animated>
-          <Button.Content visible>Generate Recipes</Button.Content>
+        <Button Button href="/meal-plan" color="teal" size="huge" animated>
+          <Button.Content visible>Meal Plan</Button.Content>
           <Button.Content hidden>
             <Icon name="arrow right" />
           </Button.Content>
         </Button>
-        <Button color="teal" size="huge" animated>
-          <Button.Content visible>Start New Search</Button.Content>
+        <Button Button href="/dashboard" color="teal" size="huge" animated>
+          <Button.Content visible>Dashboard</Button.Content>
           <Button.Content hidden>
             <Icon name="arrow right" />
           </Button.Content>
