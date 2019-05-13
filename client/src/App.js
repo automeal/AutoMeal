@@ -20,6 +20,10 @@ import Login from './components/page/Login';
 import DayMealPlan from './components/page/MealPlan/daymealplan';
 import WeekMealPlan from './components/page/MealPlan/weekmealplan';
 import Result from './components/page/RecipeResults';
+import RecipeResults from './components/page/RecipeResults';
+import HowItWorks from './components/page/HowItWorks';
+import About from './components/page/About';
+import Contact from './components/page/Contact';
 
 import DesktopContainer from './components/shared/Container/DesktopContainer';
 import MobileContainer from './components/shared/Container/MobileContainer';
@@ -56,8 +60,6 @@ class App extends Component {
       <Router>
         <Provider store={store}>
           <ResponsiveContainer>
-            {/* <div> */}
-            {/* <Navbar /> */}
             <Route exact path="/" component={Landing} />
             <Route path="/register" component={Register} />
             <Route path="/survey" component={Survey} />
@@ -67,8 +69,13 @@ class App extends Component {
             <Route path="/home-page" component={HP} />
             <Route path="/login" component={Login} />
             <Route path="/result" component={Result} />
+            <Route path="/recipe-results" component={RecipeResults} />
+            <Route path="/result" component={Result} />
+            <Route path="/recipe-results" component={RecipeResults} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
-            {/* </div> */}
+            <Route path="/how-it-works" component={HowItWorks} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={Contact} />
           </ResponsiveContainer>
         </Provider>
       </Router>

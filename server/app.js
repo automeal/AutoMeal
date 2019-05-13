@@ -29,6 +29,10 @@ mongoose
   .then(() => console.log(`MongoDB(${nodeEnv}) connected...`))
   .catch(err => console.log(err));
 
+//Attempted to see if the history object error in Survey's index.js was a CORS error but it's not
+//var cors = require('cors')
+//app.use(cors())
+
 // Bodyparser Middleware
 app.use(express.json());
 // Passport Authentication Middleware
