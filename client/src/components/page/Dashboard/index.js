@@ -150,6 +150,7 @@ class Dashboard extends Component {
       "planType" : this.state.currUser.planType,
       "calories" : this.state.currUser.calories
     }
+
     axios
       .post(
         "/recipeAPI/recipes/generateMealPlan/" + params_string, options

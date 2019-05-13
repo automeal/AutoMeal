@@ -85,7 +85,7 @@ async function sendSpoonacularRequest(params_string) {
   return data;
 }
 
-async function updateMealPlan(data, _id, mealPlans) {
+async function updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes) {
   for (var a in data) {
     var recipe = data[a];
     var err,
@@ -98,9 +98,20 @@ async function updateMealPlan(data, _id, mealPlans) {
     }
   }
 
+  var recipe = null;
   //Choose random recipe, TO DO: Make sure recipes dont overlap, pick the best ones, etc
-  var recipe = data[Math.floor(Math.random() * data.length)];
+  while (data.length > 0) {
+    var rand = Math.floor(Math.random() * data.length);
+    recipe = data[rand];
 
+    if (alreadyUsedRecipes['arr'].includes(recipe.id)) {
+      delete data[rand];
+      continue;
+    }
+
+    break;
+  }
+  alreadyUsedRecipes['arr'].push(recipe.id);
   //console.log("mealPlans", mealPlans);
   console.log(
     'Just dump recipes in array for now, meant to store only ids to save on storage space'
@@ -146,9 +157,9 @@ router.post('/generateMealPlan/', async (req, res) => {
   console.log('Param String (Server)', params_string);
 
   var breakfast_string = params_string + '&type=breakfast';
+  var alreadyUsedRecipes = { arr: [] }; //javascript stuff, can't pass by reference without doing this
   var data = await sendSpoonacularRequest(breakfast_string);
-  mealPlans = await updateMealPlan(data, _id, mealPlans);
-  console.log('updated plan', mealPlans);
+  mealPlans = await updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes);
   await sleep(200); //Don't hammer the recipe API
 
   console.log('MEAL PLAN COUNT', mealPlanCount);
@@ -156,13 +167,13 @@ router.post('/generateMealPlan/', async (req, res) => {
   for (var i = 0; i < mealPlanCount; i++) {
     //Alternate between main meal and anything else (breakfast unforatunately included)
     if (i % 2 == 0) {
-      var main_course_string = params_string + '&type=main course';
-      var data = await sendSpoonacularRequest(main_course_string);
-      mealPlans = await updateMealPlan(data, _id, mealPlans);
+      var data = await sendSpoonacularRequest(params_string);
+      mealPlans = await updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes);
       await sleep(200);
     } else {
-      var data = await sendSpoonacularRequest(params_string);
-      mealPlans = await updateMealPlan(data, _id, mealPlans);
+      var main_course_string = params_string + '&type=main course';
+      var data = await sendSpoonacularRequest(main_course_string);
+      mealPlans = await updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes);
       await sleep(200);
     }
   }
@@ -265,8 +276,6 @@ router.get('/complexRecipe/', async (req, res) => {
 
     break;
   }
-
-  //console.log("RESP", data);
 
   Recipes.findOneAndUpdate({ id: data[0].id }, data[0], { upsert: true, new: true }, function(
     err,
