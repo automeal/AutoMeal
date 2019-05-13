@@ -176,7 +176,12 @@ class Dashboard extends Component {
               Make Changes to User Information
             </Header>
             <Modal.Description>
-              <p>INSERT STUFF</p>
+              <p><Header as="h3">Current Name: </Header> </p>
+              <p><Header as="h3">New Name: </Header> </p>
+              <p><Header as="h3">Current Meals per Day:</Header></p>
+              <p><Header as="h3">New Meals per Day:</Header></p>
+              <p><Header as="h3">Current Plan Type: </Header></p>
+              <p><Header as="h3">New Plan Size: </Header></p>
             </Modal.Description>
           </Modal.Content>
         </Modal>
