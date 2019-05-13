@@ -4,6 +4,8 @@ import setAuthToken from '../setAuthToken';
 import jwt_decode from 'jwt-decode';
 
 export const registerUser = (user, history) => dispatch => {
+  console.log(`auth.js FE`);
+  console.log(user);
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -15,6 +17,7 @@ export const registerUser = (user, history) => dispatch => {
       type: GET_ERRORS,
       payload: err.response.data
     });
+    throw err;
   });
 };
 
