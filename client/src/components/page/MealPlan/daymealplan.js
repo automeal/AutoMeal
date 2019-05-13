@@ -1,7 +1,7 @@
 // import Nav from '../../shared/Nav';
 import React from 'react';
 // import './Landing.css';
-import { Card, Tab, Image, Grid } from 'semantic-ui-react';
+import { Card, Image, Grid } from 'semantic-ui-react';
 import DaySelect from '../../shared/DaySelect';
 import ex3 from '../../../Resources/ex3.jpeg';
 import ex6 from '../../../Resources/ex6.jpg';
