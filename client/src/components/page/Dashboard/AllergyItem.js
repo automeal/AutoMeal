@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { Icon, Label } from 'semantic-ui-react';
 
 class AllergyItem extends Component {
-  // TO DO: Function to delete allergy
-  handleDelete() {
-    console.log('Click!');
+
+  constructor(props) {
+    super(props);
+    //this.onIconClick.bind(this);
+  }
+
+  onIconClick(){
+    this.props.onIconClick(this.props.item, this.props.db_field_name);
   }
 
   render() {
@@ -14,7 +19,7 @@ class AllergyItem extends Component {
     };
     return (
       <Label color="red" size="large" textAlign="center" style={divStyle}>
-        <Icon name="delete" onClick={this.handleDelete} />
+        <Icon name="delete" onClick={ this.onIconClick.bind(this) }  />
         {'  '} {'  '}
         {this.props.item}
       </Label>
