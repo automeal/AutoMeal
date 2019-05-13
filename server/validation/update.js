@@ -4,22 +4,22 @@ const isEmpty = require('./isEmpty');
 module.exports = function validateUpdatedInput(data) {
   let errors = {};
 
-  // if pantry/allergies/dietaryRestrictions check that it is array
+  // if pantry/allergies/dietary_restrictions check that it is array
 
   // if any other fields present, they are denied write
   // remove fields after checking, if any left at end deny write
 
-  if (data.fullName) {
+  if (data.full_name) {
     // NAME
     // check for whitespace only strings
-    data.fullName = !isEmpty(data.fullName) ? data.fullName : '';
+    data.full_name = !isEmpty(data.full_name) ? data.full_name : '';
     // INCORRECT NAME LENGTH
-    if (!Validator.isLength(data.fullName, { min: 2, max: 30 })) {
-      errors.fullName = 'Name must be between 2 and 30 characters.';
+    if (!Validator.isLength(data.full_name, { min: 2, max: 30 })) {
+      errors.full_name = 'Name must be between 2 and 30 characters.';
     }
     // NAME FIELD EMPTY
-    if (Validator.isEmpty(data.fullName)) {
-      errors.fullName = 'Name field is required.';
+    if (Validator.isEmpty(data.full_name)) {
+      errors.full_name = 'Name field is required.';
     }
   }
 
