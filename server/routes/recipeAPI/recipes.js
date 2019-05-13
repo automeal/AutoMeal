@@ -172,7 +172,7 @@ router.post('/generateMealPlan/', async (req, res) => {
   await Users.update({ _id: _id }, { mealPlans: mealPlans });
   //console.log(user);
   console.log('meal plan finished generating server side!');
-  res.send({ message: 'meal plan generation success' });
+  res.send({ message: 'meal plan generation success', mealPlans: mealPlans });
 });
 
 // @route   GET recipeAPI/recipes/complexRecipe

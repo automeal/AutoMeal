@@ -364,7 +364,10 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     pantry: req.user.pantry,
     dietary_restrictions: req.user.dietary_restrictions,
     allergies: req.user.allergies,
-    mealPlans: req.user.mealPlans
+    mealPlans: req.user.mealPlans,
+    calories: req.user.calories,
+    mealCount: req.user.mealCount,
+    planType: req.user.planType
   })
 );
 
