@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Grid, Header, List, Checkbox, Dropdown, Segment, Button, Modal } from 'semantic-ui-react';
+import {
+  Grid,
+  Header,
+  List,
+  Checkbox,
+  Dropdown,
+  Segment,
+  Button,
+  Image,
+  Modal
+} from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 import PantryItem from './PantryItem';
 import AllergyItem from './AllergyItem';
@@ -16,6 +26,7 @@ class Dashboard extends Component {
       pantry: '',
       allergies: '',
       dietary_restrictions: '',
+
       // MEAL PLAN
       // Recipe query
       desiredMeal: '',
@@ -30,6 +41,8 @@ class Dashboard extends Component {
       ignoreIngredient: '',
       // Cuisine choice
       cuisine: [],
+      // Recipe Search Result
+      recipeSearchResults: [],
       // For the popup
       open: false
     };
@@ -110,7 +123,10 @@ class Dashboard extends Component {
             this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
           }`
       )
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res);
+        this.setState({ recipeSearchResults: res.data });
+      })
       .catch(err => console.log(err));
   };
 
@@ -228,7 +244,7 @@ class Dashboard extends Component {
         </Modal>
         <br />
         <br />
-        <Grid columns="equal" stackable>
+        <Grid stackable columns="equal">
           <Grid.Row>
             <Grid.Column floated="left">
               {/*PANTRY COMPONENT*/}
@@ -346,7 +362,7 @@ class Dashboard extends Component {
                 <br />
                 <br />
                 <br />
-                The Type of Meal You Want to Have (i.e. 'burger', 'soup', 'bottle of wine')
+                Dish
                 <br />
                 <SearchBox
                   route="recipes/recipeAutocomplete/"
@@ -437,18 +453,93 @@ class Dashboard extends Component {
                 <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
               </Segment>
             </Grid.Column>
+            {!this.state.recipeSearchResults || !this.state.recipeSearchResults.length ? (
+              ''
+            ) : (
+              <Grid.Column>
+                <Segment>
+                  <List
+                    celled
+                    items={
+                      !this.state.recipeSearchResults || !this.state.recipeSearchResults.length
+                        ? ['East some ice chips']
+                        : this.state.recipeSearchResults.map((item, key) => (
+                            <Modal
+                              trigger={
+                                <Button>
+                                  <Header>{item.title}</Header>
+                                  <Image src={item.image} small />
+                                </Button>
+                              }
+                            >
+                              <Modal.Header>
+                                Result {key + 1} of{' '}
+                                {!this.state.recipeSearchResults ||
+                                !this.state.recipeSearchResults.length
+                                  ? 0
+                                  : this.state.recipeSearchResults.length}{' '}
+                                for search '
+                                {// REPLACE WITH SOMETHING PRETTIER PLEASE
+                                `/recipeAPI/recipes/complexRecipe/?query=${
+                                  this.state.desiredMeal
+                                }` +
+                                  `&cuisine=${this.state.cuisine.join('%2C+')}` +
+                                  `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
+                                  `&includeIngredients=${this.state.includeAdditionalIngredients.join(
+                                    '%2C+'
+                                  )}` +
+                                  `&excludeIngredients=${this.state.excludeAdditionalIngredients.join(
+                                    '%2C+'
+                                  )}` +
+                                  `&intolerances=${
+                                    this.state.filterAllergies
+                                      ? this.state.currUser.allergies.join('%2C+')
+                                      : ''
+                                  }`}
+                                '
+                              </Modal.Header>
+                              <Modal.Content image scrolling>
+                                <Image size="medium" src={item.image} wrapped />
+                                <Modal.Description>
+                                  <Header>{item.title}</Header>
+                                  <List celled horizontal items={item.cuisines} />
+                                  <List celled horizontal items={item.dishTypes} />
+                                  <br />
+                                  Prep Time: {item.preparationMinutes}
+                                  <br />
+                                  Cook Time: {item.cookingMinutes}
+                                  <br />
+                                  Servings: {item.servings}
+                                  <br />
+                                  Calories: {item.calories}
+                                  <br />
+                                  Protein: {item.protein}
+                                  <br />
+                                  Fat: {item.fat}
+                                  <br />
+                                  Carbs: {item.carbs}
+                                  <br />
+                                  <List.Header>Cooking Instructions</List.Header>
+                                  <List
+                                    ordered
+                                    items={
+                                      !item.analyzedInstructions ||
+                                      !item.analyzedInstructions.length
+                                        ? ['no recipe instructions']
+                                        : item.analyzedInstructions[0].steps.map(step => step.step)
+                                    }
+                                  />
+                                </Modal.Description>
+                              </Modal.Content>
+                            </Modal>
+                          ))
+                    }
+                  />
+                </Segment>
+              </Grid.Column>
+            )}
           </Grid.Row>
         </Grid>
-        {/* Generate recipe
-          Checkboxes: "Must have pantry items", "Filter out dietary restrictions", "Filter out allergies"
-          allow them to disable certain items for the current search
-          warn when disabling anything allergy related
-         */}
-        <br />
-        <br />
-        <br />
-        <br />
-        <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
         <br />
         <br />
       </div>
