@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, Container, Icon, Menu, Responsive, Segment, Sidebar } from 'semantic-ui-react';
-import { Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logoutUser } from '../../../actions/authentication';
+import { withRouter } from 'react-router-dom';
 
-import Head from '../../shared/HomeHead';
 import Footer from '../../shared/Footer';
 
 const getWidth = () => {
@@ -19,16 +21,79 @@ class MobileContainer extends Component {
 
   handleToggle = () => this.setState({ sidebarOpened: true });
 
+  onLogout(e) {
+    e.preventDefault();
+    this.props.logoutUser(this.props.history);
+  }
+
   render() {
     const { children } = this.props;
     const { sidebarOpened } = this.state;
+    const { fixed } = this.state;
+    const { isAuthenticated, user } = this.props.auth;
 
-    return (
-      <Responsive
-        as={Sidebar.Pushable}
-        getWidth={getWidth}
-        maxWidth={Responsive.onlyMobile.maxWidth}
-      >
+    // NavBar for an authorized user
+    const authLinks = (
+      <div>
+        <Sidebar
+          as={Menu}
+          animation="push"
+          inverted
+          onHide={this.handleSidebarHide}
+          vertical
+          visible={sidebarOpened}
+        >
+          <Link to="/home-page">
+            <Menu.Item as="a" active>
+              Home
+            </Menu.Item>
+          </Link>
+          <Link to="/dashboard">
+            <Menu.Item as="a">Dashboard</Menu.Item>
+          </Link>
+          <Link to="/meal-plan">
+            <Menu.Item as="a">Meal Plan</Menu.Item>
+          </Link>
+        </Sidebar>
+
+        <Sidebar.Pusher dimmed={sidebarOpened}>
+          <Segment
+            inverted
+            textAlign="center"
+            style={{ minHeight: 50, padding: '1em 0em' }}
+            vertical
+          >
+            <Container>
+              <Menu inverted pointing secondary size="large">
+                <Menu.Item onClick={this.handleToggle}>
+                  <Icon name="sidebar" />
+                </Menu.Item>
+                <Menu.Item position="right">
+                  <Link to="/login">
+                    <Button
+                      as="a"
+                      inverted={!fixed}
+                      primary={fixed}
+                      style={{ marginLeft: '0.5em' }}
+                      onClick={this.onLogout.bind(this)}
+                    >
+                      Log Out
+                    </Button>
+                  </Link>
+                </Menu.Item>
+              </Menu>
+            </Container>
+          </Segment>
+
+          {children}
+          <Footer />
+        </Sidebar.Pusher>
+      </div>
+    );
+
+    // NavBar for unauthorized users
+    const guestLinks = (
+      <div>
         <Sidebar
           as={Menu}
           animation="push"
@@ -78,13 +143,34 @@ class MobileContainer extends Component {
           {children}
           <Footer />
         </Sidebar.Pusher>
+      </div>
+    );
+
+    return (
+      <Responsive
+        as={Sidebar.Pushable}
+        getWidth={getWidth}
+        maxWidth={Responsive.onlyMobile.maxWidth}
+      >
+        {isAuthenticated ? authLinks : guestLinks}
       </Responsive>
     );
   }
 }
 
 MobileContainer.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
-export default MobileContainer;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { logoutUser }
+  )(MobileContainer)
+);
