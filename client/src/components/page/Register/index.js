@@ -12,7 +12,7 @@ class Register extends Component {
   constructor() {
     super();
     this.state = {
-      fullName: '',
+      full_name: '',
       email: '',
       password: '',
       confirm_password: '',
@@ -31,11 +31,13 @@ class Register extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const user = {
-      fullName: this.state.fullName,
+      full_name: this.state.full_name,
       email: this.state.email,
       password: this.state.password,
       confirm_password: this.state.confirm_password
     };
+    console.log(`register FE`);
+    console.log(user);
     this.props
       .registerUser(user, this.props.history)
       .then(() => {
@@ -93,11 +95,11 @@ class Register extends Component {
               className={classnames('form-control form-control-lg', {
                 'is-invalid': errors.email
               })}
-              name="fullName"
+              name="full_name"
               onChange={this.handleInputChange}
-              value={this.state.fullName}
+              value={this.state.full_name}
             />
-            {errors.fullName && <div className="invalid-feedback">{errors.fullName}</div>}
+            {errors.full_name && <div className="invalid-feedback">{errors.full_name}</div>}
             <Form.Input
               icon="lock"
               iconPosition="left"
