@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {
+  Divider,
+  Form,
   Grid,
   Header,
   List,
@@ -227,8 +229,8 @@ class Dashboard extends Component {
         {/* HELLO HEADER */}
         <Header as="h1" textAlign="center">
           Hello,{' '}
-          {this.state.currUser.display_name
-            ? this.state.currUser.display_name
+          {this.state.currUser.full_name
+            ? this.state.currUser.full_name
             : this.state.currUser.full_name}
           <sup onClick={this.show('blurring')}>edit</sup>
         </Header>
@@ -239,7 +241,24 @@ class Dashboard extends Component {
               Make Changes to User Information
             </Header>
             <Modal.Description>
-              <p>INSERT STUFF</p>
+              <p>
+                <Header as="h3">Current Name: </Header> {this.state.currUser.full_name}
+              </p>
+              <p>
+                <Header as="h3">Current Email:</Header> {this.state.currUser.email}
+              </p>
+              <Divider />
+              <Form>
+                <Form.Field>
+                  <label>New Name</label>
+                  <input placeholder="Name" />
+                </Form.Field>
+                <Form.Field>
+                  <label>New Email</label>
+                  <input placeholder="Email" />
+                </Form.Field>
+                <Button type="submit">Submit</Button>
+              </Form>
             </Modal.Description>
           </Modal.Content>
         </Modal>
@@ -277,16 +296,13 @@ class Dashboard extends Component {
               </Segment>
               <Segment attached="bottom">
                 <p>
-                  <Header as="h5">Name: </Header> Name
-                  <Header as="h5">Meals a Day: </Header>
-                  <br />
-                  <b>Plan Type: </b>
-                  <br />
-                  <b>Plan Size: </b>
-                  <br />
-                  <b>Dietary Preferences: </b>
-                  <br />
-                  <b>Daily Calorie Intake: </b>
+                  <Header as="h5">Name: </Header> {this.state.currUser.full_name}
+                  <Header as="h5">Email: </Header> {this.state.currUser.email}
+                  {/*<Header as="h5">Meals a Day: </Header>*/}
+                  {/*<Header as="h5">Plan Type: </Header>*/}
+                  {/*<Header as="h5">Plan Size: </Header>*/}
+                  {/*<Header as="h5">Dietary Preferences: </Header>*/}
+                  {/*<Header as="h5">Daily Calorie Intake: </Header>*/}
                 </p>
               </Segment>
               {/*DIETARY RESTRICTIOS COMPONENT*/}
