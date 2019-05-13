@@ -70,6 +70,8 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/result" component={Result} />
             <Route path="/recipe-results" component={RecipeResults} />
+            <Route path="/result" component={Result} />
+            <Route path="/recipe-results" component={RecipeResults} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <Route path="/how-it-works" component={HowItWorks} />
             <Route path="/about" component={About} />
