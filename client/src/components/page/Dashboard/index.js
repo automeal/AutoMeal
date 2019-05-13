@@ -9,7 +9,8 @@ import {
   Segment,
   Button,
   Image,
-  Modal
+  Modal,
+  Item
 } from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 import PantryItem from './PantryItem';
@@ -457,19 +458,28 @@ class Dashboard extends Component {
               ''
             ) : (
               <Grid.Column>
-                <Segment>
+                <Segment attached="top" color="green">
+                  <Header as="h2" textAlign="center">
+                    Results
+                  </Header>
+                </Segment>
+                <Segment attached="bottom">
                   <List
+                    divided
                     celled
+                    relaxed="very"
                     items={
                       !this.state.recipeSearchResults || !this.state.recipeSearchResults.length
                         ? ['East some ice chips']
                         : this.state.recipeSearchResults.map((item, key) => (
                             <Modal
                               trigger={
-                                <Button>
-                                  <Header>{item.title}</Header>
-                                  <Image src={item.image} small />
-                                </Button>
+                                <List.Item>
+                                  <List.Content>
+                                    <Item.Header>{item.title}</Item.Header>
+                                    <Image src={item.image} small />
+                                  </List.Content>
+                                </List.Item>
                               }
                             >
                               <Modal.Header>
