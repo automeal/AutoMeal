@@ -10,7 +10,7 @@ import {
   Button,
   Image,
   Modal,
-  Icon
+  Item
 } from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 import PantryItem from './PantryItem';
@@ -454,103 +454,102 @@ class Dashboard extends Component {
                 <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
               </Segment>
             </Grid.Column>
-            <Grid.Column>
-              <Segment>
-                <List
-                  celled
-                  items={
-                    !this.state.recipeSearchResults || !this.state.recipeSearchResults.length
-                      ? ['East some ice chips']
-                      : this.state.recipeSearchResults.map((item, key) => (
-                          <Modal
-                            trigger={
-                              <Button>
-                                <Header>{item.title}</Header>
-                                <Image src={item.image} small />
-                              </Button>
-                            }
-                          >
-                            <Modal.Header>
-                              Result {key + 1} of{' '}
-                              {!this.state.recipeSearchResults ||
-                              !this.state.recipeSearchResults.length
-                                ? 0
-                                : this.state.recipeSearchResults.length}{' '}
-                              for search '
-                              {// REPLACE WITH SOMETHING PRETTIER PLEASE
-                              `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
-                                `&cuisine=${this.state.cuisine.join('%2C+')}` +
-                                `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
-                                `&includeIngredients=${this.state.includeAdditionalIngredients
-                                  // DO NOT concat on call (call at end of this comment block)
-                                  // concat on react side and have includeAdditionalIngredients store all ingredients to be included
-                                  // this allows users to temporarily exclude items that live in their pantry
-                                  // .concat(this.state.currUser.pantry)
-                                  .join('%2C+')}` +
-                                `&excludeIngredients=${this.state.excludeAdditionalIngredients.join(
-                                  '%2C+'
-                                )}` +
-                                `&intolerances=${
-                                  this.state.filterAllergies
-                                    ? this.state.currUser.allergies.join('%2C+')
-                                    : ''
-                                }`}
-                              '
-                            </Modal.Header>
-                            <Modal.Content image scrolling>
-                              <Image size="medium" src={item.image} wrapped />
-                              <Modal.Description>
-                                <Header>{item.title}</Header>
-                                <List celled horizontal items={item.cuisines} />
-                                <List celled horizontal items={item.dishTypes} />
-                                <br />
-                                Prep Time: {item.preparationMinutes}
-                                <br />
-                                Cook Time: {item.cookingMinutes}
-                                <br />
-                                Servings: {item.servings}
-                                <br />
-                                Calories: {item.calories}
-                                <br />
-                                Protein: {item.protein}
-                                <br />
-                                Fat: {item.fat}
-                                <br />
-                                Carbs: {item.carbs}
-                                <br />
-                                <List.Header>Cooking Instructions</List.Header>
-                                <List
-                                  ordered
-                                  items={
-                                    !item.analyzedInstructions || !item.analyzedInstructions.length
-                                      ? ['no recipe instructions']
-                                      : item.analyzedInstructions[0].steps.map(step => step.step)
-                                  }
-                                />
-                                <p>
-                                  This is an example of expanded content that will cause the modal's
-                                  dimmer to scroll
-                                </p>
-                              </Modal.Description>
-                            </Modal.Content>
-                          </Modal>
-                        ))
-                  }
-                />
-              </Segment>
-            </Grid.Column>
+            {!this.state.recipeSearchResults || !this.state.recipeSearchResults.length ? (
+              ''
+            ) : (
+              <Grid.Column>
+                <Segment attached="top" color="green">
+                  <Header as="h2" textAlign="center">
+                    Results
+                  </Header>
+                </Segment>
+                <Segment attached="bottom">
+                  <List
+                    divided
+                    celled
+                    relaxed="very"
+                    items={
+                      !this.state.recipeSearchResults || !this.state.recipeSearchResults.length
+                        ? ['East some ice chips']
+                        : this.state.recipeSearchResults.map((item, key) => (
+                            <Modal
+                              trigger={
+                                <List.Item>
+                                  <List.Content>
+                                    <Item.Header>{item.title}</Item.Header>
+                                    <Image src={item.image} small />
+                                  </List.Content>
+                                </List.Item>
+                              }
+                            >
+                              <Modal.Header>
+                                Result {key + 1} of{' '}
+                                {!this.state.recipeSearchResults ||
+                                !this.state.recipeSearchResults.length
+                                  ? 0
+                                  : this.state.recipeSearchResults.length}{' '}
+                                for search '
+                                {// REPLACE WITH SOMETHING PRETTIER PLEASE
+                                `/recipeAPI/recipes/complexRecipe/?query=${
+                                  this.state.desiredMeal
+                                }` +
+                                  `&cuisine=${this.state.cuisine.join('%2C+')}` +
+                                  `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
+                                  `&includeIngredients=${this.state.includeAdditionalIngredients.join(
+                                    '%2C+'
+                                  )}` +
+                                  `&excludeIngredients=${this.state.excludeAdditionalIngredients.join(
+                                    '%2C+'
+                                  )}` +
+                                  `&intolerances=${
+                                    this.state.filterAllergies
+                                      ? this.state.currUser.allergies.join('%2C+')
+                                      : ''
+                                  }`}
+                                '
+                              </Modal.Header>
+                              <Modal.Content image scrolling>
+                                <Image size="medium" src={item.image} wrapped />
+                                <Modal.Description>
+                                  <Header>{item.title}</Header>
+                                  <List celled horizontal items={item.cuisines} />
+                                  <List celled horizontal items={item.dishTypes} />
+                                  <br />
+                                  Prep Time: {item.preparationMinutes}
+                                  <br />
+                                  Cook Time: {item.cookingMinutes}
+                                  <br />
+                                  Servings: {item.servings}
+                                  <br />
+                                  Calories: {item.calories}
+                                  <br />
+                                  Protein: {item.protein}
+                                  <br />
+                                  Fat: {item.fat}
+                                  <br />
+                                  Carbs: {item.carbs}
+                                  <br />
+                                  <List.Header>Cooking Instructions</List.Header>
+                                  <List
+                                    ordered
+                                    items={
+                                      !item.analyzedInstructions ||
+                                      !item.analyzedInstructions.length
+                                        ? ['no recipe instructions']
+                                        : item.analyzedInstructions[0].steps.map(step => step.step)
+                                    }
+                                  />
+                                </Modal.Description>
+                              </Modal.Content>
+                            </Modal>
+                          ))
+                    }
+                  />
+                </Segment>
+              </Grid.Column>
+            )}
           </Grid.Row>
         </Grid>
-        {/* Generate recipe
-          Checkboxes: "Must have pantry items", "Filter out dietary restrictions", "Filter out allergies"
-          allow them to disable certain items for the current search
-          warn when disabling anything allergy related
-         */}
-        <br />
-        <br />
-        <br />
-        <br />
-        <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
         <br />
         <br />
       </div>
