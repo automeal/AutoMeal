@@ -111,14 +111,15 @@ async function updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes) {
 
     break;
   }
-  alreadyUsedRecipes['arr'].push(recipe.id);
+  alreadyUsedRecipes.arr.push(recipe.id);
+  console.log('alreadyused', alreadyUsedRecipes);
   //console.log("mealPlans", mealPlans);
   console.log(
     'Just dump recipes in array for now, meant to store only ids to save on storage space'
   );
   mealPlans[mealPlans.length - 1]['recipes'].push(recipe);
 
-  console.log('Recipe ID (from Spoonacular:', doc.id);
+  console.log('Recipe ID (from Spoonacular:', recipe.id);
 
   return mealPlans;
 }
@@ -162,9 +163,8 @@ router.post('/generateMealPlan/', async (req, res) => {
   mealPlans = await updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes);
   await sleep(200); //Don't hammer the recipe API
 
-  console.log('MEAL PLAN COUNT', mealPlanCount);
-
   for (var i = 0; i < mealPlanCount; i++) {
+    console.log('MEAL PLAN COUNT LEFT', mealPlanCount - i);
     //Alternate between main meal and anything else (breakfast unforatunately included)
     if (i % 2 == 0) {
       var data = await sendSpoonacularRequest(params_string);
