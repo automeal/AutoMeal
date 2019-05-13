@@ -103,9 +103,63 @@ class Dashboard extends Component {
   };
 
   handleCuisine = (event, res) => {
+    console.log("Cusine" , res);
     this.setState({ cuisine: [...this.state.cuisine, res.value[0]] });
     console.log(this.state.cuisine);
   };
+
+  generateMealPlan(){
+
+    var intolerance_string = '';
+    if (this.state.filterAllergies) 
+      intolerance_string += "&intolerances=" + this.state.currUser.allergies.join('%2C+')
+    var exclude_string = '';
+    if (this.state.excludeAdditionalIngredients.length > 0)
+      exclude_string += "&excludeIngredients=" + this.state.excludeAdditionalIngredients.join('%2C+')
+  
+    var params_obj = {
+      "intolerances" : this.state.currUser.allergies,
+      "excludeIngredients" : this.state.excludeAdditionalIngredients,
+      "diet" : this.state.currUser.dietary_restrictions,
+      "cuisine" : this.state.cuisine,
+      "includeIngredients" : this.state.currUser.pantry,
+      "minCalories" :   100, //1800 too low for responses //this.state.currUser.mealPlans[0].calories.min,
+      "maxCalories" : this.state.currUser.mealPlans[0].calories.max,
+    };
+    console.log("PARAMS OBJ", params_obj);
+
+    var params_string = "";
+    for(var param in params_obj){
+      console.log(param);
+      if (params_obj[param] && params_obj[param].constructor === Array){
+        //if ( params_obj[param].length > 0) 
+          params_string += "&" + param + "=" + params_obj[param].join('%2C');
+      }
+      else if(params_obj[param]){
+        params_string += "&" + param + "=" + params_obj[param];
+      }
+    }
+    params_string = "?" + params_string.slice(1, params_string.length);
+
+    //console.log("/recipeAPI/recipes/generateMealPlan/" + params_string);
+    //return;
+    var options = {
+      "mealCount" : this.state.currUser.mealPlans[0].mealCount,
+      "_id" : this.state.currUser.id,
+      "planType" : this.state.currUser.planType,
+      "calories" : this.state.currUser.calories
+    }
+    axios
+      .post(
+        "/recipeAPI/recipes/generateMealPlan/" + params_string, options
+      )
+      .then(  (res) => {
+        var data = res.data;
+        console.log("RESP", data);
+      })
+      .catch(err => console.log(err));
+
+  }
 
   getRecipe = () => {
     axios
@@ -550,7 +604,7 @@ class Dashboard extends Component {
         <br />
         <br />
         <br />
-        <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
+        <Button onClick={this.generateMealPlan.bind(this)}>Generate Meal Plan</Button>
         <br />
         <br />
       </div>
