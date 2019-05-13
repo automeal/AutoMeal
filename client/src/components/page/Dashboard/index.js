@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Grid, Header, List, Checkbox, Dropdown, Segment, Button } from 'semantic-ui-react';
+import { Grid, Header, List, Checkbox, Dropdown, Segment, Button, Image } from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 import PantryItem from './PantryItem';
 import AllergyItem from './AllergyItem';
@@ -16,6 +16,7 @@ class Dashboard extends Component {
       pantry: '',
       allergies: '',
       dietary_restrictions: '',
+
       // MEAL PLAN
       // Recipe query
       desiredMeal: '',
@@ -29,7 +30,9 @@ class Dashboard extends Component {
       excludeAdditionalIngredients: [],
       ignoreIngredient: '',
       // Cuisine choice
-      cuisine: []
+      cuisine: [],
+      // Recipe Search Result
+      recipeSearchResults: []
     };
     this.handleDelete = this.handleMove.bind(this);
   }
@@ -104,7 +107,10 @@ class Dashboard extends Component {
             this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
           }`
       )
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res);
+        this.setState({ recipeSearchResults: res.data });
+      })
       .catch(err => console.log(err));
   };
 
@@ -375,6 +381,27 @@ class Dashboard extends Component {
                 <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
               </Segment>
             </Grid.Column>
+            <Grid.Row>
+              <Grid.Column>
+                <Segment>
+                  <List
+                    celled
+                    items={
+                      !this.state.recipeSearchResults || !this.state.recipeSearchResults.length
+                        ? ['East some ice chips']
+                        : this.state.recipeSearchResults.map((item, key) => (
+                            // Should be a modal that pops up on click
+                            // and shows more details on recipe
+                            <div>
+                              <Header>{item.title}</Header>
+                              <Image src={item.image} />
+                            </div>
+                          ))
+                    }
+                  />
+                </Segment>
+              </Grid.Column>
+            </Grid.Row>
           </Grid.Row>
         </Grid>
       </div>
