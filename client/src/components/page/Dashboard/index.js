@@ -15,13 +15,13 @@ class Dashboard extends Component {
       // New item being searched and/or added to the respected list
       pantry: '',
       allergies: '',
-      dietaryRestrictions: '',
+      dietary_restrictions: '',
       // MEAL PLAN
       // Recipe query
       desiredMeal: '',
       // Checkboxes
       includePantry: true,
-      filterDietaryRestrictions: true,
+      filterdietary_restrictions: true,
       filterAllergies: true,
       // Additional search boxes
       includeAdditionalIngredients: [],
@@ -50,7 +50,6 @@ class Dashboard extends Component {
   };
 
   handleResultSelect = (prop, result) => {
-    
     const newItem = result.name;
 
     // If pantry item already present do not add again
@@ -62,7 +61,7 @@ class Dashboard extends Component {
       console.log('DANGER: Item considered an allergy!');
       return;
     }
-    
+
     //console.log(`currUser: ${this.state.currUser}`);
     //console.log(`currProp: ${prop}, newItem: ${newItem}`);
 
@@ -75,10 +74,10 @@ class Dashboard extends Component {
 
     axios
       .patch(`/api/users/${this.state.currUser.id}`, {
-        [prop]: newItem,
+        [prop]: newItem
       })
       .then(() => {
-        console.log("Database updated",prop,newItem);
+        console.log('Database updated', prop, newItem);
       });
     //console.log(`Hello, field: ${this.state.currUser[list]}, this.state[newItem]: ${newItem}`);
   };
@@ -97,7 +96,7 @@ class Dashboard extends Component {
       .get(
         `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
           `&cuisine=${this.state.cuisine.join('%2C+')}` +
-          `&diet=${this.state.currUser.dietaryRestrictions.join('%2C+')}` +
+          `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
           `&includeIngredients=${this.state.includeAdditionalIngredients
             // DO NOT concat on call (call at end of this comment block)
             // concat on react side and have includeAdditionalIngredients store all ingredients to be included
@@ -111,7 +110,6 @@ class Dashboard extends Component {
       )
       .then(res => console.log(res))
       .catch(err => console.log(err));
-
   };
 
   handleAdditionalIngredients = (name, value) => {
@@ -128,24 +126,32 @@ class Dashboard extends Component {
   };
 
   // TO DO: Function to delete item
-  handleItemDelete  (item, db_field_name)  {
-    console.log('Sending delete request, for item',item,'from array field in db', item,db_field_name);
-  
+  handleItemDelete(item, db_field_name) {
+    console.log(
+      'Sending delete request, for item',
+      item,
+      'from array field in db',
+      item,
+      db_field_name
+    );
+
     var delete_command = {
-          [db_field_name] : item,
-        };
+      [db_field_name]: item
+    };
 
     //Don't wait for DB to update, just update state and thus the UI right away
-    this.state.currUser[db_field_name] =  this.state.currUser[db_field_name].filter(function(value, index, arr){
-                return value != item;
-              });
-
-    this.setState( this.state);
-    axios.post(`/api/users/${this.state.currUser.id}/deleteFromArray`, delete_command)
-    .then((res) => {
-        console.log("Deleted", item,"from DATABASE")
+    this.state.currUser[db_field_name] = this.state.currUser[db_field_name].filter(function(
+      value,
+      index,
+      arr
+    ) {
+      return value != item;
     });
-    
+
+    this.setState(this.state);
+    axios.post(`/api/users/${this.state.currUser.id}/deleteFromArray`, delete_command).then(res => {
+      console.log('Deleted', item, 'from DATABASE');
+    });
   }
 
   //s TO DO: Function to move item from pantry to grocery list
@@ -158,19 +164,37 @@ class Dashboard extends Component {
     const pantryItems =
       !this.state.currUser.pantry || !this.state.currUser.pantry.length
         ? ['Pantry is empty']
-        : this.state.currUser.pantry.map(item => <PantryItem db_field_name="pantry" item={item} onIconClick={ this.handleItemDelete.bind(this) }/>);
+        : this.state.currUser.pantry.map(item => (
+            <PantryItem
+              db_field_name="pantry"
+              item={item}
+              onIconClick={this.handleItemDelete.bind(this)}
+            />
+          ));
 
     // Mapping dietary restrictions to format into components
     const dietaryItems =
-      !this.state.currUser.dietaryRestrictions || !this.state.currUser.dietaryRestrictions.length
+      !this.state.currUser.dietary_restrictions || !this.state.currUser.dietary_restrictions.length
         ? ['no dietary restrictions']
-        : this.state.currUser.dietaryRestrictions.map(item => <AllergyItem db_field_name="dietaryRestrictions" item={item} onIconClick={ this.handleItemDelete.bind(this) } />);
+        : this.state.currUser.dietary_restrictions.map(item => (
+            <AllergyItem
+              db_field_name="dietary_restrictions"
+              item={item}
+              onIconClick={this.handleItemDelete.bind(this)}
+            />
+          ));
 
     // Mapping allergy items to format into components
     const allergyItems =
       !this.state.currUser.allergies || !this.state.currUser.allergies.length
         ? ['no allergies']
-        : this.state.currUser.allergies.map(item => <AllergyItem db_field_name="allergies" item={item} onIconClick={ this.handleItemDelete.bind(this)} />);
+        : this.state.currUser.allergies.map(item => (
+            <AllergyItem
+              db_field_name="allergies"
+              item={item}
+              onIconClick={this.handleItemDelete.bind(this)}
+            />
+          ));
 
     return (
       <div style={{ padding: '0px 30px', paddingBottom: '20px' }}>
@@ -180,7 +204,7 @@ class Dashboard extends Component {
           Hello,{' '}
           {this.state.currUser.display_name
             ? this.state.currUser.display_name
-            : this.state.currUser.fullName}
+            : this.state.currUser.full_name}
           <a href="/home-page#/">
             <sup>edit</sup>
           </a>
@@ -228,16 +252,16 @@ class Dashboard extends Component {
                 <SearchBox
                   route="ingredients"
                   placeholder="Add new item to dietary restrictions"
-                  value={this.state.dietaryRestrictions}
-                  name="dietaryRestrictions"
+                  value={this.state.dietary_restrictions}
+                  name="dietary_restrictions"
                   onChange={this.handleChange.bind(this)}
                   handleResult={this.handleResultSelect.bind(this)}
                 />
                 {/*Dietary restrictions*/}
                 <List
                   items={
-                    !this.state.currUser.dietaryRestrictions ||
-                    !this.state.currUser.dietaryRestrictions.length
+                    !this.state.currUser.dietary_restrictions ||
+                    !this.state.currUser.dietary_restrictions.length
                       ? ['no dietary restrictions']
                       : dietaryItems
                   }
@@ -287,9 +311,9 @@ class Dashboard extends Component {
                 />
                 <br />
                 <Checkbox
-                  name="filterDietaryRestrictions"
-                  value={this.state.filterDietaryRestrictions}
-                  defaultChecked={this.state.filterDietaryRestrictions}
+                  name="filterdietary_restrictions"
+                  value={this.state.filterdietary_restrictions}
+                  defaultChecked={this.state.filterdietary_restrictions}
                   onChange={this.handleCheck.bind(this)}
                   toggle
                   label="Filter out recipes that include dietary restrictions"

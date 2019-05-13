@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 //import { Redirect } from 'react-router'
 //import {withRouter} from 'react-router-dom';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import Select from '../../shared/Form/Select';
 import { CheckboxGroup } from '../../shared/Form/Checkbox';
@@ -16,14 +16,12 @@ import { getSurveyData } from '../../../utils/data';
 import './Survey.css';
 import axios from 'axios';
 
-
 class Survey extends Component {
-
   //Try redirecting with the router? 's history object to avoid errors when using it in .then() in axios calls in this component
   //Same error
   static contextTypes = {
     router: PropTypes.object
-  }
+  };
 
   componentWillMount() {
     axios
@@ -169,32 +167,34 @@ class Survey extends Component {
     } = this.state;
     const { activeIndex } = this.state.diet;
 
-    var dietaryRestrictions = [];
+    var dietary_restrictions = [];
     for (var prop in healthPreferences) {
-        if (healthPreferences.hasOwnProperty(prop)  ) {
-            dietaryRestrictions.push(prop);
-        }
+      if (healthPreferences.hasOwnProperty(prop)) {
+        dietary_restrictions.push(prop);
+      }
     }
 
     var allergies = [];
     for (var prop in intolerances) {
-        if (intolerances.hasOwnProperty(prop)  ) {
-            allergies.push(prop);
-        }
-    }    
+      if (intolerances.hasOwnProperty(prop)) {
+        allergies.push(prop);
+      }
+    }
 
     var updateObj = {
-      'dietaryRestrictions': dietaryRestrictions,
-      'allergies':allergies,
-      'mealPlans':[{
-        'planType':planType,
-        'calories':calories,
-        //'personCount':personCount,
-        'mealCount':mealCount,
-      }],
+      dietary_restrictions: dietary_restrictions,
+      allergies: allergies,
+      mealPlans: [
+        {
+          planType: planType,
+          calories: calories,
+          //'personCount':personCount,
+          mealCount: mealCount
+        }
+      ]
     };
 
-    console.log("FROM SURVEY", updateObj);
+    console.log('FROM SURVEY', updateObj);
     // PATCH THE DATA
 
     /*
@@ -202,25 +202,23 @@ class Survey extends Component {
       _method: 'PATCH',
     }).then( () => {this.props.history.push('/dashboard');} )
     */
-    
-    axios.patch(`/api/users/${this.state.currUser.id}`, updateObj)
-    .then( (res) => {
+
+    axios
+      .patch(`/api/users/${this.state.currUser.id}`, updateObj)
+      .then(res => {
         //this.props.history.push('/dashboard');
         //this.props.history.replace('/dashboard');
         //this.context.router.history.push(`/dashboard`);
         //setTimeout( () => {this.props.history.push(`/dashboard`)}, 1000);
         //this.context.history.push('/dashboard')
         //this.context.history.replace('/dashboard')
-        console.log(`Sucessfullly patched from survey!`);        
-      }
-    )
-    .catch(err => {
-        console.log("err?",err.response) 
-      }
-    );
+        console.log(`Sucessfullly patched from survey!`);
+      })
+      .catch(err => {
+        console.log('err?', err.response);
+      });
 
     this.props.history.push('/dashboard');
-    
   };
 
   render() {
