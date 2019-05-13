@@ -124,7 +124,7 @@ class Dashboard extends Component {
       "cuisine" : this.state.cuisine,
       "includeIngredients" : this.state.currUser.pantry,
       "minCalories" :   100, //1800 too low for responses //this.state.currUser.mealPlans[0].calories.min,
-      "maxCalories" : this.state.currUser.mealPlans[0].calories.max,
+      "maxCalories" : this.state.currUser.calories.max,
     };
     console.log("PARAMS OBJ", params_obj);
 
