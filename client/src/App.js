@@ -62,11 +62,11 @@ class App extends Component {
           <ResponsiveContainer>
             <Route exact path="/" component={Landing} />
             <Route path="/register" component={Register} />
-            <Route path="/survey" component={Survey} />
-            <Route path="/meal-plan" component={Plan} />
-            <Route path="/daily_mealplan" component={DayMealPlan} />
-            <Route path="/weekly_mealplan" component={WeekMealPlan} />
-            <Route path="/home-page" component={HP} />
+            <PrivateRoute path="/survey" component={Survey} />
+            <PrivateRoute path="/meal-plan" component={Plan} />
+            <PrivateRoute path="/daily_mealplan" component={DayMealPlan} />
+            <PrivateRoute path="/weekly_mealplan" component={WeekMealPlan} />
+            <PrivateRoute path="/home-page" component={HP} />
             <Route path="/login" component={Login} />
             <Route path="/result" component={Result} />
             <Route path="/recipe-search" component={RecipeSearch} />
