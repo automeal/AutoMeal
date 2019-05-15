@@ -158,7 +158,8 @@ class RecipeResults extends Component {
   render() {
     return (
       <div>
-        <Grid>
+        <br />
+        <Grid stackable>
           <Grid.Column width="4">
             <Segment attached="top" textAlign="center" color="green">
               <Header as="h1">Complex Recipe Search</Header>
@@ -286,7 +287,7 @@ class RecipeResults extends Component {
                 ]}
               />{' '}
               <br />
-              <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
+              <Button onClick={this.getRecipe.bind(this)}>Search for Recipes</Button>
             </Segment>
           </Grid.Column>
           {!this.state.recipeSearchResults || !this.state.recipeSearchResults.length ? (
@@ -295,88 +296,85 @@ class RecipeResults extends Component {
             <Grid.Column width="12">
               <Segment attached="top" color="green">
                 <Header as="h2" textAlign="center">
-                  Results
+                  Recipe Results
                 </Header>
               </Segment>
               <Segment attached="bottom">
-                <List
-                  divided
-                  celled
-                  relaxed="very"
-                  items={
-                    !this.state.recipeSearchResults || !this.state.recipeSearchResults.length
-                      ? ['Eat some ice chips']
-                      : this.state.recipeSearchResults.map((item, key) => (
-                          <Modal
-                            trigger={
-                              <List.Item>
-                                <List.Content>
-                                  <Item.Header>{item.title}</Item.Header>
-                                  <Image src={item.image} small />
-                                </List.Content>
-                              </List.Item>
-                            }
-                          >
-                            <Modal.Header>
-                              Result {key + 1} of{' '}
-                              {!this.state.recipeSearchResults ||
-                              !this.state.recipeSearchResults.length
-                                ? 0
-                                : this.state.recipeSearchResults.length}{' '}
-                              for search '
-                              {// REPLACE WITH SOMETHING PRETTIER PLEASE
-                              `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
-                                `&cuisine=${this.state.cuisine.join('%2C+')}` +
-                                `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
-                                `&includeIngredients=${this.state.includeAdditionalIngredients.join(
-                                  '%2C+'
-                                )}` +
-                                `&excludeIngredients=${this.state.excludeAdditionalIngredients.join(
-                                  '%2C+'
-                                )}` +
-                                `&intolerances=${
-                                  this.state.filterAllergies
-                                    ? this.state.currUser.allergies.join('%2C+')
-                                    : ''
-                                }`}
-                              '
-                            </Modal.Header>
-                            <Modal.Content image scrolling>
-                              <Image size="medium" src={item.image} wrapped />
-                              <Modal.Description>
-                                <Header>{item.title}</Header>
-                                <List celled horizontal items={item.cuisines} />
-                                <List celled horizontal items={item.dishTypes} />
-                                <br />
-                                Prep Time: {item.preparationMinutes}
-                                <br />
-                                Cook Time: {item.cookingMinutes}
-                                <br />
-                                Servings: {item.servings}
-                                <br />
-                                Calories: {item.calories}
-                                <br />
-                                Protein: {item.protein}
-                                <br />
-                                Fat: {item.fat}
-                                <br />
-                                Carbs: {item.carbs}
-                                <br />
-                                <List.Header>Cooking Instructions</List.Header>
-                                <List
-                                  ordered
-                                  items={
-                                    !item.analyzedInstructions || !item.analyzedInstructions.length
-                                      ? ['no recipe instructions']
-                                      : item.analyzedInstructions[0].steps.map(step => step.step)
-                                  }
-                                />
-                              </Modal.Description>
-                            </Modal.Content>
-                          </Modal>
-                        ))
-                  }
-                />
+                <Card.Group itemsPerRow={3}>
+                  {!this.state.recipeSearchResults || !this.state.recipeSearchResults.length
+                    ? ['Eat some ice chips']
+                    : this.state.recipeSearchResults.map((item, key) => (
+                        <Card>
+                          <Image src={item.image} small />
+                          <Card.Content>
+                            <Card.Header>{item.title}</Card.Header>
+                          </Card.Content>
+                          <Card.Content extra>
+                            <Modal trigger={<Button>Read more</Button>}>
+                              <Modal.Header>
+                                Result {key + 1} of{' '}
+                                {!this.state.recipeSearchResults ||
+                                !this.state.recipeSearchResults.length
+                                  ? 0
+                                  : this.state.recipeSearchResults.length}{' '}
+                                for search '
+                                {// REPLACE WITH SOMETHING PRETTIER PLEASE
+                                `/recipeAPI/recipes/complexRecipe/?query=${
+                                  this.state.desiredMeal
+                                }` +
+                                  `&cuisine=${this.state.cuisine.join('%2C+')}` +
+                                  `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
+                                  `&includeIngredients=${this.state.includeAdditionalIngredients.join(
+                                    '%2C+'
+                                  )}` +
+                                  `&excludeIngredients=${this.state.excludeAdditionalIngredients.join(
+                                    '%2C+'
+                                  )}` +
+                                  `&intolerances=${
+                                    this.state.filterAllergies
+                                      ? this.state.currUser.allergies.join('%2C+')
+                                      : ''
+                                  }`}
+                                '
+                              </Modal.Header>
+                              <Modal.Content image scrolling>
+                                <Image size="medium" src={item.image} wrapped />
+                                <Modal.Description>
+                                  <Header>{item.title}</Header>
+                                  <List celled horizontal items={item.cuisines} />
+                                  <List celled horizontal items={item.dishTypes} />
+                                  <br />
+                                  Prep Time: {item.preparationMinutes}
+                                  <br />
+                                  Cook Time: {item.cookingMinutes}
+                                  <br />
+                                  Servings: {item.servings}
+                                  <br />
+                                  Calories: {item.calories}
+                                  <br />
+                                  Protein: {item.protein}
+                                  <br />
+                                  Fat: {item.fat}
+                                  <br />
+                                  Carbs: {item.carbs}
+                                  <br />
+                                  <List.Header>Cooking Instructions</List.Header>
+                                  <List
+                                    ordered
+                                    items={
+                                      !item.analyzedInstructions ||
+                                      !item.analyzedInstructions.length
+                                        ? ['no recipe instructions']
+                                        : item.analyzedInstructions[0].steps.map(step => step.step)
+                                    }
+                                  />
+                                </Modal.Description>
+                              </Modal.Content>
+                            </Modal>
+                          </Card.Content>
+                        </Card>
+                      ))}
+                </Card.Group>
               </Segment>
             </Grid.Column>
           )}
