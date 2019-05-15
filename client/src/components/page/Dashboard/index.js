@@ -298,8 +298,8 @@ class Dashboard extends Component {
                 <p>
                   <Header as="h5">Name: </Header> {this.state.currUser.full_name}
                   <Header as="h5">Email: </Header> {this.state.currUser.email}
-                  {/*<Header as="h5">Meals a Day: </Header>*/}
-                  {/*<Header as="h5">Plan Type: </Header>*/}
+                  <Header as="h5">Meals a Day: </Header> {this.state.currUser.mealCount}
+                  <Header as="h5">Plan Type: </Header> {this.state.currUser.planType}
                   {/*<Header as="h5">Plan Size: </Header>*/}
                   {/*<Header as="h5">Dietary Preferences: </Header>*/}
                   {/*<Header as="h5">Daily Calorie Intake: </Header>*/}
@@ -486,7 +486,7 @@ class Dashboard extends Component {
                     relaxed="very"
                     items={
                       !this.state.recipeSearchResults || !this.state.recipeSearchResults.length
-                        ? ['East some ice chips']
+                        ? ['Eat some ice chips']
                         : this.state.recipeSearchResults.map((item, key) => (
                             <Modal
                               trigger={
