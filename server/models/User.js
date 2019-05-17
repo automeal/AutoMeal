@@ -211,10 +211,24 @@ const UserSchema = new Schema({
   mealPlans: [MealSchema],
 
   //Current Data
-  planType: Number,
-  calories: Object,
-  personCount: Number,
-  mealCount: Number
+  planType: {
+    type: Number,
+    default: 7
+  },
+  calories: {
+    type: Object,
+    default: {
+      activeIndex: 0,
+      max: 2500,
+      min: 1800,
+      selected: 'rec'
+    }
+  },
+  //personCount: Number,
+  mealCount: {
+    type: Number,
+    default: 3
+  }
 });
 
 //Cache types of each field of User in arrayDBFields, only need to do this once

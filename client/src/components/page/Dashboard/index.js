@@ -147,7 +147,7 @@ class Dashboard extends Component {
     //console.log("/recipeAPI/recipes/generateMealPlan/" + params_string);
     //return;
     var options = {
-      "mealCount" : this.state.currUser.mealPlans[0].mealCount,
+      "mealCount" : this.state.currUser.mealCount,
       "_id" : this.state.currUser.id,
       "planType" : this.state.currUser.planType,
       "calories" : this.state.currUser.calories
