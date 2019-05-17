@@ -382,7 +382,7 @@ router.get('/:id/getAllMealPlans', (req, res) => {
 
 /*
 
-Example of how to use, (needs this.state.currUser popuated from another call, api/users/current)
+Example, (needs this.state.currUser popuated from another call, api/users/current)
 
     axios
       .get(`/api/users/${this.state.currUser.id}/latestMealPlan`
