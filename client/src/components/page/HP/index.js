@@ -9,21 +9,19 @@ class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <HomeHead />
-        <Grid.Row>
-          <Grid.Column width={8}>
-            <div className="Login">
-              <div className="Login__banner" />
-              <div className="Login__data">
-                <div className="Login__data__content">
-                  <ul>
-                    <Carousel />
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </Grid.Column>
-        </Grid.Row>
+        <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
+          <Grid.Row>
+            <Grid.Column>
+              <HomeHead />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <h1>New Recipes To Try</h1>
+              <Carousel />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
     );
   }

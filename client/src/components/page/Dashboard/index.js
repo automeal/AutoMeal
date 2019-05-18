@@ -1,22 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {
-  Divider,
-  Form,
-  Grid,
-  Header,
-  List,
-  Checkbox,
-  Dropdown,
-  Segment,
-  Button,
-  Image,
-  Modal,
-  Item
-} from 'semantic-ui-react';
-import SearchBox from '../../shared/Search';
-import PantryItem from './PantryItem';
-import AllergyItem from './AllergyItem';
+import { Divider, Form, Grid, Header, Button, Modal, Label, Message } from 'semantic-ui-react';
+import Pantry from './Pantry';
+import DietaryRestrictions from './DietaryRestrictions';
+import Allergies from './Allergies';
+import UserInfo from './UserInfo';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -29,25 +17,14 @@ class Dashboard extends Component {
       pantry: '',
       allergies: '',
       dietary_restrictions: '',
-
-      // MEAL PLAN
-      // Recipe query
-      desiredMeal: '',
-      // Checkboxes
-      includePantry: true,
-      filterdietary_restrictions: true,
-      filterAllergies: true,
-      // Additional search boxes
-      includeAdditionalIngredients: [],
-      addIngredient: '',
-      excludeAdditionalIngredients: [],
-      ignoreIngredient: '',
-      // Cuisine choice
-      cuisine: [],
-      // Recipe Search Result
-      recipeSearchResults: [],
       // For the popup
-      open: false
+      open: false,
+      newName: '',
+      newEmail: '',
+      newPassword: '',
+      confirmNewPassword: '',
+      successfulUpdate: false,
+      updateSent: false
     };
     //this.handleDelete = this.handleMove.bind(this);
   }
@@ -57,6 +34,7 @@ class Dashboard extends Component {
       .get('/api/users/current', { Authorization: localStorage.getItem('jwtToken') })
       .then(user => {
         this.setState({ currUser: user.data });
+        console.log(user);
       });
   }
 
@@ -209,7 +187,7 @@ class Dashboard extends Component {
   };
 
   // TO DO: Function to delete item
-  handleItemDelete(item, db_field_name) {
+  handleItemDelete = (item, db_field_name) => {
     console.log(
       'Sending delete request, for item',
       item,
@@ -228,62 +206,57 @@ class Dashboard extends Component {
       index,
       arr
     ) {
-      return value != item;
+      return value !== item;
     });
 
     this.setState(this.state);
     axios.post(`/api/users/${this.state.currUser.id}/deleteFromArray`, delete_command).then(res => {
       console.log('Deleted', item, 'from DATABASE');
     });
-  }
+  };
 
   //s TO DO: Function to move item from pantry to grocery list
-  handleMove() {
+  handleMove = () => {
     console.log('B Click!');
-  }
+  };
+
+  contactInfoUpdate = () => {
+    const { newName, newEmail, newPassword, confirmNewPassword } = this.state;
+    const { currName, currEmail } = this.state.currUser;
+    let newData = {};
+    if (newName !== currName && newName !== '') newData.full_name = newName;
+    if (newEmail !== currEmail && newEmail !== '') newData.email = newEmail;
+
+    if (newData.full_name || newData.email)
+      axios.patch(`/api/users/${this.state.currUser.id}`, newData).then(res => {
+        this.setState({
+          currUser: { ...this.state.currUser, ...newData },
+          successfulUpdate: res.data.success,
+          updateSent: true
+        });
+      });
+
+    if (newPassword === confirmNewPassword && newPassword !== '' && confirmNewPassword !== '') {
+      newData.password = newPassword;
+      axios.patch(`/api/users/${this.state.currUser.id}/changePassword`, newData).then(res => {
+        this.setState({
+          currUser: { ...this.state.currUser, ...newData },
+          successfulUpdate: res.data.success,
+          updateSent: true
+        });
+      });
+    } else {
+      this.setState({ updateSent: true, successfulUpdate: false });
+    }
+  };
 
   //For blurring the popup background
   show = dimmer => () => this.setState({ dimmer, open: true });
-  close = () => this.setState({ open: false });
+  close = () => this.setState({ open: false, updateSent: false });
 
   render() {
     // For blurring the popup background
     const { open, dimmer } = this.state;
-    // Mapping pantry items to format into components
-    const pantryItems =
-      !this.state.currUser.pantry || !this.state.currUser.pantry.length
-        ? ['Pantry is empty']
-        : this.state.currUser.pantry.map(item => (
-            <PantryItem
-              db_field_name="pantry"
-              item={item}
-              onIconClick={this.handleItemDelete.bind(this)}
-            />
-          ));
-
-    // Mapping dietary restrictions to format into components
-    const dietaryItems =
-      !this.state.currUser.dietary_restrictions || !this.state.currUser.dietary_restrictions.length
-        ? ['no dietary restrictions']
-        : this.state.currUser.dietary_restrictions.map(item => (
-            <AllergyItem
-              db_field_name="dietary_restrictions"
-              item={item}
-              onIconClick={this.handleItemDelete.bind(this)}
-            />
-          ));
-
-    // Mapping allergy items to format into components
-    const allergyItems =
-      !this.state.currUser.allergies || !this.state.currUser.allergies.length
-        ? ['no allergies']
-        : this.state.currUser.allergies.map(item => (
-            <AllergyItem
-              db_field_name="allergies"
-              item={item}
-              onIconClick={this.handleItemDelete.bind(this)}
-            />
-          ));
 
     return (
       <div style={{ padding: '0px 30px', paddingBottom: '20px' }}>
@@ -293,8 +266,10 @@ class Dashboard extends Component {
           Hello,{' '}
           {this.state.currUser.full_name
             ? this.state.currUser.full_name
-            : this.state.currUser.full_name}
-          <sup onClick={this.show('blurring')}>edit</sup>
+            : this.state.currUser.full_name}{' '}
+          <Label basic pointing="left" as="sup" onClick={this.show('blurring')}>
+            edit
+          </Label>
         </Header>
         {/*Popup to edit user info*/}
         <Modal dimmer={dimmer} open={open} onClose={this.close} centered={true}>
@@ -313,13 +288,66 @@ class Dashboard extends Component {
               <Form>
                 <Form.Field>
                   <label>New Name</label>
-                  <input placeholder="Name" />
+                  <input
+                    placeholder="Name"
+                    name="newName"
+                    value={this.state.newName}
+                    onChange={this.handleChange.bind(this)}
+                  />
                 </Form.Field>
                 <Form.Field>
                   <label>New Email</label>
-                  <input placeholder="Email" />
+                  <input
+                    placeholder="Email"
+                    name="newEmail"
+                    value={this.state.newEmail}
+                    onChange={this.handleChange.bind(this)}
+                  />
                 </Form.Field>
-                <Button type="submit">Submit</Button>
+                <Form.Group widths="equal">
+                  <Form.Field>
+                    <label>New Password</label>
+                    <Form.Input
+                      placeholder="New Password"
+                      type="password"
+                      name="newPassword"
+                      value={this.state.newPassword}
+                      onChange={this.handleChange.bind(this)}
+                      error={
+                        this.state.confirmNewPassword !== this.state.newPassword &&
+                        this.state.confirmNewPassword !== ''
+                      }
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <label>Confirm New Password</label>
+                    <Form.Input
+                      placeholder="Confirm New Password"
+                      type="password"
+                      name="confirmNewPassword"
+                      value={this.state.confirmNewPassword}
+                      onChange={this.handleChange.bind(this)}
+                      error={
+                        this.state.confirmNewPassword !== this.state.newPassword &&
+                        this.state.newPassword !== ''
+                      }
+                    />
+                  </Form.Field>
+                </Form.Group>
+                <Button type="submit" onClick={this.contactInfoUpdate.bind(this)}>
+                  Submit
+                </Button>
+                <Message
+                  positive={this.state.successfulUpdate}
+                  negative={!this.state.successfulUpdate}
+                  hidden={!this.state.updateSent}
+                  header={this.state.successfulUpdate ? 'Success' : 'Error'}
+                  content={
+                    this.state.successfulUpdate
+                      ? 'Your user information has been updated!'
+                      : 'An error occurred, please check your input.'
+                  }
+                />
               </Form>
             </Modal.Description>
           </Modal.Content>
@@ -329,303 +357,33 @@ class Dashboard extends Component {
         <Grid stackable columns="equal">
           <Grid.Row>
             <Grid.Column floated="left">
-              {/*PANTRY COMPONENT*/}
-              <Segment attached="top" color="green">
-                <Header as="h2" textAlign="center">
-                  Your Pantry
-                </Header>
-              </Segment>
-              <Segment attached="bottom">
-                <p>
-                  {/*Search component for ingredients*/}
-                  <SearchBox
-                    route="ingredients"
-                    onChange={this.handleChange.bind(this)}
-                    handleResult={this.handleResultSelect.bind(this)}
-                    placeholder="Add new item to pantry"
-                    value={this.state.pantry}
-                    name="pantry"
-                  />
-                  {/*Pantry items*/}
-                  <List items={pantryItems} />
-                </p>
-              </Segment>
+              <Pantry
+                handleItemDelete={this.handleItemDelete.bind(this)}
+                currUser={this.state.currUser}
+                handleChange={this.handleChange.bind(this)}
+                handleResultSelect={this.handleResultSelect.bind(this)}
+                pantry={this.pantry}
+              />
             </Grid.Column>
             <Grid.Column floated="left">
-              {/* OTHER INFO */}
-              <Segment attached="top" textAlign="center" color="green">
-                <Header as="h1">User Information</Header>
-              </Segment>
-              <Segment attached="bottom">
-                <p>
-                  <Header as="h5">Name: </Header> {this.state.currUser.full_name}
-                  <Header as="h5">Email: </Header> {this.state.currUser.email}
-                  {/*<Header as="h5">Meals a Day: </Header>*/}
-                  {/*<Header as="h5">Plan Type: </Header>*/}
-                  {/*<Header as="h5">Plan Size: </Header>*/}
-                  {/*<Header as="h5">Dietary Preferences: </Header>*/}
-                  {/*<Header as="h5">Daily Calorie Intake: </Header>*/}
-                </p>
-              </Segment>
-              {/*DIETARY RESTRICTIOS COMPONENT*/}
-              <Segment attached="top" textAlign="center" color="green">
-                <Header as="h1">Your Dietary Restrictions</Header>
-              </Segment>
-              <Segment attached="bottom">
-                {/*Search component for dietary restrictions*/}
-                <SearchBox
-                  route="ingredients"
-                  placeholder="Add new item to dietary restrictions"
-                  value={this.state.dietary_restrictions}
-                  name="dietary_restrictions"
-                  onChange={this.handleChange.bind(this)}
-                  handleResult={this.handleResultSelect.bind(this)}
-                />
-                {/*Dietary restrictions*/}
-                <List items={dietaryItems} />
-              </Segment>
-              {/*ALLERGIES COMPONENT*/}
-              <Segment attached="top" textAlign="center" color="green">
-                <Header as="h1">Your Allergies</Header>
-              </Segment>
-              <Segment attached="bottom">
-                {/*Search component for allergy items*/}
-                <SearchBox
-                  route="ingredients"
-                  handleResult={this.handleResultSelect.bind(this)}
-                  placeholder="Add new item to allergies"
-                  value={this.state.allergies}
-                  name="allergies"
-                  onChange={this.handleChange.bind(this)}
-                />
-                {/*Allergy items*/}
-                <List items={allergyItems} />
-              </Segment>
+              <UserInfo currUser={this.state.currUser} />
             </Grid.Column>
-            <Grid.Column floated="left">
-              <Segment attached="top" textAlign="center" color="green">
-                <Header as="h1">Complex Recipe Search</Header>
-              </Segment>
-              <Segment attached="bottom">
-                <br />
-                <br />
-                Complex Recipe Search
-                <br />
-                <br />
-                <Checkbox
-                  name="includePantry"
-                  value={this.state.includePantry}
-                  defaultChecked={this.state.includePantry}
-                  onChange={this.handleCheck.bind(this)}
-                  toggle
-                  label="Include pantry"
-                />
-                <br />
-                <Checkbox
-                  name="filterdietary_restrictions"
-                  value={this.state.filterdietary_restrictions}
-                  defaultChecked={this.state.filterdietary_restrictions}
-                  onChange={this.handleCheck.bind(this)}
-                  toggle
-                  label="Filter out recipes that include dietary restrictions"
-                />
-                <br />
-                <Checkbox
-                  name="filterAllergies"
-                  value={this.state.filterAllergies}
-                  defaultChecked={this.state.filterAllergies}
-                  onChange={this.handleCheck.bind(this)}
-                  toggle
-                  label="Filter out recipes that include allergies"
-                />
-                <br />
-                <br />
-                <br />
-                Dish
-                <br />
-                <SearchBox
-                  route="recipes/recipeAutocomplete/"
-                  handleResult={(name, value) => this.setState({ [name]: [value.title] })}
-                  placeholder="'burger', 'soup', etc"
-                  value={this.state.desiredMeal}
-                  name="desiredMeal"
-                  onChange={this.handleChange.bind(this)}
-                />
-                <br />
-                <List.Header>Additional Ingredients to Use:</List.Header>
-                <List
-                  items={
-                    !this.state.includeAdditionalIngredients ||
-                    !this.state.includeAdditionalIngredients.length
-                      ? ['no additional ingredients to include']
-                      : this.state.includeAdditionalIngredients
-                  }
-                />
-                <SearchBox
-                  route="ingredients"
-                  handleResult={this.handleAdditionalIngredients.bind(this)}
-                  placeholder="Include ingredient"
-                  value={this.state.addIngredient}
-                  name="addIngredient"
-                  onChange={this.handleChange.bind(this)}
-                />
-                <br />
-                <List.Header>Additional Ingredients to Exclude:</List.Header>
-                <List
-                  items={
-                    !this.state.excludeAdditionalIngredients ||
-                    !this.state.excludeAdditionalIngredients.length
-                      ? ['no additional ingredients to exclude']
-                      : this.state.excludeAdditionalIngredients
-                  }
-                />
-                <SearchBox
-                  route="ingredients"
-                  handleResult={this.handleAdditionalIngredients.bind(this)}
-                  placeholder="Exclude ingredient"
-                  value={this.state.ignoreIngredient}
-                  name="ignoreIngredient"
-                  onChange={this.handleChange.bind(this)}
-                />
-                <br />
-                <Dropdown
-                  onChange={this.handleCuisine.bind(this)}
-                  value={this.state.cuisine}
-                  name="cuisine"
-                  placeholder="Cuisine"
-                  clearable
-                  multiple
-                  search
-                  selection
-                  fluid
-                  options={[
-                    { key: 'African', value: 'African', text: 'African' },
-                    { key: 'American', value: 'American', text: 'American' },
-                    { key: 'British', value: 'British', text: 'British' },
-                    { key: 'Cajun', value: 'Cajun', text: 'Cajun' },
-                    { key: 'Caribbean', value: 'Caribbean', text: 'Caribbean' },
-                    { key: 'Chinese', value: 'Chinese', text: 'Chinese' },
-                    { key: 'Eastern', value: 'Eastern', text: 'Eastern' },
-                    { key: 'European', value: 'European', text: 'European' },
-                    { key: 'French', value: 'French', text: 'French' },
-                    { key: 'German', value: 'German', text: 'German' },
-                    { key: 'Greek', value: 'Greek', text: 'Greek' },
-                    { key: 'Halal', value: 'Halal', text: 'Halal' },
-                    { key: 'Indian', value: 'Indian', text: 'Indian' },
-                    { key: 'Irish', value: 'Irish', text: 'Irish' },
-                    { key: 'Italian', value: 'Italian', text: 'Italian' },
-                    { key: 'Japanese', value: 'Japanese', text: 'Japanese' },
-                    { key: 'Jewish', value: 'Jewish', text: 'Jewish' },
-                    { key: 'Korean', value: 'Korean', text: 'Korean' },
-                    { key: 'Kosher', value: 'Kosher', text: 'Kosher' },
-                    { key: 'Latin American', value: 'Latin American', text: 'Latin American' },
-                    { key: 'Mexican', value: 'Mexican', text: 'Mexican' },
-                    { key: 'Middle Eastern', value: 'Middle Eastern', text: 'Middle Eastern' },
-                    { key: 'Nordic', value: 'Nordic', text: 'Nordic' },
-                    { key: 'Southern', value: 'Southern', text: 'Southern' },
-                    { key: 'Spanish', value: 'Spanish', text: 'Spanish' },
-                    { key: 'Thai', value: 'Thai', text: 'Thai' },
-                    { key: 'Vietnamese', value: 'Vietnamese', text: 'Vietnamese' }
-                  ]}
-                />{' '}
-                <br />
-                <Button onClick={this.getRecipe.bind(this)}>get dat recipe</Button>
-              </Segment>
+            <Grid.Column>
+              <DietaryRestrictions
+                handleItemDelete={this.handleItemDelete.bind(this)}
+                currUser={this.state.currUser}
+                handleChange={this.handleChange.bind(this)}
+                handleResultSelect={this.handleResultSelect.bind(this)}
+                dietary_restrictions={this.dietary_restrictions}
+              />
+              <Allergies
+                handleItemDelete={this.handleItemDelete.bind(this)}
+                currUser={this.state.currUser}
+                handleChange={this.handleChange.bind(this)}
+                handleResultSelect={this.handleResultSelect.bind(this)}
+                allergies={this.allergies}
+              />
             </Grid.Column>
-            {!this.state.recipeSearchResults || !this.state.recipeSearchResults.length ? (
-              ''
-            ) : (
-              <Grid.Column>
-                <Segment attached="top" color="green">
-                  <Header as="h2" textAlign="center">
-                    Results
-                  </Header>
-                </Segment>
-                <Segment attached="bottom">
-                  <List
-                    divided
-                    celled
-                    relaxed="very"
-                    items={
-                      !this.state.recipeSearchResults || !this.state.recipeSearchResults.length
-                        ? ['East some ice chips']
-                        : this.state.recipeSearchResults.map((item, key) => (
-                            <Modal
-                              trigger={
-                                <List.Item>
-                                  <List.Content>
-                                    <Item.Header>{item.title}</Item.Header>
-                                    <Image src={item.image} small />
-                                  </List.Content>
-                                </List.Item>
-                              }
-                            >
-                              <Modal.Header>
-                                Result {key + 1} of{' '}
-                                {!this.state.recipeSearchResults ||
-                                !this.state.recipeSearchResults.length
-                                  ? 0
-                                  : this.state.recipeSearchResults.length}{' '}
-                                for search '
-                                {// REPLACE WITH SOMETHING PRETTIER PLEASE
-                                `/recipeAPI/recipes/complexRecipe/?query=${
-                                  this.state.desiredMeal
-                                }` +
-                                  `&cuisine=${this.state.cuisine.join('%2C+')}` +
-                                  `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
-                                  `&includeIngredients=${this.state.includeAdditionalIngredients.join(
-                                    '%2C+'
-                                  )}` +
-                                  `&excludeIngredients=${this.state.excludeAdditionalIngredients.join(
-                                    '%2C+'
-                                  )}` +
-                                  `&intolerances=${
-                                    this.state.filterAllergies
-                                      ? this.state.currUser.allergies.join('%2C+')
-                                      : ''
-                                  }`}
-                                '
-                              </Modal.Header>
-                              <Modal.Content image scrolling>
-                                <Image size="medium" src={item.image} wrapped />
-                                <Modal.Description>
-                                  <Header>{item.title}</Header>
-                                  <List celled horizontal items={item.cuisines} />
-                                  <List celled horizontal items={item.dishTypes} />
-                                  <br />
-                                  Prep Time: {item.preparationMinutes}
-                                  <br />
-                                  Cook Time: {item.cookingMinutes}
-                                  <br />
-                                  Servings: {item.servings}
-                                  <br />
-                                  Calories: {item.calories}
-                                  <br />
-                                  Protein: {item.protein}
-                                  <br />
-                                  Fat: {item.fat}
-                                  <br />
-                                  Carbs: {item.carbs}
-                                  <br />
-                                  <List.Header>Cooking Instructions</List.Header>
-                                  <List
-                                    ordered
-                                    items={
-                                      !item.analyzedInstructions ||
-                                      !item.analyzedInstructions.length
-                                        ? ['no recipe instructions']
-                                        : item.analyzedInstructions[0].steps.map(step => step.step)
-                                    }
-                                  />
-                                </Modal.Description>
-                              </Modal.Content>
-                            </Modal>
-                          ))
-                    }
-                  />
-                </Segment>
-              </Grid.Column>
-            )}
           </Grid.Row>
         </Grid>
 
