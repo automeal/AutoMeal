@@ -36,8 +36,8 @@ const HomeHead = ({ mobile }) => (
             <Icon name="arrow right" />
           </Button.Content>
         </Button>
-        <Button Button href="/dashboard" color="teal" size="huge" animated>
-          <Button.Content visible>Dashboard</Button.Content>
+        <Button Button href="/recipe-search" color="teal" size="huge" animated>
+          <Button.Content visible>Recipe Search</Button.Content>
           <Button.Content hidden>
             <Icon name="arrow right" />
           </Button.Content>

@@ -19,8 +19,7 @@ import Register from './components/page/Register';
 import Login from './components/page/Login';
 import DayMealPlan from './components/page/MealPlan/daymealplan';
 import WeekMealPlan from './components/page/MealPlan/weekmealplan';
-import Result from './components/page/RecipeResults';
-import RecipeResults from './components/page/RecipeResults';
+import RecipeSearch from './components/page/RecipeSearch';
 import HowItWorks from './components/page/HowItWorks';
 import About from './components/page/About';
 import Contact from './components/page/Contact';
@@ -61,18 +60,15 @@ class App extends Component {
         <Provider store={store}>
           <ResponsiveContainer>
             <Route exact path="/" component={Landing} />
-            <Route path="/register" component={Register} />
-            <Route path="/survey" component={Survey} />
-            <Route path="/meal-plan" component={Plan} />
-            <Route path="/daily_mealplan" component={DayMealPlan} />
-            <Route path="/weekly_mealplan" component={WeekMealPlan} />
-            <Route path="/home-page" component={HP} />
             <Route path="/login" component={Login} />
-            <Route path="/result" component={Result} />
-            <Route path="/recipe-results" component={RecipeResults} />
-            <Route path="/result" component={Result} />
-            <Route path="/recipe-results" component={RecipeResults} />
+            <Route path="/register" component={Register} />
+            <Route path="/recipe-search" component={RecipeSearch} />
+            <PrivateRoute path="/survey" component={Survey} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/home-page" component={HP} />
+            <PrivateRoute path="/meal-plan" component={Plan} />
+            <PrivateRoute path="/daily_mealplan" component={DayMealPlan} />
+            <PrivateRoute path="/weekly_mealplan" component={WeekMealPlan} />
             <Route path="/how-it-works" component={HowItWorks} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
