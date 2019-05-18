@@ -8,6 +8,7 @@ import LandingHead from '../../shared/LandingHead';
 function Landing() {
   return (
     <div>
+      {/*Top image header of landing page*/}
       <LandingHead />
       <Segment style={{ padding: '8em 0em' }} vertical>
         <Container text>
