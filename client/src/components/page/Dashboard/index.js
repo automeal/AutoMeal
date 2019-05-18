@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Divider, Form, Grid, Header, List, Segment, Button, Modal } from 'semantic-ui-react';
+import { Divider, Form, Grid, Header, List, Segment, Icon, Button, Modal } from 'semantic-ui-react';
 import Pantry from './Pantry';
 import DietaryRestrictions from './DietaryRestrictions';
 import Allergies from './Allergies';
@@ -86,7 +86,7 @@ class Dashboard extends Component {
     if (this.state.filterAllergies)
       intolerance_string += '&intolerances=' + this.state.currUser.allergies.join('%2C+');
     var exclude_string = '';
-    if (this.state.excludeAdditionalIngredients.length > 0)
+    if (this.state.excludeAdditionalIngredients)
       exclude_string +=
         '&excludeIngredients=' + this.state.excludeAdditionalIngredients.join('%2C+');
 
@@ -297,10 +297,6 @@ class Dashboard extends Component {
          */}
         <br />
         <br />
-        <br />
-        <br />
-        <Button onClick={this.generateMealPlan.bind(this)}>Generate Meal Plan</Button>
-
         <br />
         <br />
       </div>

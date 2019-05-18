@@ -1,114 +1,174 @@
 // import Nav from '../../shared/Nav';
-import React from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
 import { Container, Header, Button, Icon } from 'semantic-ui-react';
 import food5 from '../../../Resources/food5.jpg';
-//import './Landing.css';
 
-const MealPlan = ({ mobile }) => (
-  <div className="ui fluid image">
-    <img src={food5} alt="" />
-    <div
-      style={{
-        position: 'absolute',
-        bottom: '40%',
-        width: '100%',
-        height: 'auto'
-      }}
-    >
-      <Container text textAlign="center">
-        <Header
-          as="h1"
-          content="Your Meal Plan"
-          style={{
-            fontSize: mobile ? '2em' : '4em',
-            fontWeight: 'normal',
-            marginBottom: 0,
-            marginTop: mobile ? '1.5em' : '3em'
-          }}
-        />
-        <Button href="/daily_mealplan" color="green" size="huge" animated>
-          <Button.Content visible>Daily Meal Plan</Button.Content>
-          <Button.Content hidden>
-            <Icon name="arrow right" />
-          </Button.Content>
-        </Button>
-        <Button href="/weekly_mealplan" color="green" size="huge" animated>
-          <Button.Content visible>Weekly Meal Plan</Button.Content>
-          <Button.Content hidden>
-            <Icon name="arrow right" />
-          </Button.Content>
-        </Button>
-      </Container>
-    </div>
-  </div>
-);
-export default MealPlan;
-/*import React from 'react';
-import Meal from '../../shared/Meal';
-import Tabs, {Tab} from '../../shared/Tabs';
-import NotFound from '../../shared/NotFound';
-import Nav from '../../shared/Nav';
+class MealPlan extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currUser: {},
+      pantry: '',
+      allergies: '',
+      dietary_restrictions: '',
 
-import './Plan.css';
-
-const createContent = (heading,dataOb,index) => {
-  let contentArr = [];
-  for(let mealType in dataOb){
-    let content = dataOb[mealType][index];
-    if(content){
-      contentArr.push({label:mealType,content:content})
-    }
+      open: false
+    };
   }
-  return (
-    <Tab heading =  { heading } key={`Tab__${index}`} >
-      {
-        contentArr.map((elem,i) => {
-          let recipe = elem.content.recipe;
-          let dietLabels = recipe.dietLabels ? recipe.dietLabels : {};
-          let healthLabels =  recipe.healthLabels ? recipe.healthLabels : {};
+  componentDidMount() {
+    axios
+      .get('/api/users/current', { Authorization: localStorage.getItem('jwtToken') })
+      .then(user => {
+        this.setState({ currUser: user.data });
+      });
+  }
+  generateMealPlan = () => {
+    var intolerance_string = '';
+    if (this.state.filterAllergies)
+      intolerance_string += '&intolerances=' + this.state.currUser.allergies.join('%2C+');
+    var exclude_string = '';
+    if (this.state.excludeAdditionalIngredients)
+      exclude_string +=
+        '&excludeIngredients=' + this.state.excludeAdditionalIngredients.join('%2C+');
 
-          return (
-            <Meal type={elem.label}
-                  imgSrc={ recipe.image ? recipe.image : null }
-                  heading={ recipe.label ? recipe.label : null }
-                  source={ recipe.source ? recipe.source : null }
-                  tags={[...dietLabels, ...healthLabels]}
-                  url={ recipe.url ? recipe.url : "#"}
-                  key={`Meal__${i}_${index}`}
-            />
-          )
-        })
+    console.log(this.state.currUser);
+    var params_obj = {
+      intolerances: this.state.currUser.allergies,
+      excludeIngredients: this.state.excludeAdditionalIngredients,
+      diet: this.state.currUser.dietary_restrictions,
+      cuisine: this.state.cuisine,
+      includeIngredients: this.state.currUser.pantry,
+      minCalories: 100, //1800 too low for responses //this.state.currUser.mealPlans[0].calories.min,
+      maxCalories: this.state.currUser.calories.max
+    };
+    console.log('PARAMS OBJ', params_obj);
+
+    var params_string = '';
+    for (var param in params_obj) {
+      console.log(param);
+      if (params_obj[param] && params_obj[param].constructor === Array) {
+        //if ( params_obj[param].length > 0)
+        params_string += '&' + param + '=' + params_obj[param].join('%2C');
+      } else if (params_obj[param]) {
+        params_string += '&' + param + '=' + params_obj[param];
       }
-    </Tab>
-  )
-}
+    }
+    params_string = '?' + params_string.slice(1, params_string.length);
 
-const createTabs = (count,data) => {
-  let tabs = [];
-  for(let i=0;i<count;i++){
-    let content = createContent(`Day ${i+1}`, data, i);
-    tabs.push(content)
+    //console.log("/recipeAPI/recipes/generateMealPlan/" + params_string);
+    //return;
+    var options = {
+      mealCount: this.state.currUser.mealCount,
+      _id: this.state.currUser.id,
+      planType: this.state.currUser.planType,
+      calories: this.state.currUser.calories
+    };
+
+    axios
+      .post('/recipeAPI/recipes/generateMealPlan/' + params_string, options)
+      .then(res => {
+        var data = res.data;
+
+        this.state.currUser.mealPlans = data['mealPlans'];
+        this.setState(this.state);
+
+        console.log('Success, latest meal plan:', data['mealPlans'][data['mealPlans'].length - 1]);
+        //this.props.history.push('/dashboard');
+      })
+      .catch(err => console.log(err));
+  };
+  render() {
+    const weekly = this.state.currUser.planType === 7 ? true : false;
+    const weekly_mealplan = (
+      <div className="ui fluid image">
+        <img src={food5} alt="" />
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '40%',
+            width: '100%',
+            height: 'auto'
+          }}
+        >
+          <Container text textAlign="center">
+            <Header
+              as="h1"
+              content="Your Meal Plan"
+              style={{
+                fontWeight: 'normal',
+                marginBottom: 0
+              }}
+            />
+            <Button
+              href="/weekly_mealplan"
+              Button
+              color="red"
+              size="huge"
+              animated
+              onClick={this.generateMealPlan.bind(this)}
+            >
+              <Button.Content visible>Generate Meal Plan</Button.Content>
+              <Button.Content hidden>
+                <Icon name="arrow right" />
+              </Button.Content>
+            </Button>
+
+            <Button href="/weekly_mealplan" color="green" size="huge" animated>
+              <Button.Content visible>Weekly Meal Plan</Button.Content>
+              <Button.Content hidden>
+                <Icon name="arrow right" />
+              </Button.Content>
+            </Button>
+          </Container>
+        </div>
+      </div>
+    );
+    const daily_mealplan = (
+      <div className="ui fluid image">
+        <img src={food5} alt="" />
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '40%',
+            width: '100%',
+            height: 'auto'
+          }}
+        >
+          <Container text textAlign="center">
+            <Header
+              as="h1"
+              content="Your Meal Plan"
+              style={{
+                fontWeight: 'normal',
+                marginBottom: 0
+              }}
+            />
+            <Button
+              href="/daily_mealplan"
+              Button
+              color="red"
+              size="huge"
+              animated
+              onClick={this.generateMealPlan.bind(this)}
+            >
+              <Button.Content visible>Generate Meal Plan</Button.Content>
+              <Button.Content hidden>
+                <Icon name="arrow right" />
+              </Button.Content>
+            </Button>
+
+            <Button href="/daily_mealplan" color="green" size="huge" animated>
+              <Button.Content visible>Daily Meal Plan</Button.Content>
+              <Button.Content hidden>
+                <Icon name="arrow right" />
+              </Button.Content>
+            </Button>
+          </Container>
+        </div>
+      </div>
+    );
+    return <div className="ui fluid image">{weekly ? weekly_mealplan : daily_mealplan}</div>;
   }
-  return (
-    <Tabs defaultIndex={0} className="Plan__tabs" >{tabs.map((tab) => tab)}</Tabs>
-  )
 }
-
-const Plan = (props) => {
-  if(!props.location || !props.location.state || !props.location.state.data) return (
-    <div>
-      <Nav />
-      <NotFound />
-    </div>
-  )
-  let param = props.location.state.data;
-  return(
-    <div className="Plan">
-      <Nav />
-      {createTabs(param.num,param.data)}
-    </div>
-  )
-}
-
-export default Plan;
-*/
+export default MealPlan;

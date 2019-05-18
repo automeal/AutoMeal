@@ -2,31 +2,16 @@
 import React from 'react';
 import axios from 'axios';
 // import './Landing.css';
-import { Card, Image, Grid } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import DaySelect from '../../shared/DaySelect';
+import RecipeResults from '../../shared/RecipeResults';
+
 class Mealplan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currUser: {},
-      selectedDay: this.getTodaysDate(),
-      meals: {
-        breakfast: {
-          recipes: []
-        },
-        lunch: {
-          recipes: []
-        },
-        dinner: {
-          recipes: []
-        },
-        morning_snacks: {
-          recipes: []
-        },
-        afternoon_snacks: {
-          recipes: []
-        }
-      }
+      selectedDay: this.getTodaysDate()
     };
   }
   componentWillMount() {
@@ -57,85 +42,14 @@ class Mealplan extends React.Component {
         />
 
         <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
-          <h1>Wednesday meal plan</h1>
+          <RecipeResults
+            recipeSearchResults={
+              !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                ? ''
+                : this.state.currUser.mealPlans[1].recipes
+            }
+          />
         </Grid>
-        <Card.Group itemsPerRow={3} raised>
-          <Card>
-            <Image
-              style={{ width: '460px', height: '320px' }}
-              src={
-                !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                  ? ''
-                  : this.state.currUser.mealPlans[0].recipes[0].image
-              }
-            />
-            <Card.Content>
-              <Card.Header>Breakfast</Card.Header>
-              <Card.Meta>
-                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                  ? ''
-                  : this.state.currUser.mealPlans[0].recipes[0].title}
-              </Card.Meta>
-              <Card.Description>
-                preparationMinutes:
-                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                  ? ''
-                  : this.state.currUser.mealPlans[0].recipes[0].preparationMinutes}
-                Minutes
-              </Card.Description>
-            </Card.Content>
-          </Card>
-          <Card>
-            <Image
-              style={{ width: '460px', height: '320px' }}
-              src={
-                !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                  ? ''
-                  : this.state.currUser.mealPlans[0].recipes[1].image
-              }
-            />
-            <Card.Content>
-              <Card.Header>Lunch</Card.Header>
-              <Card.Meta>
-                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                  ? ''
-                  : this.state.currUser.mealPlans[0].recipes[1].title}
-              </Card.Meta>
-              <Card.Description>
-                preparationMinutes:
-                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                  ? ''
-                  : this.state.currUser.mealPlans[0].recipes[1].preparationMinutes}
-                Minutes
-              </Card.Description>
-            </Card.Content>
-          </Card>
-          <Card>
-            <Image
-              style={{ width: '460px', height: '320px' }}
-              src={
-                !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                  ? ''
-                  : this.state.currUser.mealPlans[0].recipes[2].image
-              }
-            />
-            <Card.Content>
-              <Card.Header>Dinner</Card.Header>
-              <Card.Meta>
-                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                  ? ''
-                  : this.state.currUser.mealPlans[0].recipes[2].title}
-              </Card.Meta>
-              <Card.Description>
-                preparationMinutes:
-                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                  ? ''
-                  : this.state.currUser.mealPlans[0].recipes[2].preparationMinutes}
-                Minutes
-              </Card.Description>
-            </Card.Content>
-          </Card>
-        </Card.Group>
       </div>
     );
   }
