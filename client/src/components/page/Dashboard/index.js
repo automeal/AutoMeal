@@ -1,19 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {
-  Divider,
-  Form,
-  Grid,
-  Header,
-  List,
-  Checkbox,
-  Dropdown,
-  Segment,
-  Button,
-  Image,
-  Modal,
-  Item
-} from 'semantic-ui-react';
+import { Divider, Form, Grid, Header, List, Segment, Button, Modal } from 'semantic-ui-react';
 import SearchBox from '../../shared/Search';
 import PantryItem from './PantryItem';
 import AllergyItem from './AllergyItem';
@@ -300,9 +287,9 @@ class Dashboard extends Component {
                   <Header as="h5">Email: </Header> {this.state.currUser.email}
                   <Header as="h5">Meals a Day: </Header> {this.state.currUser.mealCount}
                   <Header as="h5">Plan Type: </Header> {this.state.currUser.planType}
-                  {/*<Header as="h5">Plan Size: </Header>*/}
-                  {/*<Header as="h5">Dietary Preferences: </Header>*/}
-                  {/*<Header as="h5">Daily Calorie Intake: </Header>*/}
+                  <Header as="h5">Plan Size: </Header> {this.state.currUser.planSize}
+                  <Header as="h5">Dietary Preferences: </Header>
+                  <Header as="h5">Daily Calorie Intake: {this.state.currUser.calories}</Header>
                 </p>
               </Segment>
             </Grid.Column>

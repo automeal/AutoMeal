@@ -12,11 +12,12 @@ class Contact extends Component {
     };
   }
 
-  handleChange = e => {};
+  handleChange = (e, { value }) => this.setState({ value });
 
   render() {
     // TO DO:
     // - Add actual functionality to submitting a message
+
     return (
       <div>
         <br />
