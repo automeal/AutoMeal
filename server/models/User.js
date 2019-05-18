@@ -38,7 +38,6 @@ const RecipeSchema = new Schema(
     image: String,
     imageType: String,
     ketogenic: Boolean,
-    likes: Number,
     lowFodmap: Boolean,
     missedIngredientCount: Number,
     missedIngredients: Array,
@@ -141,13 +140,13 @@ const MealSchema = new Schema({
   Assuming you need to generate a new plan to change the plan type, calories, personCount, etc.
   Then no need to store historic information per meal plan, just once
   */
-  //Histrorical Data
+  // Histrorical Data
   planType: Number,
   calories: Object,
   personCount: Number,
   mealCount: Number,
 
-  //Use to update/push a new mealplan into the history
+  // Use to update/push a new mealplan into the history
   dateCreated: {
     type: Date,
     default: Date.now
@@ -194,7 +193,7 @@ const UserSchema = new Schema({
   //   default: Date.now
   // },
 
-  //Pantry for current meal plan
+  // Pantry for current meal plan
   pantry: {
     type: Array,
     default: ['salt', 'pepper', 'oil', 'lettuce', 'milk']
@@ -210,7 +209,7 @@ const UserSchema = new Schema({
   },
   mealPlans: [MealSchema],
 
-  //Current Data
+  // Current Data
   planType: {
     type: Number,
     default: 7
@@ -224,42 +223,42 @@ const UserSchema = new Schema({
       selected: 'rec'
     }
   },
-  //personCount: Number,
+  // personCount: Number,
   mealCount: {
     type: Number,
     default: 3
   }
 });
 
-//Cache types of each field of User in arrayDBFields, only need to do this once
+// Cache types of each field of User in arrayDBFields, only need to do this once
 const arrayDBFields = [];
 for (path in UserSchema.paths) {
-  //console.log(path, UserSchema.paths[path] instanceof mongoose.Schema.Types.Array);
+  // console.log(path, UserSchema.paths[path] instanceof mongoose.Schema.Types.Array);
   if (UserSchema.paths[path] instanceof mongoose.Schema.Types.Array) {
     arrayDBFields.push(path);
   }
 }
 const arrayDBFieldsLower = [];
 for (path in UserSchema.paths) {
-  //console.log(path, UserSchema.paths[path] instanceof mongoose.Schema.Types.Array);
+  // console.log(path, UserSchema.paths[path] instanceof mongoose.Schema.Types.Array);
   if (UserSchema.paths[path] instanceof mongoose.Schema.Types.Array) {
     arrayDBFields.push(path.toLowerCase());
   }
 }
-//console.log(arrayDBFields);
+// console.log(arrayDBFields);
 
-//Callback ver. but want to cache fields before being imported, not after
-//UserSchema.eachPath((pathname, schematype) => {
-//console.log("PathName",pathname,"Type", schematype instanceof mongoose.Schema.Types.Array );
-//});
+// Callback ver. but want to cache fields before being imported, not after
+// UserSchema.eachPath((pathname, schematype) => {
+// console.log("PathName",pathname,"Type", schematype instanceof mongoose.Schema.Types.Array );
+// });
 
-var User = mongoose.model('users', UserSchema);
-var Recipes = mongoose.model('recipes', RecipeSchema);
+const User = mongoose.model('users', UserSchema);
+const Recipes = mongoose.model('recipes', RecipeSchema);
 module.exports = User;
 module.exports.Recipes = Recipes;
-//Monkeypatch arrayDBFields to User/module.exports, probably better ways to do this but will not change existing import code
+// Monkeypatch arrayDBFields to User/module.exports, probably better ways to do this but will not change existing import code
 module.exports.arrayDBFields = arrayDBFields;
-//Case insensitive cache of arrayDBFields, probably not neccessary though
+// Case insensitive cache of arrayDBFields, probably not neccessary though
 module.exports.arrayDBFieldsLower = arrayDBFieldsLower;
 
 // Additional fields

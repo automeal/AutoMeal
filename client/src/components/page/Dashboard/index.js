@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Divider, Form, Grid, Header, Button, Modal, Label, Message } from 'semantic-ui-react';
+import { Divider, Form, Grid, Header, List, Segment, Icon, Button, Modal, Label, Message } from 'semantic-ui-react';
 import Pantry from './Pantry';
 import DietaryRestrictions from './DietaryRestrictions';
 import Allergies from './Allergies';
@@ -394,10 +394,6 @@ class Dashboard extends Component {
          */}
         <br />
         <br />
-        <br />
-        <br />
-        <Button onClick={this.generateMealPlan.bind(this)}>Generate Meal Plan</Button>
-
         <br />
         <br />
       </div>
