@@ -19,7 +19,6 @@ import Register from './components/page/Register';
 import Login from './components/page/Login';
 import DayMealPlan from './components/page/MealPlan/daymealplan';
 import WeekMealPlan from './components/page/MealPlan/weekmealplan';
-import Result from './components/page/RecipeResults';
 import RecipeSearch from './components/page/RecipeSearch';
 import HowItWorks from './components/page/HowItWorks';
 import About from './components/page/About';
@@ -61,17 +60,15 @@ class App extends Component {
         <Provider store={store}>
           <ResponsiveContainer>
             <Route exact path="/" component={Landing} />
+            <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route path="/recipe-search" component={RecipeSearch} />
             <PrivateRoute path="/survey" component={Survey} />
+            <PrivateRoute path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/home-page" component={HP} />
             <PrivateRoute path="/meal-plan" component={Plan} />
             <PrivateRoute path="/daily_mealplan" component={DayMealPlan} />
             <PrivateRoute path="/weekly_mealplan" component={WeekMealPlan} />
-            <PrivateRoute path="/home-page" component={HP} />
-            <Route path="/login" component={Login} />
-            <Route path="/result" component={Result} />
-            <Route path="/recipe-search" component={RecipeSearch} />
-            <Route path="/result" component={Result} />
-            <PrivateRoute path="/dashboard" component={Dashboard} />
             <Route path="/how-it-works" component={HowItWorks} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
