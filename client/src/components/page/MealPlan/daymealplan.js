@@ -1,16 +1,14 @@
 // import Nav from '../../shared/Nav';
 import React from 'react';
+import axios from 'axios';
 // import './Landing.css';
 import { Card, Image, Grid } from 'semantic-ui-react';
 import DaySelect from '../../shared/DaySelect';
-import ex3 from '../../../Resources/ex3.jpeg';
-import ex6 from '../../../Resources/ex6.jpg';
-import ex4 from '../../../Resources/ex4.jpg';
-
 class Mealplan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currUser: {},
       selectedDay: this.getTodaysDate(),
       meals: {
         breakfast: {
@@ -30,6 +28,16 @@ class Mealplan extends React.Component {
         }
       }
     };
+  }
+  componentWillMount() {
+    axios
+      .get('/api/users/current', { Authorization: localStorage.getItem('jwtToken') })
+      .then(user => {
+        this.setState({ currUser: user.data });
+        // this.state.currUser.mealPlans[0].recipes[0].title
+        console.log(`hello`);
+        console.log(this.state.currUser);
+      });
   }
 
   getTodaysDate() {
@@ -53,27 +61,78 @@ class Mealplan extends React.Component {
         </Grid>
         <Card.Group itemsPerRow={3} raised>
           <Card>
-            <Image style={{ width: '460px', height: '320px' }} src={ex3} />
+            <Image
+              style={{ width: '460px', height: '320px' }}
+              src={
+                !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                  ? ''
+                  : this.state.currUser.mealPlans[0].recipes[0].image
+              }
+            />
             <Card.Content>
               <Card.Header>Breakfast</Card.Header>
-              <Card.Meta>Sushi</Card.Meta>
-              <Card.Description>make time:</Card.Description>
+              <Card.Meta>
+                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                  ? ''
+                  : this.state.currUser.mealPlans[0].recipes[0].title}
+              </Card.Meta>
+              <Card.Description>
+                preparationMinutes:
+                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                  ? ''
+                  : this.state.currUser.mealPlans[0].recipes[0].preparationMinutes}
+                Minutes
+              </Card.Description>
             </Card.Content>
           </Card>
           <Card>
-            <Image style={{ width: '460px', height: '320px' }} src={ex6} />
+            <Image
+              style={{ width: '460px', height: '320px' }}
+              src={
+                !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                  ? ''
+                  : this.state.currUser.mealPlans[0].recipes[1].image
+              }
+            />
             <Card.Content>
               <Card.Header>Lunch</Card.Header>
-              <Card.Meta>Sushi</Card.Meta>
-              <Card.Description>make time:</Card.Description>
+              <Card.Meta>
+                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                  ? ''
+                  : this.state.currUser.mealPlans[0].recipes[1].title}
+              </Card.Meta>
+              <Card.Description>
+                preparationMinutes:
+                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                  ? ''
+                  : this.state.currUser.mealPlans[0].recipes[1].preparationMinutes}
+                Minutes
+              </Card.Description>
             </Card.Content>
           </Card>
           <Card>
-            <Image style={{ width: '460px', height: '320px' }} src={ex4} />
+            <Image
+              style={{ width: '460px', height: '320px' }}
+              src={
+                !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                  ? ''
+                  : this.state.currUser.mealPlans[0].recipes[2].image
+              }
+            />
             <Card.Content>
               <Card.Header>Dinner</Card.Header>
-              <Card.Meta>Sushi</Card.Meta>
-              <Card.Description>make time:</Card.Description>
+              <Card.Meta>
+                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                  ? ''
+                  : this.state.currUser.mealPlans[0].recipes[2].title}
+              </Card.Meta>
+              <Card.Description>
+                preparationMinutes:
+                {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+                  ? ''
+                  : this.state.currUser.mealPlans[0].recipes[2].preparationMinutes}
+                Minutes
+              </Card.Description>
             </Card.Content>
           </Card>
         </Card.Group>
