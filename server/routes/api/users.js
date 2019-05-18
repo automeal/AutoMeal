@@ -363,8 +363,41 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     pantry: req.user.pantry,
     dietary_restrictions: req.user.dietary_restrictions,
     allergies: req.user.allergies,
-    mealPlans: req.user.mealPlans
+    mealPlans: req.user.mealPlans,
+    calories: req.user.calories,
+    mealCount: req.user.mealCount,
+    planType: req.user.planType
   })
 );
+
+//Route, api/users/:id/getAllMealPlans
+router.get('/:id/getAllMealPlans', (req, res) => {
+  User.findById(req.params.id, { mealPlans: 1 })
+    .then(mealPlans => {
+      res.json(mealPlans);
+    })
+    .catch(err => res.status(404).json({ success: false }));
+});
+
+/*
+
+Example, (needs this.state.currUser popuated from another call, api/users/current)
+
+    axios
+      .get(`/api/users/${this.state.currUser.id}/latestMealPlan`
+  
+      ).then( (res) => { console.log(res);  } )
+    return;
+
+*/
+//Route, api/users/:id/latestMealPlan
+router.get('/:id/latestMealPlan', (req, res) => {
+  User.findById(req.params.id, { mealPlans: 1 })
+    .then(mealPlans => {
+      console.log('DB', mealPlans);
+      res.send(mealPlans['mealPlans'][mealPlans['mealPlans'].length - 1]);
+    })
+    .catch(err => res.status(404).json({ success: false }));
+});
 
 module.exports = router;
