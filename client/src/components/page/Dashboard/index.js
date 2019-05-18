@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Divider, Form, Grid, Header, List, Segment, Button, Modal } from 'semantic-ui-react';
-import SearchBox from '../../shared/Search';
-import PantryItem from './PantryItem';
-import AllergyItem from './AllergyItem';
+import { Divider, Form, Grid, Header, Button, Modal } from 'semantic-ui-react';
+import Pantry from './Pantry';
+import DietaryRestrictions from './DietaryRestrictions';
+import Allergies from './Allergies';
+import UserInfo from './UserInfo';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -16,23 +17,6 @@ class Dashboard extends Component {
       pantry: '',
       allergies: '',
       dietary_restrictions: '',
-
-      // MEAL PLAN
-      // Recipe query
-      desiredMeal: '',
-      // Checkboxes
-      includePantry: true,
-      filterdietary_restrictions: true,
-      filterAllergies: true,
-      // Additional search boxes
-      includeAdditionalIngredients: [],
-      addIngredient: '',
-      excludeAdditionalIngredients: [],
-      ignoreIngredient: '',
-      // Cuisine choice
-      cuisine: [],
-      // Recipe Search Result
-      recipeSearchResults: [],
       // For the popup
       open: false
     };
@@ -87,54 +71,8 @@ class Dashboard extends Component {
     //console.log(`Hello, field: ${this.state.currUser[list]}, this.state[newItem]: ${newItem}`);
   };
 
-  handleCheck = (event, result) => {
-    this.setState({ [result.name]: !result.value });
-  };
-
-  handleCuisine = (event, res) => {
-    this.setState({ cuisine: [...this.state.cuisine, res.value[0]] });
-    console.log(this.state.cuisine);
-  };
-
-  getRecipe = () => {
-    axios
-      .get(
-        `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
-          `&cuisine=${this.state.cuisine.join('%2C+')}` +
-          `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
-          `&includeIngredients=${this.state.includeAdditionalIngredients
-            // DO NOT concat on call (call at end of this comment block)
-            // concat on react side and have includeAdditionalIngredients store all ingredients to be included
-            // this allows users to temporarily exclude items that live in their pantry
-            // .concat(this.state.currUser.pantry)
-            .join('%2C+')}` +
-          `&excludeIngredients=${this.state.excludeAdditionalIngredients.join('%2C+')}` +
-          `&intolerances=${
-            this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
-          }`
-      )
-      .then(res => {
-        console.log(res);
-        this.setState({ recipeSearchResults: res.data });
-      })
-      .catch(err => console.log(err));
-  };
-
-  handleAdditionalIngredients = (name, value) => {
-    console.log('name:');
-    console.log(name);
-    console.log('value:');
-    console.log(value);
-    const newItem = value.name;
-    this.setState(
-      name === 'addIngredient'
-        ? { includeAdditionalIngredients: [...this.state.includeAdditionalIngredients, newItem] }
-        : { excludeAdditionalIngredients: [...this.state.excludeAdditionalIngredients, newItem] }
-    );
-  };
-
   // TO DO: Function to delete item
-  handleItemDelete(item, db_field_name) {
+  handleItemDelete = (item, db_field_name) => {
     console.log(
       'Sending delete request, for item',
       item,
@@ -160,12 +98,12 @@ class Dashboard extends Component {
     axios.post(`/api/users/${this.state.currUser.id}/deleteFromArray`, delete_command).then(res => {
       console.log('Deleted', item, 'from DATABASE');
     });
-  }
+  };
 
   //s TO DO: Function to move item from pantry to grocery list
-  handleMove() {
+  handleMove = () => {
     console.log('B Click!');
-  }
+  };
 
   //For blurring the popup background
   show = dimmer => () => this.setState({ dimmer, open: true });
@@ -174,41 +112,6 @@ class Dashboard extends Component {
   render() {
     // For blurring the popup background
     const { open, dimmer } = this.state;
-    // Mapping pantry items to format into components
-    const pantryItems =
-      !this.state.currUser.pantry || !this.state.currUser.pantry.length
-        ? ['Pantry is empty']
-        : this.state.currUser.pantry.map(item => (
-            <PantryItem
-              db_field_name="pantry"
-              item={item}
-              onIconClick={this.handleItemDelete.bind(this)}
-            />
-          ));
-
-    // Mapping dietary restrictions to format into components
-    const dietaryItems =
-      !this.state.currUser.dietary_restrictions || !this.state.currUser.dietary_restrictions.length
-        ? ['no dietary restrictions']
-        : this.state.currUser.dietary_restrictions.map(item => (
-            <AllergyItem
-              db_field_name="dietary_restrictions"
-              item={item}
-              onIconClick={this.handleItemDelete.bind(this)}
-            />
-          ));
-
-    // Mapping allergy items to format into components
-    const allergyItems =
-      !this.state.currUser.allergies || !this.state.currUser.allergies.length
-        ? ['no allergies']
-        : this.state.currUser.allergies.map(item => (
-            <AllergyItem
-              db_field_name="allergies"
-              item={item}
-              onIconClick={this.handleItemDelete.bind(this)}
-            />
-          ));
 
     return (
       <div style={{ padding: '0px 30px', paddingBottom: '20px' }}>
@@ -254,80 +157,32 @@ class Dashboard extends Component {
         <Grid stackable columns="equal">
           <Grid.Row>
             <Grid.Column floated="left">
-              {/*PANTRY COMPONENT*/}
-              <Segment attached="top" color="green">
-                <Header as="h2" textAlign="center">
-                  Your Pantry
-                </Header>
-              </Segment>
-              <Segment attached="bottom">
-                <p>
-                  {/*Search component for ingredients*/}
-                  <SearchBox
-                    route="ingredients"
-                    onChange={this.handleChange.bind(this)}
-                    handleResult={this.handleResultSelect.bind(this)}
-                    placeholder="Add new item to pantry"
-                    value={this.state.pantry}
-                    name="pantry"
-                  />
-                  {/*Pantry items*/}
-                  <List items={pantryItems} />
-                </p>
-              </Segment>
+              <Pantry
+                handleItemDelete={this.handleItemDelete.bind(this)}
+                currUser={this.state.currUser}
+                handleChange={this.handleChange.bind(this)}
+                handleResultSelect={this.handleResultSelect.bind(this)}
+                pantry={this.pantry}
+              />
             </Grid.Column>
             <Grid.Column floated="left">
-              {/* OTHER INFO */}
-              <Segment attached="top" textAlign="center" color="green">
-                <Header as="h1">User Information</Header>
-              </Segment>
-              <Segment attached="bottom">
-                <p>
-                  <Header as="h5">Name: </Header> {this.state.currUser.full_name}
-                  <Header as="h5">Email: </Header> {this.state.currUser.email}
-                  <Header as="h5">Meals a Day: </Header> {this.state.currUser.mealCount}
-                  <Header as="h5">Plan Type: </Header> {this.state.currUser.planType}
-                  <Header as="h5">Plan Size: </Header> {this.state.currUser.planSize}
-                  <Header as="h5">Dietary Preferences: </Header>
-                  <Header as="h5">Daily Calorie Intake: {this.state.currUser.calories}</Header>
-                </p>
-              </Segment>
+              <UserInfo currUser={this.state.currUser} />
             </Grid.Column>
             <Grid.Column>
-              {/*DIETARY RESTRICTIOS COMPONENT*/}
-              <Segment attached="top" textAlign="center" color="green">
-                <Header as="h1">Your Dietary Restrictions</Header>
-              </Segment>
-              <Segment attached="bottom">
-                {/*Search component for dietary restrictions*/}
-                <SearchBox
-                  route="ingredients"
-                  placeholder="Add new item to dietary restrictions"
-                  value={this.state.dietary_restrictions}
-                  name="dietary_restrictions"
-                  onChange={this.handleChange.bind(this)}
-                  handleResult={this.handleResultSelect.bind(this)}
-                />
-                {/*Dietary restrictions*/}
-                <List items={dietaryItems} />
-              </Segment>
-              {/*ALLERGIES COMPONENT*/}
-              <Segment attached="top" textAlign="center" color="green">
-                <Header as="h1">Your Allergies</Header>
-              </Segment>
-              <Segment attached="bottom">
-                {/*Search component for allergy items*/}
-                <SearchBox
-                  route="ingredients"
-                  handleResult={this.handleResultSelect.bind(this)}
-                  placeholder="Add new item to allergies"
-                  value={this.state.allergies}
-                  name="allergies"
-                  onChange={this.handleChange.bind(this)}
-                />
-                {/*Allergy items*/}
-                <List items={allergyItems} />
-              </Segment>
+              <DietaryRestrictions
+                handleItemDelete={this.handleItemDelete.bind(this)}
+                currUser={this.state.currUser}
+                handleChange={this.handleChange.bind(this)}
+                handleResultSelect={this.handleResultSelect.bind(this)}
+                dietary_restrictions={this.dietary_restrictions}
+              />
+              <Allergies
+                handleItemDelete={this.handleItemDelete.bind(this)}
+                currUser={this.state.currUser}
+                handleChange={this.handleChange.bind(this)}
+                handleResultSelect={this.handleResultSelect.bind(this)}
+                allergies={this.allergies}
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>
