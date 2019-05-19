@@ -129,9 +129,9 @@ router.patch('/:id/changePassword', (req, res) => {
               bcrypt.hash(req.body.password, salt, (err, hash) => {
                 // Change password field in request to hashed version
                 req.body.password = hash;
-                // must do this step in arrow function (req.body.password is reset after)
+                // must do this step in arrow function (req.body.password is reset after leaving this scope)
                 User.updateOne({ _id: req.params.id }, req.body, (err, raw) => {
-                  err ? res.send(err) : res.send(raw);
+                  err ? res.send(err) : res.send({ success: true });
                 });
               });
             });
@@ -144,7 +144,7 @@ router.patch('/:id/changePassword', (req, res) => {
   }
 });
 
-//Basically this patch call either replaces or appends to fields in the DB
+// This patch call either replaces or appends to fields in the DB
 /*
  NOTE: About what and how to patch our data
  - PANTRY is always (should be) only updated one item at a time via the DASHBOARD
@@ -166,7 +166,7 @@ router.patch('/:id', (req, res) => {
   }
 
   if (req.body.password) {
-    var msg = 'Do not use PATCH api/users/:id for changing passwords';
+    let msg = 'Do not use PATCH api/users/:id for changing passwords';
     console.log(msg);
     return res.send({ error: msg });
   } else {
@@ -202,11 +202,11 @@ router.patch('/:id', (req, res) => {
     //If the prop (key) in our data (req.body) is an array type in our DB (userDBFields, a custom export from User.js),
     //then append the data (value of key in req.body) to the DB instead of overwriting it if it's just a single value (not array)
 
-    var db_commands = {};
-    var data = req.body;
-    for (var prop in data) {
+    let db_commands = {};
+    let data = req.body;
+    for (let prop in data) {
       if (User.arrayDBFields.includes(prop) && data[prop].constructor !== Array) {
-        var temp = data[prop];
+        let temp = data[prop];
         delete data[prop];
 
         if (!('$push' in db_commands)) db_commands['$push'] = {};
@@ -237,8 +237,7 @@ router.patch('/:id', (req, res) => {
         return res.send(err);
       } else {
         console.log('DB patch successful');
-        //console.log('RAW', raw);
-        return res.send(raw);
+        return res.status(200).json({ success: true });
       }
     });
   }
@@ -250,15 +249,15 @@ router.patch('/:id', (req, res) => {
 // @desc    Enter in name of DB field as a key, and the values what to delete from the DB field. Only for DB fields that are arrays.
 // @access  Private
 router.post('/:id/deleteFromArray', (req, res) => {
-  var db_commands = {
+  let db_commands = {
     $pull: {},
     $pullAll: {}
   };
-  var data = req.body;
+  let data = req.body;
 
-  for (var prop in data) {
+  for (let prop in data) {
     if (User.arrayDBFields.includes(prop)) {
-      var temp = data[prop];
+      let temp = data[prop];
 
       if (data[prop].constructor !== Array) {
         db_commands['$pull'][prop] = temp;
@@ -292,21 +291,21 @@ router.post('/:id/deleteFromArray', (req, res) => {
 // or a key in an object (any value). Some fields won't be deleted.
 // @access  Private
 router.post('/:id/deleteEntireField', (req, res) => {
-  var db_commands = { $unset: {} };
-  var data = req.body;
+  let db_commands = { $unset: {} };
+  let data = req.body;
 
   if (data.constructor === Array) {
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       db_commands['$unset'][data[i]] = 1;
     }
   } else {
-    for (var element in data) {
+    for (let element in data) {
       data[element] = 1;
     }
     db_commands['$unset'] = data;
   }
 
-  var dontDelete = [
+  let dontDelete = [
     'mealplans',
     'pantry',
     'fullname',
@@ -317,14 +316,14 @@ router.post('/:id/deleteEntireField', (req, res) => {
   ];
 
   if (data.constructor === Array) {
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       if (dontDelete.includes(data[i].toLowerCase())) {
         console.log({ error: 'Field ' + data[i] + ' is not an allowable field to delete' });
         return res.send({ error: 'Field ' + data[i] + ' is not an allowable field to delete' });
       }
     }
   } else {
-    for (var prop in data) {
+    for (let prop in data) {
       if (dontDelete.includes(prop.toLowerCase())) {
         console.log({ error: 'Field ' + prop + ' is not an allowable field to delete' });
         return res.send({ error: 'Field ' + prop + ' is not an allowable field to delete' });

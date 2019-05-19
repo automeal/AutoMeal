@@ -4,11 +4,6 @@ const isEmpty = require('./isEmpty');
 module.exports = function validateUpdatedInput(data) {
   let errors = {};
 
-  // if pantry/allergies/dietary_restrictions check that it is array
-
-  // if any other fields present, they are denied write
-  // remove fields after checking, if any left at end deny write
-
   if (data.full_name) {
     // NAME
     // check for whitespace only strings
@@ -36,7 +31,6 @@ module.exports = function validateUpdatedInput(data) {
     }
   }
 
-  // BUG: make sure it is a new password
   if (data.password) {
     // PASSWORD
     data.password = !isEmpty(data.password) ? data.password : '';
