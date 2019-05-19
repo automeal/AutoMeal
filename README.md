@@ -101,6 +101,7 @@ Using the answers from your survey, recipes and/or a meal plan can be generated 
 ### AutoMeal Future Iterations and Reflection:
 
 Future Iterations:
+
     1. Implement a barcode scanner to scan food and add specific items directly into user's pantry
     2. More advanced safeguards for recipe searches
     3. Implement a grocery list in addition to the pantry
