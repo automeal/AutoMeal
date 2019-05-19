@@ -3,6 +3,7 @@ import { Icon, Label } from 'semantic-ui-react';
 import axios from 'axios';
 
 class PantryItem extends Component {
+  //Component view for pantry items in dashboard
   constructor(props) {
     super(props);
     //this.onIconClick.bind(this);
