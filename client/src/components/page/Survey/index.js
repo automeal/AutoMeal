@@ -184,6 +184,9 @@ class Survey extends Component {
     var updateObj = {
       dietary_restrictions: dietary_restrictions,
       allergies: allergies,
+      planType: planType,
+      calories: calories,
+      mealCount: mealCount,
       mealPlans: [
         {
           planType: planType,
