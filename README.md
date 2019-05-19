@@ -106,7 +106,7 @@ Future Iterations:
     2. More advanced safeguards for recipe searches
     3. Implement a grocery list in addition to the pantry
     4. Interfacing with online retailers
-    5. Allow for recipe “multiplication” so a user could add more serving sizes than the serving size provided by the recipe,     and have the ingredients update to match the requirements for this augmented serving
+    5. Allow for recipe “multiplication” so a user could add more serving sizes than the serving size provided by the recipe, and have the ingredients update to match the requirements for this augmented serving
 
 Reflection: 
     
