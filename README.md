@@ -110,8 +110,8 @@ Future Iterations:
 
 Reflection: 
     
-Challenges we were able to overcome and future iterations from our requirements document that we were able to implement       include suggesting random recipes if the user is unsure of what to eat as well as incorporating various cuisines into the     recipe search (i.e. Caribbean, American, Japanese, etc.). We were able to improve our Mobile UI through the use of             Semantic UI and fix the issues with our mobile display.  
+Challenges we were able to overcome and future iterations from our requirements document that we were able to implement       include suggesting random recipes if the user is unsure of what to eat, as well as incorporating various cuisines into the     recipe search (i.e. Caribbean, American, Japanese, etc.). We were able to improve our Mobile UI through the use of             Semantic UI and fix the issues with our mobile display.  
    
-Challenges we still face include the limiations of the Spoonacular API and the calls it is able to generate as well as         finding an adequate number of unique recipes for users with very limited dietary restrictions.
+Challenges we still face include the limitations of the Spoonacular API and the calls it is able to generate, as well as         finding an adequate number of unique recipes for users with very limited dietary restrictions.
     
 More testing for users with various combinations of diets, intolerances, and health preferences is needed to ensure all       users have the same experience. 
