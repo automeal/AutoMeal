@@ -1,12 +1,9 @@
-// import Nav from '../../shared/Nav';
 import React from 'react';
 import axios from 'axios';
-// import './Landing.css';
 import { Grid } from 'semantic-ui-react';
-import DaySelect from '../../shared/DaySelect';
-import RecipeResults from '../../shared/RecipeResults';
+import Recipe from '../../shared/MealPlan';
 
-class Mealplan extends React.Component {
+class History extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,16 +24,12 @@ class Mealplan extends React.Component {
   render() {
     return (
       <div className="DayView content-container">
-        <h1>AutoMeal Daily Meal Plan</h1>
-
         <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
-          <RecipeResults
-            header="Recipe Results"
-            itemsPerRow={3}
+          <Recipe
             recipeSearchResults={
               !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                 ? ''
-                : this.state.currUser.mealPlans[1].recipes
+                : this.state.currUser.mealPlans.map((item, key) => item.recipes)
             }
           />
         </Grid>
@@ -45,4 +38,4 @@ class Mealplan extends React.Component {
   }
 }
 
-export default Mealplan;
+export default History;

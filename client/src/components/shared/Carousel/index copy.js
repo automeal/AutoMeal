@@ -44,7 +44,7 @@ class Carousel extends Component {
       >
         <Grid.Column>
           <Card fluid>
-            <Image alt="" style={{ width: 420, height: 320 }} src={ex3} />
+            <Image alt="" src={ex3} />
             <Card.Header>header</Card.Header>
             <Card.Meta>Ingredients: </Card.Meta>
             <Card.Description>Time to Make: </Card.Description>
@@ -52,7 +52,7 @@ class Carousel extends Component {
         </Grid.Column>
         <Grid.Column>
           <Card fluid>
-            <Image alt="" style={{ width: 420, height: 320 }} src={ex1} />
+            <Image alt="" src={ex1} />
             <Card.Header>header</Card.Header>
             <Card.Meta>Ingredients: </Card.Meta>
             <Card.Description>Time to Make: </Card.Description>
@@ -60,7 +60,7 @@ class Carousel extends Component {
         </Grid.Column>
         <Grid.Column>
           <Card fluid>
-            <Image alt="" style={{ width: 420, height: 320 }} src={ex2} />
+            <Image alt="" src={ex2} />
             <Card.Header>header</Card.Header>
             <Card.Meta>Ingredients: </Card.Meta>
             <Card.Description>Time to Make: </Card.Description>
@@ -68,7 +68,7 @@ class Carousel extends Component {
         </Grid.Column>
         <Grid.Column>
           <Card fluid>
-            <Image alt="" style={{ width: 420, height: 320 }} src={ex4} />
+            <Image alt="" src={ex4} />
             <Card.Header>header</Card.Header>
             <Card.Meta>Ingredients: </Card.Meta>
             <Card.Description>Time to Make: </Card.Description>
@@ -76,7 +76,7 @@ class Carousel extends Component {
         </Grid.Column>
         <Grid.Column>
           <Card fluid>
-            <Image alt="" style={{ width: 420, height: 320 }} src={ex5} />
+            <Image alt="" src={ex5} />
             <Card.Header>header</Card.Header>
             <Card.Meta>Ingredients: </Card.Meta>
             <Card.Description>Time to Make: </Card.Description>
@@ -84,7 +84,7 @@ class Carousel extends Component {
         </Grid.Column>
         <Grid.Column>
           <Card fluid>
-            <Image alt="" style={{ width: 420, height: 320 }} src={ex6} />
+            <Image alt="" src={ex6} />
             <Card.Header>header</Card.Header>
             <Card.Meta>Ingredients: </Card.Meta>
             <Card.Description>Time to Make: </Card.Description>
