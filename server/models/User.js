@@ -72,8 +72,9 @@ const RecipeSchema = new Schema(
   it's easier to integrate into mongoose and more clear what fields a Meal should have instead of just calling 
   it an Array of Objects in UserSchema's mealPlans field.
 */
-const MealSchema = new Schema({
-  /*
+const MealSchema = new Schema(
+  {
+    /*
   One meal plan has any number of recipes per seven days, so the structure should be something like:
 
   Object(){
@@ -114,12 +115,16 @@ const MealSchema = new Schema({
   }
 
   */
-  recipes: {
-    type: Array,
-    default: []
-  },
+    recipes: {
+      type: Array,
+      default: []
+    },
 
-  /*
+    days: {
+      type: Array,
+      default: []
+    },
+    /*
   Pantry used for this specific mealplan, initially at least, if recipes can be removed/changed mid meal plan,
   it could be trickier.
   
@@ -131,35 +136,37 @@ const MealSchema = new Schema({
   individual recipes and expect those to update based on new pantry, then historic pantry information may have to be
   stored, An array of pantries (which are already an array, so Array of arrays)
   */
-  pantry: {
-    type: Array,
-    default: []
-  },
+    pantry: {
+      type: Array,
+      default: []
+    },
 
-  /*
+    /*
   Assuming you need to generate a new plan to change the plan type, calories, personCount, etc.
   Then no need to store historic information per meal plan, just once
   */
-  // Histrorical Data
-  planType: Number,
-  calories: Object,
-  personCount: Number,
-  mealCount: Number,
+    // Histrorical Data
+    planType: Number,
+    calories: Object,
+    personCount: Number,
+    mealCount: Number,
 
-  // Use to update/push a new mealplan into the history
-  dateCreated: {
-    type: Date,
-    default: Date.now
+    // Use to update/push a new mealplan into the history
+    dateCreated: {
+      type: Date,
+      default: Date.now
+    },
+    lastUpdated: {
+      type: Date,
+      default: Date.now
+    },
+    status: {
+      type: String,
+      default: 'Currently generating meal plan'
+    }
   },
-  lastUpdated: {
-    type: Date,
-    default: Date.now
-  },
-  status: {
-    type: String,
-    default: 'Currently generating meal plan'
-  }
-});
+  { strict: false }
+);
 
 // Create Schema
 const UserSchema = new Schema({
