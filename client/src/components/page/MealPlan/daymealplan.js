@@ -36,7 +36,8 @@ class Mealplan extends React.Component {
             recipeSearchResults={
               !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                 ? ''
-                : this.state.currUser.mealPlans[1].recipes
+                : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1].days[0]
+                    .recipes
             }
           />
         </Grid>

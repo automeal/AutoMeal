@@ -44,7 +44,7 @@ class Mealplan extends React.Component {
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
                     : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
-                        .recipes
+                        .days[0].recipes
                 }
               />
             </Grid>
@@ -70,8 +70,8 @@ class Mealplan extends React.Component {
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 2]
-                        .recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[1].recipes
                 }
               />
             </Grid>
@@ -96,8 +96,8 @@ class Mealplan extends React.Component {
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 3]
-                        .recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[2].recipes
                 }
               />
             </Grid>
@@ -122,8 +122,8 @@ class Mealplan extends React.Component {
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 4]
-                        .recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[3].recipes
                 }
               />
             </Grid>
@@ -148,8 +148,8 @@ class Mealplan extends React.Component {
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 5]
-                        .recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[4].recipes
                 }
               />
             </Grid>
@@ -174,8 +174,8 @@ class Mealplan extends React.Component {
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 6]
-                        .recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[5].recipes
                 }
               />
             </Grid>
@@ -200,8 +200,8 @@ class Mealplan extends React.Component {
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 7]
-                        .recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[6].recipes
                 }
               />
             </Grid>

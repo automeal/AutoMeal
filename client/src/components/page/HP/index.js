@@ -3,7 +3,6 @@ import React from 'react';
 // import './Landing.css';
 import { Grid, Card } from 'semantic-ui-react';
 import HomeHead from '../../shared/HomeHead';
-import Carousel from '../../shared/Carousel';
 import axios from 'axios';
 import RecipeCard from '../../shared/RecipeCard';
 import InfiniteCarousel from 'react-leaf-carousel';
