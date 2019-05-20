@@ -20,6 +20,7 @@ What are you waiting for? Start cooking [now](https://automeal.herokuapp.com)!
 > **RAPID_API_KEY**, **JWT_SECRET**, and **PRODUCTION_MONGODB_URI**, as dictated below.  
 > You will also need to add MongoDB as an add-on  
 > **Resources -> Add-ons** and then enter **mLab MongoDB**
+> Heroku AutoMeal app not compatible with Firefox browser
 
 ### Source Compilation & Development
 
