@@ -94,12 +94,7 @@ class RecipeSearch extends Component {
         `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
           `&cuisine=${this.state.cuisine.join('%2C+')}` +
           `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
-          `&includeIngredients=${this.state.includeAdditionalIngredients
-            // DO NOT concat on call (call at end of this comment block)
-            // concat on react side and have includeAdditionalIngredients store all ingredients to be included
-            // this allows users to temporarily exclude items that live in their pantry
-            // .concat(this.state.currUser.pantry)
-            .join('%2C+')}` +
+          `&includeIngredients=${this.state.includeAdditionalIngredients.join('%2C+')}` +
           `&excludeIngredients=${this.state.excludeAdditionalIngredients.join('%2C+')}` +
           `&intolerances=${
             this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
@@ -188,6 +183,8 @@ class RecipeSearch extends Component {
                 !this.state.includeAdditionalIngredients ||
                 !this.state.includeAdditionalIngredients.length
                   ? ['no additional ingredients to include']
+                  : this.state.includePantry
+                  ? this.state.includeAdditionalIngredients.concat(this.state.currUser.pantry)
                   : this.state.includeAdditionalIngredients
               }
             />
