@@ -161,8 +161,8 @@ const MealSchema = new Schema(
       default: Date.now
     },
     status: {
-      type: String,
-      default: 'Currently generating meal plan'
+      type: Number,
+      default: 0
     }
   },
   { strict: false }

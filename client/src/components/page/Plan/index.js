@@ -85,6 +85,9 @@ class MealPlan extends Component {
     const weekly = this.state.currUser.planType === 7 ? true : false;
     const meal_empty =
       this.state.currUser.mealPlans === undefined || this.state.currUser.mealPlans.length < 1;
+    const meal_generating = meal_empty
+      ? false
+      : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1].status === 0;
 
     const weekly_mealplan = (
       <div className="ui fluid image">
@@ -112,7 +115,7 @@ class MealPlan extends Component {
               color="red"
               size="huge"
               loading={this.state.loader}
-              disabled={this.state.loader}
+              disabled={this.state.loader || meal_generating}
               animated
               onClick={this.generateMealPlan.bind(this)}
             >
@@ -164,7 +167,7 @@ class MealPlan extends Component {
               size="huge"
               animated
               loading={this.state.loader}
-              disabled={this.state.loader}
+              disabled={this.state.loader || meal_generating}
               onClick={this.generateMealPlan.bind(this)}
             >
               <Button.Content visible>Generate Meal Plan</Button.Content>

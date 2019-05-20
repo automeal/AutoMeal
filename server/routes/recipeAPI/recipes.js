@@ -200,9 +200,10 @@ router.post('/generateMealPlan/', async (req, res) => {
     planType: planType,
     calories: calories,
     mealCount: mealCount,
-    status: 'Currently generating meal plan'
+    status: 0
   });
   //return null;
+  await Users.update({ _id: _id }, { mealPlans: mealPlans });
 
   var params_string = '';
   for (var param in req.query) {
@@ -308,7 +309,7 @@ router.post('/generateMealPlan/', async (req, res) => {
     mealPlans[mealPlans.length - 1] = curMealPlan;
   }
 
-  mealPlans[mealPlans.length - 1]['status'] = 'Finished generating';
+  mealPlans[mealPlans.length - 1]['status'] = 1;
   //If all is well, update the mealPlans array with the latest mealplan
   await Users.update({ _id: _id }, { mealPlans: mealPlans });
   //console.log(user);
