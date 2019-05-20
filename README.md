@@ -98,6 +98,21 @@ Fill in your virtual pantry with items you keep in your kitchen so recipes found
 Step 4:
 Using the answers from your survey, recipes and/or a meal plan can be generated based off of your preferences. The possibilities are endless!
 
+
+### AutoMeal Features
+
+    1. Weekly or Daily Meal Planning
+    2. Search for new recipes 
+    3. Random recipe recommendations
+    4. View meal plan history
+    5. Update user and nutritional information (change survey info)
+    6. Low Fat Diet Calculation:
+        maxFat = ((maxCal * .15) / 9) / numMeals
+    7. Low Carb Diet Calculation:
+        maxCarb = ((maxCal * .20) / 4) / numMeals
+    8. Store pantry items in user dashboard
+        
+
 ### AutoMeal Future Iterations and Reflection:
 
 Future Iterations:
