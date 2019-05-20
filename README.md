@@ -77,12 +77,12 @@ Run development environment with
 ```
 npm run dev
 ```
+
 ### About AutoMeal
 
 Our goal is to create a web application that supplies users with recipes collected from the internet to form a daily or weekly meal plan based on the items they already have in their refrigerator or pantry and in accordance with their dietary and nutritional goals and limitations.
 
-Many people do not plan the meals they will eat during the day or week and this can waste time and money. In addition to this, many people do not have enough time to cook for themselves and they resort to eating out or ordering takeout. Planning your meals throughout the week can properly prepare you to eat healthier, save time, and save money. Oftentimes, people buy the same groceries over and over again but do not know exactly what they want to eat. By compiling recipes from the internet and allowing users to input the ingredients that they have on hand (or would like to eat), our application will output recipes and meal plans based on each user’s specific needs. 
-
+Many people do not plan the meals they will eat during the day or week and this can waste time and money. In addition to this, many people do not have enough time to cook for themselves and they resort to eating out or ordering takeout. Planning your meals throughout the week can properly prepare you to eat healthier, save time, and save money. Oftentimes, people buy the same groceries over and over again but do not know exactly what they want to eat. By compiling recipes from the internet and allowing users to input the ingredients that they have on hand (or would like to eat), our application will output recipes and meal plans based on each user’s specific needs.
 
 ### How to Use AutoMeal (User Guide)
 
@@ -98,11 +98,10 @@ Fill in your virtual pantry with items you keep in your kitchen so recipes found
 Step 4:
 Using the answers from your survey, recipes and/or a meal plan can be generated based off of your preferences. The possibilities are endless!
 
-
 ### AutoMeal Features
 
     1. Weekly or Daily Meal Planning
-    2. Search for new recipes 
+    2. Search for new recipes
     3. Random recipe recommendations
     4. View meal plan history
     5. Update user and nutritional information (change survey info)
@@ -111,7 +110,7 @@ Using the answers from your survey, recipes and/or a meal plan can be generated 
     7. Low Carb Diet Calculation:
         maxCarb = ((maxCal * .20) / 4) / numMeals
     8. Store pantry items in user dashboard
-        
+
 
 ### AutoMeal Future Iterations and Reflection:
 
@@ -123,10 +122,10 @@ Future Iterations:
     4. Interfacing with online retailers
     5. Allow for recipe “multiplication” so a user could add more serving sizes than the serving size provided by the recipe, and have the ingredients update to match the requirements for this augmented serving
 
-Reflection: 
-    
-Challenges we were able to overcome and future iterations from our requirements document that we were able to implement       include suggesting random recipes if the user is unsure of what to eat, as well as incorporating various cuisines into the     recipe search (i.e. Caribbean, American, Japanese, etc.). We were able to improve our Mobile UI through the use of             Semantic UI and fix the issues with our mobile display.  
-   
-Challenges we still face include the limitations of the Spoonacular API and the calls it is able to generate, as well as         finding an adequate number of unique recipes for users with very limited dietary restrictions.
-    
-More testing for users with various combinations of diets, intolerances, and health preferences is needed to ensure all       users have the same experience. 
+Reflection:
+  
+Challenges we were able to overcome and future iterations from our requirements document that we were able to implement include suggesting random recipes if the user is unsure of what to eat, as well as incorporating various cuisines into the recipe search (i.e. Caribbean, American, Japanese, etc.). We were able to improve our Mobile UI through the use of Semantic UI and fix the issues with our mobile display.
+
+Challenges we still face include the limitations of the Spoonacular API and the calls it is able to generate, as well as finding an adequate number of unique recipes for users with very limited dietary restrictions.
+  
+More testing for users with various combinations of diets, intolerances, and health preferences is needed to ensure all users have the same experience.
