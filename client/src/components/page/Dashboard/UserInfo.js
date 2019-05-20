@@ -4,6 +4,14 @@ import { Segment, Header } from 'semantic-ui-react';
 const UserInfo = props => {
   console.log(`currUser::::::`);
   console.log(Object.keys(props.currUser));
+  var planTypeAlpha = '';
+
+  if (props.currUser.planType === 7) {
+    planTypeAlpha = 'Weekly';
+  } else {
+    planTypeAlpha = 'Daily';
+  }
+
   return (
     <div>
       {/* OTHER INFO */}
@@ -15,14 +23,16 @@ const UserInfo = props => {
           <Header as="h5">Name: </Header> {props.currUser.full_name}
           <Header as="h5">Email: </Header> {props.currUser.email}
           <Header as="h5">Meals a Day: </Header> {props.currUser.mealCount}
-          <Header as="h5">Plan Type: </Header> {props.currUser.planType}
+          <Header as="h5">Plan Type: </Header> {planTypeAlpha}
           {/* <Header as="h5">Plan Size: </Header> */}
           <Header as="h5">Dietary Preferences: </Header>{' '}
           {!props.currUser.calories || !props.currUser.calories ? (
             ''
           ) : (
             <div>
-              <div>Calories:</div>
+              <div style={{ color: 'green' }}>
+                <b>Calories:</b>
+              </div>
               <div>min: {props.currUser.calories.min}</div>
               <div>max: {props.currUser.calories.max}</div>
             </div>

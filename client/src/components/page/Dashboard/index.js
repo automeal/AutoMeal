@@ -215,10 +215,10 @@ class Dashboard extends Component {
     });
   };
 
-  //s TO DO: Function to move item from pantry to grocery list
-  handleMove = () => {
-    console.log('B Click!');
-  };
+  //TO DO: Function to move item from pantry to grocery list
+  //handleMove = () => {
+  //  console.log('B Click!');
+  //};
 
   contactInfoUpdate = () => {
     const { newName, newEmail, newPassword, confirmNewPassword } = this.state;
@@ -272,6 +272,8 @@ class Dashboard extends Component {
           </Label>
         </Header>
         {/*Popup to edit user info*/}
+        {/*TO DO:*/}
+        {/* Need to add actual functionality to edit user information?! */}
         <Modal dimmer={dimmer} open={open} onClose={this.close} centered={true}>
           <Modal.Content scrolling>
             <Header as="h2" textAlign="center">
