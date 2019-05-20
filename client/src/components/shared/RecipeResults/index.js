@@ -14,10 +14,6 @@ const RecipeResults = props => {
         <Card.Group stackable itemsPerRow={props.itemsPerRow}>
           {!props.recipeSearchResults || !props.recipeSearchResults.length ? (
             <Dimmer active inverted>
-              <br />
-              <br />
-              <br />
-              <br />
               <Loader inverted>Loading</Loader>
             </Dimmer>
           ) : (

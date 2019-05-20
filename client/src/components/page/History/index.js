@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Grid } from 'semantic-ui-react';
-import Recipe from '../../shared/MealPlan';
+import RecipeResults from '../../shared/RecipeResults';
 
 class History extends React.Component {
   constructor(props) {
@@ -25,13 +25,15 @@ class History extends React.Component {
     return (
       <div className="DayView content-container">
         <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
-          <Recipe
-            recipeSearchResults={
-              !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
-                ? ''
-                : this.state.currUser.mealPlans.map((item, key) => item.recipes)
-            }
-          />
+          {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
+            ? ''
+            : this.state.currUser.mealPlans.map((recipes, key) => (
+                <RecipeResults
+                  header={`Week ${key + 1}`}
+                  itemsPerRow={3}
+                  recipeSearchResults={recipes.recipes}
+                />
+              ))}
         </Grid>
       </div>
     );

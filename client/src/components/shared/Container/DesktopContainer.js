@@ -51,6 +51,9 @@ class DesktopContainer extends Component {
           <Link to="/meal-plan">
             <Menu.Item as="a">Meal Plan</Menu.Item>
           </Link>
+          <Link to="/recipe_history">
+            <Menu.Item as="a">History Recipes</Menu.Item>
+          </Link>
           <Menu.Item position="right">
             <Link to="/login">
               <Button
