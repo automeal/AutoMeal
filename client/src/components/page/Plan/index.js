@@ -129,7 +129,7 @@ class MealPlan extends Component {
               href="/weekly_mealplan"
               color="green"
               size="huge"
-              disabled={meal_empty || this.state.loader}
+              disabled={meal_empty || this.state.loader || meal_generating}
               animated
             >
               <Button.Content visible>Weekly Meal Plan</Button.Content>
@@ -180,7 +180,7 @@ class MealPlan extends Component {
               href="/daily_mealplan"
               color="green"
               size="huge"
-              disabled={meal_empty || this.state.loader}
+              disabled={meal_empty || this.state.loader || meal_generating}
               animated
             >
               <Button.Content visible>Daily Meal Plan</Button.Content>
