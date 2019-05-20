@@ -1,18 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {
-  Divider,
-  Form,
-  Grid,
-  Header,
-  List,
-  Segment,
-  Icon,
-  Button,
-  Modal,
-  Label,
-  Message
-} from 'semantic-ui-react';
+import { Divider, Form, Grid, Header, Button, Modal, Label, Message } from 'semantic-ui-react';
 import Pantry from './Pantry';
 import DietaryRestrictions from './DietaryRestrictions';
 import Allergies from './Allergies';
@@ -35,10 +23,13 @@ class Dashboard extends Component {
       newEmail: '',
       newPassword: '',
       confirmNewPassword: '',
+      newMealsPerDay: undefined,
+      newPlanType: undefined,
+      newMinCals: undefined,
+      newMaxCals: undefined,
       successfulUpdate: false,
       updateSent: false
     };
-    //this.handleDelete = this.handleMove.bind(this);
   }
 
   componentDidMount() {
@@ -70,9 +61,6 @@ class Dashboard extends Component {
       return;
     }
 
-    //console.log(`currUser: ${this.state.currUser}`);
-    //console.log(`currProp: ${prop}, newItem: ${newItem}`);
-
     //Update state immediately, no need to to wait for the DB to update UI
     this.state.currUser[prop].push(newItem);
     this.setState({
@@ -87,7 +75,6 @@ class Dashboard extends Component {
       .then(() => {
         console.log('Database updated', prop, newItem);
       });
-    //console.log(`Hello, field: ${this.state.currUser[list]}, this.state[newItem]: ${newItem}`);
   };
 
   handleCheck = (event, result) => {
@@ -204,13 +191,50 @@ class Dashboard extends Component {
   //};
 
   contactInfoUpdate = () => {
-    const { newName, newEmail, newPassword, confirmNewPassword } = this.state;
-    const { currName, currEmail } = this.state.currUser;
+    const {
+      newName,
+      newEmail,
+      newPassword,
+      confirmNewPassword,
+      newMealsPerDay,
+      newPlanType,
+      newMaxCals,
+      newMinCals
+    } = this.state;
+    const { currName, currEmail, calories, mealCount, planType } = this.state.currUser;
     let newData = {};
     if (newName !== currName && newName !== '') newData.full_name = newName;
     if (newEmail !== currEmail && newEmail !== '') newData.email = newEmail;
+    if (newMinCals !== calories.min && newMinCals < calories.max && newMinCals !== undefined) {
+      newData.calories = { ...calories };
+      newData.calories.min = newMinCals;
+    }
+    if (newMaxCals !== calories.max && newMaxCals > calories.min && newMaxCals !== undefined) {
+      newData.calories = { ...calories };
+      newData.calories.max = newMaxCals;
+    }
+    if (
+      (newMealsPerDay == 2 || newMealsPerDay == 3 || newMealsPerDay == 5) &&
+      newMealsPerDay !== mealCount &&
+      newMealsPerDay !== 0
+    ) {
+      newData.mealCount = newMealsPerDay;
+    }
+    if (
+      (newPlanType == 1 || newPlanType == 7) &&
+      newPlanType !== planType &&
+      newPlanType !== undefined
+    )
+      newData.planType = newPlanType;
 
-    if (newData.full_name || newData.email)
+    console.log(newData);
+    if (
+      newData.full_name ||
+      newData.email ||
+      newData.calories ||
+      newData.mealCount ||
+      newData.planType
+    )
       axios.patch(`/api/users/${this.state.currUser.id}`, newData).then(res => {
         this.setState({
           currUser: { ...this.state.currUser, ...newData },
@@ -316,6 +340,45 @@ class Dashboard extends Component {
                         this.state.confirmNewPassword !== this.state.newPassword &&
                         this.state.newPassword !== ''
                       }
+                    />
+                  </Form.Field>
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Field>
+                    <label>Meals a Day (2, 3, or 5)</label>
+                    <Form.Input
+                      placeholder={this.state.currUser.mealCount}
+                      name="newMealsPerDay"
+                      value={this.state.newMealsPerDay}
+                      onChange={this.handleChange.bind(this)}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <label>Daily(1) or Weekly(7) Plan</label>
+                    <Form.Input
+                      placeholder={this.state.currUser.planType}
+                      name="newPlanType"
+                      value={this.state.newPlanType}
+                      onChange={this.handleChange.bind(this)}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <label>Dietary Preferences</label>
+                    <Form.Input
+                      placeholder={`Minimum Calories: ${
+                        !this.state.currUser.calories ? '' : this.state.currUser.calories.min
+                      }`}
+                      name="newMinCals"
+                      value={this.state.newMinCals}
+                      onChange={this.handleChange.bind(this)}
+                    />
+                    <Form.Input
+                      placeholder={`Maximum Calories: ${
+                        !this.state.currUser.calories ? '' : this.state.currUser.calories.max
+                      }`}
+                      name="newMaxCals"
+                      value={this.state.newMaxCals}
+                      onChange={this.handleChange.bind(this)}
                     />
                   </Form.Field>
                 </Form.Group>
