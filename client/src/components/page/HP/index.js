@@ -44,6 +44,7 @@ class HomePage extends React.Component {
         <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
           <Grid.Row>
             <Grid.Column>
+              {/*Top image header of home page*/}
               <HomeHead />
             </Grid.Column>
           </Grid.Row>

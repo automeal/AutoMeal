@@ -1,3 +1,10 @@
+// MOBILE VIEW OF OUR APPLICATION
+// Still has some bugs ... but mainly works
+// Bugs to Fix:
+// - Menu doesn't work on home page or landing page
+// - Menu doesn't work on meal plan page
+// - Basically doesn't work on any pages with a big image header :(
+
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, Container, Icon, Menu, Responsive, Segment, Sidebar } from 'semantic-ui-react';
@@ -53,6 +60,9 @@ class MobileContainer extends Component {
           </Link>
           <Link to="/meal-plan">
             <Menu.Item as="a">Meal Plan</Menu.Item>
+          </Link>
+          <Link to="/recipe-search">
+            <Menu.Item as="a">Recipe Search</Menu.Item>
           </Link>
         </Sidebar>
 

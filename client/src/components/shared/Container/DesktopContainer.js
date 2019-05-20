@@ -1,3 +1,5 @@
+// DESKTOP VIEW OF OUR APPLICATION
+
 import React, { Component } from 'react';
 import { Responsive, Visibility, Segment, Menu, Container, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
@@ -53,6 +55,9 @@ class DesktopContainer extends Component {
           </Link>
           <Link to="/recipe_history">
             <Menu.Item as="a">History Recipes</Menu.Item>
+          </Link>
+          <Link to="/recipe-search">
+            <Menu.Item as="a">Recipe Search</Menu.Item>
           </Link>
           <Menu.Item position="right">
             <Link to="/login">
