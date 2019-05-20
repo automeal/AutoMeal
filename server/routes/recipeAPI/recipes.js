@@ -192,7 +192,13 @@ router.get('/complexRecipe/', async (req, res) => {
 
   var params_string = '';
   for (var param in req.query) {
-    if (req.query[param] && req.query[param].constructor === Array) {
+    if (param == 'useMaxCarbs') {
+      params_string +=
+        '&maxCarbs=' + ((req.query.maxCalories * 0.2) / 4 / req.query.mealCount).toString();
+    } else if (param == 'useMaxFat') {
+      params_string +=
+        '&maxFat=' + ((req.query.maxCalories * 0.15) / 9 / req.query.mealCount).toString();
+    } else if (req.query[param] && req.query[param].constructor === Array) {
       //if ( req.query[param].length > 0)
       params_string += '&' + param + '=' + req.query[param].join('%2C');
     } else if (req.query[param]) {

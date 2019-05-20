@@ -62,7 +62,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route path="/recipe-search" component={RecipeSearch} />
+            <PrivateRoute path="/recipe-search" component={RecipeSearch} />
             <PrivateRoute path="/survey" component={Survey} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/home-page" component={HP} />

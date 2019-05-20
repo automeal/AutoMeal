@@ -103,7 +103,11 @@ class RecipeSearch extends Component {
           `&excludeIngredients=${this.state.excludeAdditionalIngredients.join('%2C+')}` +
           `&intolerances=${
             this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
-          }`
+          }` +
+          `&maxCalories=${this.state.currUser.calories.max}` +
+          `&mealCount=${this.state.currUser.mealCount}` +
+          `&useMaxCarbs=true` +
+          `&useMaxFat=true`
       )
       .then(res => {
         console.log(res);
