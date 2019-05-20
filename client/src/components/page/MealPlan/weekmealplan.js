@@ -38,10 +38,13 @@ class Mealplan extends React.Component {
               stackable
             >
               <RecipeResults
+                itemsPerRow={3}
+                header="Recipe Results"
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[0].recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[0].recipes
                 }
               />
             </Grid>
@@ -62,10 +65,13 @@ class Mealplan extends React.Component {
               stackable
             >
               <RecipeResults
+                itemsPerRow={3}
+                header="Recipe Results"
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[1].recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[1].recipes
                 }
               />
             </Grid>
@@ -85,10 +91,13 @@ class Mealplan extends React.Component {
               stackable
             >
               <RecipeResults
+                itemsPerRow={3}
+                header="Recipe Results"
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[2].recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[2].recipes
                 }
               />
             </Grid>
@@ -108,10 +117,13 @@ class Mealplan extends React.Component {
               stackable
             >
               <RecipeResults
+                itemsPerRow={3}
+                header="Recipe Results"
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[3].recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[3].recipes
                 }
               />
             </Grid>
@@ -131,10 +143,13 @@ class Mealplan extends React.Component {
               stackable
             >
               <RecipeResults
+                itemsPerRow={3}
+                header="Recipe Results"
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[4].recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[4].recipes
                 }
               />
             </Grid>
@@ -154,10 +169,13 @@ class Mealplan extends React.Component {
               stackable
             >
               <RecipeResults
+                itemsPerRow={3}
+                header="Recipe Results"
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[5].recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[5].recipes
                 }
               />
             </Grid>
@@ -177,10 +195,13 @@ class Mealplan extends React.Component {
               stackable
             >
               <RecipeResults
+                itemsPerRow={3}
+                header="Recipe Results"
                 recipeSearchResults={
                   !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                     ? ''
-                    : this.state.currUser.mealPlans[6].recipes
+                    : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1]
+                        .days[6].recipes
                 }
               />
             </Grid>

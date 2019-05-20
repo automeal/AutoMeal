@@ -1,7 +1,7 @@
 // import Nav from '../../shared/Nav';
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Container, Header, Button, Icon } from 'semantic-ui-react';
+import { Container, Header, Button, Icon, Loader, Dimmer } from 'semantic-ui-react';
 import food5 from '../../../Resources/food5.jpg';
 
 class MealPlan extends Component {
@@ -13,7 +13,8 @@ class MealPlan extends Component {
       allergies: '',
       dietary_restrictions: '',
 
-      open: false
+      open: false,
+      loader: false
     };
   }
   componentDidMount() {
@@ -64,7 +65,7 @@ class MealPlan extends Component {
       planType: this.state.currUser.planType,
       calories: this.state.currUser.calories
     };
-
+    this.setState({ loader: true });
     axios
       .post('/recipeAPI/recipes/generateMealPlan/' + params_string, options)
       .then(res => {
@@ -73,13 +74,21 @@ class MealPlan extends Component {
         this.state.currUser.mealPlans = data['mealPlans'];
         this.setState(this.state);
 
-        console.log('Success, latest meal plan:', data['mealPlans'][data['mealPlans'].length - 1]);
-        //this.props.history.push('/dashboard');
+        //console.log('Success, latest meal plan:', data['mealPlans'][data['mealPlans'].length - 1]);
+        if (this.state.currUser.planType === 7) {
+          this.props.history.push('/weekly_mealplan');
+        } else this.props.history.push('/daily_mealplan');
       })
       .catch(err => console.log(err));
   };
   render() {
     const weekly = this.state.currUser.planType === 7 ? true : false;
+    const meal_empty =
+      this.state.currUser.mealPlans === undefined || this.state.currUser.mealPlans.length < 1;
+    const meal_generating = meal_empty
+      ? false
+      : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1].status === 0;
+
     const weekly_mealplan = (
       <div className="ui fluid image">
         <img src={food5} alt="" />
@@ -100,11 +109,13 @@ class MealPlan extends Component {
                 marginBottom: 0
               }}
             />
+
             <Button
-              href="/weekly_mealplan"
               Button
               color="red"
               size="huge"
+              loading={this.state.loader}
+              disabled={this.state.loader || meal_generating}
               animated
               onClick={this.generateMealPlan.bind(this)}
             >
@@ -114,7 +125,13 @@ class MealPlan extends Component {
               </Button.Content>
             </Button>
 
-            <Button href="/weekly_mealplan" color="green" size="huge" animated>
+            <Button
+              href="/weekly_mealplan"
+              color="green"
+              size="huge"
+              disabled={meal_empty || this.state.loader}
+              animated
+            >
               <Button.Content visible>Weekly Meal Plan</Button.Content>
               <Button.Content hidden>
                 <Icon name="arrow right" />
@@ -145,11 +162,12 @@ class MealPlan extends Component {
               }}
             />
             <Button
-              href="/daily_mealplan"
               Button
               color="red"
               size="huge"
               animated
+              loading={this.state.loader}
+              disabled={this.state.loader || meal_generating}
               onClick={this.generateMealPlan.bind(this)}
             >
               <Button.Content visible>Generate Meal Plan</Button.Content>
@@ -158,7 +176,13 @@ class MealPlan extends Component {
               </Button.Content>
             </Button>
 
-            <Button href="/daily_mealplan" color="green" size="huge" animated>
+            <Button
+              href="/daily_mealplan"
+              color="green"
+              size="huge"
+              disabled={meal_empty || this.state.loader}
+              animated
+            >
               <Button.Content visible>Daily Meal Plan</Button.Content>
               <Button.Content hidden>
                 <Icon name="arrow right" />

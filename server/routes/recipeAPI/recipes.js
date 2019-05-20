@@ -13,6 +13,19 @@ function sleep(ms) {
   });
 }
 
+/**
+ * FROM https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 async function sendSpoonacularRequest(params_string) {
   var result = await unirest
     .get(
@@ -24,13 +37,24 @@ async function sendSpoonacularRequest(params_string) {
     .header('X-RapidAPI-Key', process.env.RAPID_API_KEY);
 
   var data = result.body.results;
+  var captures = [];
   for (var a in data) {
     var recipe = data[a];
+
     var ingredients = [];
     var missed_ingredients = [];
     var used_ingredients = [];
     var unused_ingredients = [];
     var all_ingredients = [];
+
+    if (
+      recipe === undefined ||
+      recipe.analyzedInstructions === undefined ||
+      recipe.analyzedInstructions[0] === undefined
+    ) {
+      console.log(recipe.analyzedInstructions);
+      continue;
+    }
 
     for (var b in recipe.analyzedInstructions[0].steps) {
       var step = recipe.analyzedInstructions[0].steps[b];
@@ -78,30 +102,32 @@ async function sendSpoonacularRequest(params_string) {
     data[a]['UNUSEDINGREDIENTS'] = unused_ingredients;
     data[a]['USEDINGREDIENTS'] = used_ingredients;
     data[a]['ALLINGREDIENTS'] = all_ingredients;
+
+    //console.log("About to update?")
     //break;
-
-    break;
-  }
-  return data;
-}
-
-async function updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes) {
-  for (var a in data) {
-    var recipe = data[a];
     var err,
-      doc = await Recipes.findOneAndUpdate({ id: recipe.id }, recipe, { upsert: true, new: true });
+      doc = await Recipes.findOneAndUpdate({ id: data[a].id }, data[a], {
+        upsert: true,
+        new: true
+      });
     if (err) {
       console.log(err);
       throw new Error('Bad Update? The heck');
       return err, doc;
       //return res.status(500).send( { error: err });
     }
+    captures.push(data[a]);
   }
+  return captures;
+}
 
+async function updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes) {
   var recipe = null;
-  //Choose random recipe, TO DO: Make sure recipes dont overlap, pick the best ones, etc
+
+  //Let's not choose a random recipe since it should be sorted by most releveant first
+  var rand = 0;
   while (data.length > 0) {
-    var rand = Math.floor(Math.random() * data.length);
+    //var rand = Math.floor(Math.random() * data.length);
     recipe = data[rand];
 
     if (alreadyUsedRecipes['arr'].includes(recipe.id)) {
@@ -114,15 +140,50 @@ async function updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes) {
   alreadyUsedRecipes.arr.push(recipe.id);
   console.log('alreadyused', alreadyUsedRecipes);
   //console.log("mealPlans", mealPlans);
-  console.log(
-    'Just dump recipes in array for now, meant to store only ids to save on storage space'
-  );
+
   mealPlans[mealPlans.length - 1]['recipes'].push(recipe);
 
   console.log('Recipe ID (from Spoonacular:', recipe.id);
 
   return mealPlans;
 }
+
+function chooseRecipe(keys, recipes_used_map) {
+  var recipe = null;
+
+  shuffle(keys);
+
+  //console.log(recipes_used_map['all']);
+  //console.log(keys);
+
+  for (var i = 0; i < keys.length; i++) {
+    var arr = recipes_used_map['all'][keys[i]]; //Get recipe arr
+
+    //var recipe = null;
+    for (var b = 0; b < arr.length; b++) {
+      if (arr[b] === undefined) console.log('index', b, 'undefined?');
+
+      //recipe = arr[0]; // Most relevant recipe first
+      if (arr[b] === undefined || recipes_used_map['used'].includes(arr[b].id)) {
+        continue;
+      }
+
+      recipe = arr[b];
+      break;
+    }
+
+    if (recipe !== null) {
+      recipes_used_map['used'].push(recipe.id);
+      recipes_used_map['all'][keys[i]] = arr;
+      return recipe;
+    }
+  }
+
+  console.log(recipes_used_map['used']);
+  console.log(recipe);
+  return recipe;
+}
+
 // @route   POST recipeAPI/recipes/generateMealPlan
 router.post('/generateMealPlan/', async (req, res) => {
   //const { query, cuisine, diet, includeIngredients, excludeIngredients, intolerances } = req.query;
@@ -133,14 +194,16 @@ router.post('/generateMealPlan/', async (req, res) => {
   var mealPlans = (await Users.findOne({ _id: _id }, { mealPlans: 1 }))['mealPlans'];
 
   mealPlans.push({
-    recipes: [],
+    //recipes: [],
+    days: [],
     created_on: Date.now,
     planType: planType,
     calories: calories,
     mealCount: mealCount,
-    status: 'Currently generating meal plan'
+    status: 0
   });
   //return null;
+  await Users.update({ _id: _id }, { mealPlans: mealPlans });
 
   var params_string = '';
   for (var param in req.query) {
@@ -151,34 +214,102 @@ router.post('/generateMealPlan/', async (req, res) => {
       params_string += '&' + param + '=' + req.query[param];
     }
   }
+
+  var count = '15';
   params_string = '?' + params_string.slice(1, params_string.length);
   params_string +=
-    '&number=10&limitLicense=false&offset=0&ranking=0&addRecipeInformation=true&instructionsRequired=true&fillIngredients=true';
+    '&number=' +
+    count +
+    '&limitLicense=false&offset=0&ranking=0&addRecipeInformation=true&instructionsRequired=true&fillIngredients=true';
 
   console.log('Param String (Server)', params_string);
 
   var breakfast_string = params_string + '&type=breakfast';
+  var recipes_map = {};
   var alreadyUsedRecipes = { arr: [] }; //javascript stuff, can't pass by reference without doing this
-  var data = await sendSpoonacularRequest(breakfast_string);
-  mealPlans = await updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes);
-  await sleep(200); //Don't hammer the recipe API
 
-  for (var i = 0; i < mealPlanCount; i++) {
-    console.log('MEAL PLAN COUNT LEFT', mealPlanCount - i);
-    //Alternate between main meal and anything else (breakfast unforatunately included)
-    if (i % 2 == 0) {
-      var data = await sendSpoonacularRequest(params_string);
-      mealPlans = await updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes);
-      await sleep(200);
-    } else {
-      var main_course_string = params_string + '&type=main course';
-      var data = await sendSpoonacularRequest(main_course_string);
-      mealPlans = await updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes);
-      await sleep(200);
+  var dish_types = [
+    'breakfast',
+    'main course',
+    'side dish',
+    'dessert',
+    'appetizer',
+    'salad',
+    'bread',
+    'soup'
+    //"beverage", "sauce", "drink"
+  ];
+
+  for (var a = 0; a < dish_types.length; a++) {
+    var dt = dish_types[a];
+    console.log('Collecting ', dt, 'recipes');
+    recipes_map[dt] = await sendSpoonacularRequest(params_string + '&type=' + dt);
+    await sleep(100); //Don't hammer the recipe API
+  }
+  console.log('Done Grabbing spoonacular recipes');
+
+  //console.log();
+
+  //var data = await sendSpoonacularRequest(breakfast_string);
+  //mealPlans = await updateMealPlan(data, _id, mealPlans, alreadyUsedRecipes);
+  var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  var recipes_used_map = {
+    used: [],
+    all: recipes_map
+  };
+
+  for (var b = 0; b < days.length; b++) {
+    var curMealPlan = mealPlans[mealPlans.length - 1];
+    curMealPlan.days.push({ recipes: [] });
+
+    switch (days[b]) {
+      case 'Monday':
+        console.log('day:', days[b]);
+        console.log(mealPlanCount);
+        curMealPlan.days[b]['recipes'].push(chooseRecipe(['breakfast'], recipes_used_map));
+
+        for (var i = 0; i < mealPlanCount; i++) {
+          //console.log('MEAL PLAN COUNT LEFT', mealPlanCount - i);
+          //Alternate between main meal and anything else (breakfast unforatunately included)
+          if (i % 2 == 0) {
+            curMealPlan.days[b]['recipes'].push(
+              chooseRecipe(
+                ['side dish', 'dessert', 'appetizer', 'salad', 'bread', 'soup'],
+                recipes_used_map
+              )
+            );
+          } else {
+            curMealPlan.days[b]['recipes'].push(chooseRecipe(['main course'], recipes_used_map));
+          }
+        }
+        break;
+      default:
+        console.log('def', days[b]);
+        curMealPlan.days[b]['recipes'].push(chooseRecipe(['breakfast'], recipes_used_map));
+
+        for (var i = 0; i < mealPlanCount; i++) {
+          //console.log('MEAL PLAN COUNT LEFT', mealPlanCount - i);
+          //Alternate between main meal and anything else (breakfast unforatunately included)
+          if (i % 2 == 0) {
+            curMealPlan.days[b]['recipes'].push(
+              chooseRecipe(
+                ['side dish', 'dessert', 'appetizer', 'salad', 'bread', 'soup'],
+                recipes_used_map
+              )
+            );
+          } else {
+            curMealPlan.days[b]['recipes'].push(chooseRecipe(['main course'], recipes_used_map));
+          }
+        }
+        break;
+      //throw new Error("Not a valid day");
     }
+
+    mealPlans[mealPlans.length - 1] = curMealPlan;
   }
 
-  mealPlans[mealPlans.length - 1]['status'] = 'Finished generating';
+  mealPlans[mealPlans.length - 1]['status'] = 1;
   //If all is well, update the mealPlans array with the latest mealplan
   await Users.update({ _id: _id }, { mealPlans: mealPlans });
   //console.log(user);

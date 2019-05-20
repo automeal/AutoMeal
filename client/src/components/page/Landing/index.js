@@ -8,6 +8,7 @@ import LandingHead from '../../shared/LandingHead';
 function Landing() {
   return (
     <div>
+      {/*Top image header of landing page*/}
       <LandingHead />
       <Segment style={{ padding: '8em 0em' }} vertical>
         <Container text>
@@ -84,15 +85,14 @@ function Landing() {
               <Header as="h3" style={{ fontSize: '2em' }}>
                 "It's so straight-forward!"
               </Header>
-              <p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
+              <p style={{ fontSize: '1.33em' }}>Thomas Brown</p>
             </Grid.Column>
             <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
               <Header as="h3" style={{ fontSize: '2em' }}>
                 "Trying out new recipes has never been easier."
               </Header>
-              <p style={{ fontSize: '1.33em', textAlign: 'center' }}>
-                <SearchBox route="ingredientSearch" />
-              </p>
+              <p style={{ fontSize: '1.33em' }}>Sasha Edwards</p>
+              <p style={{ fontSize: '1.33em', textAlign: 'center' }} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

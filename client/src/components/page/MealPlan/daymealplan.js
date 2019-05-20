@@ -10,8 +10,7 @@ class Mealplan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currUser: {},
-      selectedDay: this.getTodaysDate()
+      currUser: {}
     };
   }
   componentWillMount() {
@@ -20,33 +19,25 @@ class Mealplan extends React.Component {
       .then(user => {
         this.setState({ currUser: user.data });
         // this.state.currUser.mealPlans[0].recipes[0].title
-        console.log(`hello`);
+        console.log(`user data`);
         console.log(this.state.currUser);
       });
   }
 
-  getTodaysDate() {
-    return new Date(Date.now() - 60000 * new Date().getTimezoneOffset());
-  }
-  changeSelectedDay(newDay) {
-    this.setState({ selectedDay: newDay }, () => {});
-  }
   render() {
     return (
       <div className="DayView content-container">
-        <h1>AutoMeal Calendar</h1>
-        <DaySelect
-          selectedDay={this.state.selectedDay}
-          changeSelectedDay={this.changeSelectedDay.bind(this)}
-          day={this.state.selectedDay}
-        />
+        <h1>AutoMeal Daily Meal Plan</h1>
 
         <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
           <RecipeResults
+            header="Recipe Results"
+            itemsPerRow={3}
             recipeSearchResults={
               !this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
                 ? ''
-                : this.state.currUser.mealPlans[1].recipes
+                : this.state.currUser.mealPlans[this.state.currUser.mealPlans.length - 1].days[0]
+                    .recipes
             }
           />
         </Grid>

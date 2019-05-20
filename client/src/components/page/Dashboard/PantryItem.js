@@ -3,24 +3,25 @@ import { Icon, Label } from 'semantic-ui-react';
 import axios from 'axios';
 
 class PantryItem extends Component {
-
+  //Component view for pantry items in dashboard
   constructor(props) {
     super(props);
     //this.onIconClick.bind(this);
     //this.onLabelClick.bind(this);
   }
 
-  onIconClick(){
-    //Why 
+  onIconClick() {
+    //Why
     this.props.onIconClick(this.props.item, this.props.db_field_name);
   }
-  onLabelClick(){
+
+  onLabelClick() {
     this.props.onLabelClick();
   }
 
   //Basically, pass the parent's function as an argument, which shows up in this.props
   //Then, onclick, call that function, with another argument that was passed to this component,
-  //item, which is in this.props.item. Then, the parent handles the state stuff. 
+  //item, which is in this.props.item. Then, the parent handles the state stuff.
   render() {
     const divStyle = {
       margin: '5px',
@@ -28,12 +29,12 @@ class PantryItem extends Component {
     };
     return (
       <Label color="green" size="large" textAlign="center" style={divStyle}>
-        <Icon name="delete"  onClick={ this.onIconClick.bind(this) }/>
+        <Icon name="delete" onClick={this.onIconClick.bind(this)} />
         {'  '} {'  '}
         {this.props.item}
-        <Label.Detail>
+        {/*<Label.Detail>
           <Icon name="angle double right" onClick={this.onLabelClick.bind(this)} />
-        </Label.Detail>
+        </Label.Detail>*/}
       </Label>
     );
   }

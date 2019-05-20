@@ -261,7 +261,11 @@ class RecipeSearch extends Component {
         {!this.state.recipeSearchResults || !this.state.recipeSearchResults.length ? (
           ''
         ) : (
-          <RecipeResults recipeSearchResults={this.state.recipeSearchResults} />
+          <RecipeResults
+            itemsPerRow={3}
+            header="Recipe Results"
+            recipeSearchResults={this.state.recipeSearchResults}
+          />
         )}
       </Grid>
     );

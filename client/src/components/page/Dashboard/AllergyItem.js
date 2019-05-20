@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Icon, Label } from 'semantic-ui-react';
 
 class AllergyItem extends Component {
-
+  // Component view for allergies and diet restrictions in dashboard
   constructor(props) {
     super(props);
     //this.onIconClick.bind(this);
   }
 
-  onIconClick(){
+  onIconClick() {
     this.props.onIconClick(this.props.item, this.props.db_field_name);
   }
 
@@ -19,7 +19,7 @@ class AllergyItem extends Component {
     };
     return (
       <Label color="red" size="large" textAlign="center" style={divStyle}>
-        <Icon name="delete" onClick={ this.onIconClick.bind(this) }  />
+        <Icon name="delete" onClick={this.onIconClick.bind(this)} />
         {'  '} {'  '}
         {this.props.item}
       </Label>

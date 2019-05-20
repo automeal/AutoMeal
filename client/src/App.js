@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import 'font-awesome/css/font-awesome.css';
+// import 'font-awesome/css/font-awesome.css';
 
 import './global.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -23,6 +23,7 @@ import RecipeSearch from './components/page/RecipeSearch';
 import HowItWorks from './components/page/HowItWorks';
 import About from './components/page/About';
 import Contact from './components/page/Contact';
+import History from './components/page/History';
 
 import DesktopContainer from './components/shared/Container/DesktopContainer';
 import MobileContainer from './components/shared/Container/MobileContainer';
@@ -69,6 +70,7 @@ class App extends Component {
             <PrivateRoute path="/meal-plan" component={Plan} />
             <PrivateRoute path="/daily_mealplan" component={DayMealPlan} />
             <PrivateRoute path="/weekly_mealplan" component={WeekMealPlan} />
+            <PrivateRoute path="/recipe_history" component={History} />
             <Route path="/how-it-works" component={HowItWorks} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
