@@ -21,17 +21,35 @@ class History extends React.Component {
       });
   }
 
+  consolidateMealPlan(mealPlan) {
+    var recipes = [];
+
+    if (mealPlan.planType === 7) {
+      console.log('weekly');
+      for (var i = 0; i < mealPlan.days.length; i++) {
+        var day = mealPlan.days[i];
+        recipes = recipes.concat(day.recipes);
+      }
+    } else {
+      console.log('daily');
+      recipes = recipes.concat(mealPlan.days[0].recipes);
+    }
+    console.log('recipe');
+    console.log(recipes);
+    return recipes;
+  }
+
   render() {
     return (
       <div className="DayView content-container">
         <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
           {!this.state.currUser.mealPlans || !this.state.currUser.mealPlans.length
             ? ''
-            : this.state.currUser.mealPlans.map((recipes, key) => (
+            : this.state.currUser.mealPlans.map((mealPlan, key) => (
                 <RecipeResults
                   header={`Week ${key + 1}`}
                   itemsPerRow={3}
-                  recipeSearchResults={recipes.recipes}
+                  recipeSearchResults={this.consolidateMealPlan(mealPlan)}
                 />
               ))}
         </Grid>

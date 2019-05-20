@@ -186,15 +186,7 @@ class Survey extends Component {
       allergies: allergies,
       planType: planType,
       calories: calories,
-      mealCount: mealCount,
-      mealPlans: [
-        {
-          planType: planType,
-          calories: calories,
-          //'personCount':personCount,
-          mealCount: mealCount
-        }
-      ]
+      mealCount: mealCount
     };
 
     console.log('FROM SURVEY', updateObj);

@@ -83,6 +83,8 @@ class MealPlan extends Component {
   };
   render() {
     const weekly = this.state.currUser.planType === 7 ? true : false;
+    const meal_empty =
+      this.state.currUser.mealPlans === undefined || this.state.currUser.mealPlans.length < 1;
 
     const weekly_mealplan = (
       <div className="ui fluid image">
@@ -110,6 +112,7 @@ class MealPlan extends Component {
               color="red"
               size="huge"
               loading={this.state.loader}
+              disabled={this.state.loader}
               animated
               onClick={this.generateMealPlan.bind(this)}
             >
@@ -119,7 +122,13 @@ class MealPlan extends Component {
               </Button.Content>
             </Button>
 
-            <Button href="/weekly_mealplan" color="green" size="huge" animated>
+            <Button
+              href="/weekly_mealplan"
+              color="green"
+              size="huge"
+              disabled={meal_empty || this.state.loader}
+              animated
+            >
               <Button.Content visible>Weekly Meal Plan</Button.Content>
               <Button.Content hidden>
                 <Icon name="arrow right" />
@@ -155,6 +164,7 @@ class MealPlan extends Component {
               size="huge"
               animated
               loading={this.state.loader}
+              disabled={this.state.loader}
               onClick={this.generateMealPlan.bind(this)}
             >
               <Button.Content visible>Generate Meal Plan</Button.Content>
@@ -163,7 +173,13 @@ class MealPlan extends Component {
               </Button.Content>
             </Button>
 
-            <Button href="/daily_mealplan" color="green" size="huge" animated>
+            <Button
+              href="/daily_mealplan"
+              color="green"
+              size="huge"
+              disabled={meal_empty || this.state.loader}
+              animated
+            >
               <Button.Content visible>Daily Meal Plan</Button.Content>
               <Button.Content hidden>
                 <Icon name="arrow right" />
