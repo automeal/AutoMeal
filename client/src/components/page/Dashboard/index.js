@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Divider, Form, Grid, Header, List, Segment, Icon, Button, Modal, Label, Message } from 'semantic-ui-react';
+import { Divider, Form, Grid, Header, Button, Modal, Label, Message } from 'semantic-ui-react';
 import Pantry from './Pantry';
 import DietaryRestrictions from './DietaryRestrictions';
 import Allergies from './Allergies';
@@ -23,10 +23,13 @@ class Dashboard extends Component {
       newEmail: '',
       newPassword: '',
       confirmNewPassword: '',
+      newMealsPerDay: undefined,
+      newPlanType: undefined,
+      newMinCals: undefined,
+      newMaxCals: undefined,
       successfulUpdate: false,
       updateSent: false
     };
-    //this.handleDelete = this.handleMove.bind(this);
   }
 
   componentDidMount() {
@@ -58,9 +61,6 @@ class Dashboard extends Component {
       return;
     }
 
-    //console.log(`currUser: ${this.state.currUser}`);
-    //console.log(`currProp: ${prop}, newItem: ${newItem}`);
-
     //Update state immediately, no need to to wait for the DB to update UI
     this.state.currUser[prop].push(newItem);
     this.setState({
@@ -75,7 +75,6 @@ class Dashboard extends Component {
       .then(() => {
         console.log('Database updated', prop, newItem);
       });
-    //console.log(`Hello, field: ${this.state.currUser[list]}, this.state[newItem]: ${newItem}`);
   };
 
   handleCheck = (event, result) => {
@@ -83,70 +82,65 @@ class Dashboard extends Component {
   };
 
   handleCuisine = (event, res) => {
-    console.log("Cusine" , res);
+    console.log('Cusine', res);
     this.setState({ cuisine: [...this.state.cuisine, res.value[0]] });
     console.log(this.state.cuisine);
   };
 
-  generateMealPlan(){
-
+  generateMealPlan() {
     var intolerance_string = '';
-    if (this.state.filterAllergies) 
-      intolerance_string += "&intolerances=" + this.state.currUser.allergies.join('%2C+')
+    if (this.state.filterAllergies)
+      intolerance_string += '&intolerances=' + this.state.currUser.allergies.join('%2C+');
     var exclude_string = '';
     if (this.state.excludeAdditionalIngredients.length > 0)
-      exclude_string += "&excludeIngredients=" + this.state.excludeAdditionalIngredients.join('%2C+')
-    
+      exclude_string +=
+        '&excludeIngredients=' + this.state.excludeAdditionalIngredients.join('%2C+');
+
     console.log(this.state.currUser);
     var params_obj = {
-      "intolerances" : this.state.currUser.allergies,
-      "excludeIngredients" : this.state.excludeAdditionalIngredients,
-      "diet" : this.state.currUser.dietary_restrictions,
-      "cuisine" : this.state.cuisine,
-      "includeIngredients" : this.state.currUser.pantry,
-      "minCalories" :   100, //1800 too low for responses //this.state.currUser.mealPlans[0].calories.min,
-      "maxCalories" : this.state.currUser.calories.max,
+      intolerances: this.state.currUser.allergies,
+      excludeIngredients: this.state.excludeAdditionalIngredients,
+      diet: this.state.currUser.dietary_restrictions,
+      cuisine: this.state.cuisine,
+      includeIngredients: this.state.currUser.pantry,
+      minCalories: 100, //1800 too low for responses //this.state.currUser.mealPlans[0].calories.min,
+      maxCalories: this.state.currUser.calories.max
     };
-    console.log("PARAMS OBJ", params_obj);
+    console.log('PARAMS OBJ', params_obj);
 
-    var params_string = "";
-    for(var param in params_obj){
+    var params_string = '';
+    for (var param in params_obj) {
       console.log(param);
-      if (params_obj[param] && params_obj[param].constructor === Array){
-        //if ( params_obj[param].length > 0) 
-          params_string += "&" + param + "=" + params_obj[param].join('%2C');
-      }
-      else if(params_obj[param]){
-        params_string += "&" + param + "=" + params_obj[param];
+      if (params_obj[param] && params_obj[param].constructor === Array) {
+        //if ( params_obj[param].length > 0)
+        params_string += '&' + param + '=' + params_obj[param].join('%2C');
+      } else if (params_obj[param]) {
+        params_string += '&' + param + '=' + params_obj[param];
       }
     }
-    params_string = "?" + params_string.slice(1, params_string.length);
+    params_string = '?' + params_string.slice(1, params_string.length);
 
     //console.log("/recipeAPI/recipes/generateMealPlan/" + params_string);
     //return;
     var options = {
-      "mealCount" : this.state.currUser.mealCount,
-      "_id" : this.state.currUser.id,
-      "planType" : this.state.currUser.planType,
-      "calories" : this.state.currUser.calories
-    }
+      mealCount: this.state.currUser.mealCount,
+      _id: this.state.currUser.id,
+      planType: this.state.currUser.planType,
+      calories: this.state.currUser.calories
+    };
 
     axios
-      .post(
-        "/recipeAPI/recipes/generateMealPlan/" + params_string, options
-      )
-      .then(  (res) => {
+      .post('/recipeAPI/recipes/generateMealPlan/' + params_string, options)
+      .then(res => {
         var data = res.data;
-        
-        this.state.currUser.mealPlans = data["mealPlans"];
-        this.setState( this.state );
 
-        console.log("Success, latest meal plan:", data["mealPlans"][data["mealPlans"].length-1] )
+        this.state.currUser.mealPlans = data['mealPlans'];
+        this.setState(this.state);
+
+        console.log('Success, latest meal plan:', data['mealPlans'][data['mealPlans'].length - 1]);
         //this.props.history.push('/dashboard');
-
       })
       .catch(err => console.log(err));
-
   }
 
   getRecipe = () => {
@@ -221,13 +215,50 @@ class Dashboard extends Component {
   //};
 
   contactInfoUpdate = () => {
-    const { newName, newEmail, newPassword, confirmNewPassword } = this.state;
-    const { currName, currEmail } = this.state.currUser;
+    const {
+      newName,
+      newEmail,
+      newPassword,
+      confirmNewPassword,
+      newMealsPerDay,
+      newPlanType,
+      newMaxCals,
+      newMinCals
+    } = this.state;
+    const { currName, currEmail, calories, mealCount, planType } = this.state.currUser;
     let newData = {};
     if (newName !== currName && newName !== '') newData.full_name = newName;
     if (newEmail !== currEmail && newEmail !== '') newData.email = newEmail;
+    if (newMinCals !== calories.min && newMinCals < calories.max && newMinCals !== undefined) {
+      newData.calories = { ...calories };
+      newData.calories.min = newMinCals;
+    }
+    if (newMaxCals !== calories.max && newMaxCals > calories.min && newMaxCals !== undefined) {
+      newData.calories = { ...calories };
+      newData.calories.max = newMaxCals;
+    }
+    if (
+      (newMealsPerDay == 2 || newMealsPerDay == 3 || newMealsPerDay == 5) &&
+      newMealsPerDay !== mealCount &&
+      newMealsPerDay !== 0
+    ) {
+      newData.mealCount = newMealsPerDay;
+    }
+    if (
+      (newPlanType == 1 || newPlanType == 7) &&
+      newPlanType !== planType &&
+      newPlanType !== undefined
+    )
+      newData.planType = newPlanType;
 
-    if (newData.full_name || newData.email)
+    console.log(newData);
+    if (
+      newData.full_name ||
+      newData.email ||
+      newData.calories ||
+      newData.mealCount ||
+      newData.planType
+    )
       axios.patch(`/api/users/${this.state.currUser.id}`, newData).then(res => {
         this.setState({
           currUser: { ...this.state.currUser, ...newData },
@@ -333,6 +364,45 @@ class Dashboard extends Component {
                         this.state.confirmNewPassword !== this.state.newPassword &&
                         this.state.newPassword !== ''
                       }
+                    />
+                  </Form.Field>
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Field>
+                    <label>Meals a Day (2, 3, or 5)</label>
+                    <Form.Input
+                      placeholder={this.state.currUser.mealCount}
+                      name="newMealsPerDay"
+                      value={this.state.newMealsPerDay}
+                      onChange={this.handleChange.bind(this)}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <label>Daily(1) or Weekly(7) Plan</label>
+                    <Form.Input
+                      placeholder={this.state.currUser.planType}
+                      name="newPlanType"
+                      value={this.state.newPlanType}
+                      onChange={this.handleChange.bind(this)}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <label>Dietary Preferences</label>
+                    <Form.Input
+                      placeholder={`Minimum Calories: ${
+                        !this.state.currUser.calories ? '' : this.state.currUser.calories.min
+                      }`}
+                      name="newMinCals"
+                      value={this.state.newMinCals}
+                      onChange={this.handleChange.bind(this)}
+                    />
+                    <Form.Input
+                      placeholder={`Maximum Calories: ${
+                        !this.state.currUser.calories ? '' : this.state.currUser.calories.max
+                      }`}
+                      name="newMaxCals"
+                      value={this.state.newMaxCals}
+                      onChange={this.handleChange.bind(this)}
                     />
                   </Form.Field>
                 </Form.Group>
