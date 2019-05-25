@@ -112,6 +112,17 @@ Using the answers from your survey, recipes and/or a meal plan can be generated 
         maxCarb = ((maxCal * .20) / 4) / numMeals
     8. Store pantry items in user dashboard
 
+### AutoMeal Techonology Stack
+
+Frontend: React.js
+
+Backend: Node.js
+
+API: Spoonacular Food API
+
+Database: MongoDB
+
+Testing: Travis CI, Jest, Heroku
 
 ### AutoMeal Future Iterations and Reflection:
 
