@@ -26,9 +26,10 @@ class RecipeSearch extends Component {
       // Recipe Search Result
       recipeSearchResults: [],
       // For the popup
-      open: false
+      open: false,
+      madeRequest: false,
+      requestDone: false
     };
-    //this.handleDelete = this.handleMove.bind(this);
   }
 
   componentDidMount() {
@@ -89,6 +90,7 @@ class RecipeSearch extends Component {
   };
 
   getRecipe = () => {
+    this.setState({ madeRequest: true, requestDone: false });
     axios
       .get(
         `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
@@ -106,9 +108,11 @@ class RecipeSearch extends Component {
       )
       .then(res => {
         console.log(res);
-        this.setState({ recipeSearchResults: res.data });
+        this.setState({ recipeSearchResults: res.data, requestDone: true });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        throw err;
+      });
   };
 
   handleAdditionalIngredients = (name, value) => {
@@ -127,7 +131,7 @@ class RecipeSearch extends Component {
   render() {
     return (
       <Grid stackable style={{ padding: '20px' }}>
-        <Grid.Column width="4">
+        <Grid.Column width={this.state.madeRequest ? 4 : 6}>
           <Segment attached="top" textAlign="center" color="green">
             <Header as="h1">Complex Recipe Search</Header>
           </Segment>
@@ -259,8 +263,13 @@ class RecipeSearch extends Component {
             <Button onClick={this.getRecipe.bind(this)}>Search for Recipes</Button>
           </Segment>
         </Grid.Column>
-        {!this.state.recipeSearchResults || !this.state.recipeSearchResults.length ? (
+        {!this.state.madeRequest ? (
           ''
+        ) : (!this.state.recipeSearchResults || !this.state.recipeSearchResults.length) &&
+          this.state.requestDone ? (
+          <Grid.Column textAlign="center" width="12">
+            <List items={['No Results :(']} />
+          </Grid.Column>
         ) : (
           <RecipeResults
             itemsPerRow={3}

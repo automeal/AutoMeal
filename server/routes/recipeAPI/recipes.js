@@ -318,118 +318,41 @@ router.post('/generateMealPlan/', async (req, res) => {
 });
 
 // @route   GET recipeAPI/recipes/complexRecipe
-router.get('/complexRecipe/', async (req, res) => {
-  const { query, cuisine, diet, includeIngredients, excludeIngredients, intolerances } = req.query;
+router.get('/complexRecipe/', (req, res) => {
+  const {
+    query,
+    cuisine,
+    diet,
+    includeIngredients,
+    excludeIngredients,
+    intolerances,
+    maxCalories,
+    mealCount
+  } = req.query;
 
-  var params_string = '';
-  for (var param in req.query) {
-    if (param == 'useMaxCarbs') {
-      params_string +=
-        '&maxCarbs=' + ((req.query.maxCalories * 0.2) / 4 / req.query.mealCount).toString();
-    } else if (param == 'useMaxFat') {
-      params_string +=
-        '&maxFat=' + ((req.query.maxCalories * 0.15) / 9 / req.query.mealCount).toString();
-    } else if (req.query[param] && req.query[param].constructor === Array) {
-      //if ( req.query[param].length > 0)
-      params_string += '&' + param + '=' + req.query[param].join('%2C');
-    } else if (req.query[param]) {
-      params_string += '&' + param + '=' + req.query[param];
-    }
-  }
-  params_string = '?' + params_string.slice(1, params_string.length);
-  params_string +=
-    '&number=10&limitLicense=false&offset=0&ranking=0&addRecipeInformation=true&instructionsRequired=true&fillIngredients=true';
-
-  console.log(params_string);
-  console.log('x');
-
-  var result = await unirest
+  unirest
     .get(
       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com` +
         `/recipes/searchComplex` +
-        params_string
+        `?query=${query}` +
+        `&cuisine=${cuisine}` +
+        `&diet=${diet}` +
+        `&includeIngredients=${includeIngredients}` +
+        `&excludeIngredients=${excludeIngredients}` +
+        `&intolerances=${intolerances}` +
+        `&number=10` +
+        `&ranking=0` +
+        `&instructionsRequired=true` +
+        `&addRecipeInformation=true` +
+        `maxCarbs=${((maxCalories * 0.2) / 4 / mealCount).toString()}` +
+        `maxFat=${((maxCalories * 0.15) / 9 / mealCount).toString()}`
     )
     .header('X-RapidAPI-Host', 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com')
-    .header('X-RapidAPI-Key', process.env.RAPID_API_KEY);
-
-  //console.log("RESULTS", result.body.results);
-  //console.log("DATA",result.body.results);
-  var data = result.body.results;
-  for (var a in data) {
-    var recipe = data[a];
-    var ingredients = [];
-    var missed_ingredients = [];
-    var used_ingredients = [];
-    var unused_ingredients = [];
-    var all_ingredients = [];
-
-    for (var b in recipe.analyzedInstructions[0].steps) {
-      var step = recipe.analyzedInstructions[0].steps[b];
-
-      for (var c in step.ingredients) {
-        var ingredient = step.ingredients[c].name;
-        if (ingredients.indexOf(ingredient) === -1) {
-          ingredients.push(ingredient);
-          all_ingredients.push(ingredient);
-        }
-      }
-    }
-
-    for (var d in recipe.usedIngredients) {
-      var ingredient = recipe.usedIngredients[d].name;
-      if (used_ingredients.indexOf(ingredient) === -1) {
-        used_ingredients.push(ingredient);
-        all_ingredients.push(ingredient);
-      }
-    }
-
-    for (var e in recipe.unusedIngredients) {
-      var ingredient = recipe.unusedIngredients[e].name;
-      if (unused_ingredients.indexOf(ingredient) === -1) {
-        unused_ingredients.push(ingredient);
-        all_ingredients.push(ingredient);
-      }
-    }
-
-    for (var f in recipe.missedIngredients) {
-      var ingredient = recipe.missedIngredients[f].name;
-      if (missed_ingredients.indexOf(ingredient) === -1) {
-        missed_ingredients.push(ingredient);
-        all_ingredients.push(ingredient);
-      }
-    }
-
-    //console.log(ingredients);
-    //console.log(missed_ingredients);
-    //console.log(unused_ingredients);
-    //console.log(used_ingredients);
-
-    data[a]['INGREDIENTS'] = ingredients;
-    data[a]['MISSEDINGREDIENTS'] = missed_ingredients;
-    data[a]['UNUSEDINGREDIENTS'] = unused_ingredients;
-    data[a]['USEDINGREDIENTS'] = used_ingredients;
-    data[a]['ALLINGREDIENTS'] = all_ingredients;
-    //break;
-
-    break;
-  }
-
-  Recipes.findOneAndUpdate({ id: data[0].id }, data[0], { upsert: true, new: true }, function(
-    err,
-    doc
-  ) {
-    if (err) {
-      console.log(err);
-      return res.status(500).send({ error: err });
-    }
-    //return res.send(doc);
-    console.log('DOC', doc);
-    return res.json(result.body.results);
-  });
-
-  //res.json(result.body.results);
-
-  //console.log(result.body.results[0]);
+    .header('X-RapidAPI-Key', process.env.RAPID_API_KEY)
+    .end(result => {
+      console.log(result.body.results);
+      res.json(result.body.results);
+    });
 });
 
 // @route   GET recipeAPI/recipes/recipeAutoComplete

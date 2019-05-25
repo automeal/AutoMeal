@@ -4,7 +4,7 @@ import RecipeCard from '../RecipeCard';
 
 const RecipeResults = props => {
   return (
-    <Grid.Column width="12">
+    <Grid.Column width={props.width ? props.width : 12}>
       <Segment attached="top" color="green">
         <Header as="h2" textAlign="center">
           {props.header}
