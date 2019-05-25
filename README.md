@@ -126,7 +126,7 @@ More testing for users with various combinations of diets, intolerances, and hea
 
 2. Take Our Survey!
 
-![](./img/Survey/png)
+![](./img/Survey.png)
 
 3. Update Your Dashboard!
 
