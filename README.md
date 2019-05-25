@@ -141,3 +141,34 @@ Challenges we were able to overcome and future iterations from our requirements 
 Challenges we still face include the limitations of the Spoonacular API and the calls it is able to generate, as well as finding an adequate number of unique recipes for users with very limited dietary restrictions.
   
 More testing for users with various combinations of diets, intolerances, and health preferences is needed to ensure all users have the same experience.
+
+### AutoMeal User Flow (with Images)
+
+1. Register for AutoMeal!
+
+![](./img/LandingPage.png)
+
+![](./img/RegisterPage.png)
+
+2. Take Our Survey!
+
+![](./img/Survey.png)
+
+3. Update Your Dashboard!
+
+![](./img/Dashboard.png)
+
+4. Generate Your Meal Plan!
+
+![](./img/MealPlanLanding.png)
+
+![](./img/MealPlan.png)
+
+![](./img/MealPlanHistory.png)
+
+5. Explore New Recipes!
+
+![](./img/RecipeSearch.png)
+
+![](./img/Recommendations.png)
+
