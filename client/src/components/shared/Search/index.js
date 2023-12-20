@@ -27,10 +27,10 @@ class SearchBox extends Component {
       [event.target.value]: event.target.value
     });
     this.props.onChange(event);
-    axios.get(`/recipeAPI/${this.props.route}?search=${event.target.value}`).then(res => {
-      this.setState({ searchResults: res.data });
-      console.log(this.state.searchResults);
-    });
+    // axios.get(`/recipeAPI/${this.props.route}?search=${event.target.value}`).then(res => {
+    //   this.setState({ searchResults: res.data });
+    //   console.log(this.state.searchResults);
+    // });
   };
 
   handleSubmit = async event => {

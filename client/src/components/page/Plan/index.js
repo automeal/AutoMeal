@@ -66,20 +66,20 @@ class MealPlan extends Component {
       calories: this.state.currUser.calories
     };
     this.setState({ loader: true });
-    axios
-      .post('/recipeAPI/recipes/generateMealPlan/' + params_string, options)
-      .then(res => {
-        var data = res.data;
+    // axios
+    //   .post('/recipeAPI/recipes/generateMealPlan/' + params_string, options)
+    //   .then(res => {
+    //     var data = res.data;
 
-        this.state.currUser.mealPlans = data['mealPlans'];
-        this.setState(this.state);
+    //     this.state.currUser.mealPlans = data['mealPlans'];
+    //     this.setState(this.state);
 
-        //console.log('Success, latest meal plan:', data['mealPlans'][data['mealPlans'].length - 1]);
-        if (this.state.currUser.planType === 7) {
-          this.props.history.push('/weekly_mealplan');
-        } else this.props.history.push('/daily_mealplan');
-      })
-      .catch(err => console.log(err));
+    //     //console.log('Success, latest meal plan:', data['mealPlans'][data['mealPlans'].length - 1]);
+    //     if (this.state.currUser.planType === 7) {
+    //       this.props.history.push('/weekly_mealplan');
+    //     } else this.props.history.push('/daily_mealplan');
+    //   })
+    //   .catch(err => console.log(err));
   };
   render() {
     const weekly = this.state.currUser.planType === 7 ? true : false;

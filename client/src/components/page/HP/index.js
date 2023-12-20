@@ -30,15 +30,16 @@ class HomePage extends React.Component {
     //this.handleDelete = this.handleMove.bind(this);
   }
   getRecipe = () => {
-    axios
-      .get(`/recipeAPI/recipes/complexRecipe/?query=?`)
-      .then(res => {
-        this.setState({ recipeSearchResults: res.data });
-      })
-      .catch(err => console.log(err));
+    // axios
+    //   .get(`/recipeAPI/recipes/complexRecipe/?query=?`)
+    //   .then(res => {
+    //     this.setState({ recipeSearchResults: res.data });
+    //   })
+    //   .catch(err => console.log(err));
+        this.setState({ recipeSearchResults: {} });
   };
   render() {
-    this.getRecipe();
+    // this.getRecipe();
     return (
       <div>
         <Grid columns="equal" verticalAlign="middle" textAlign="center" divided stretched stackable>
