@@ -143,29 +143,29 @@ class Dashboard extends Component {
     //   .catch(err => console.log(err));
   }
 
-  getRecipe = () => {
-    axios
-      .get(
-        `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
-          `&cuisine=${this.state.cuisine.join('%2C+')}` +
-          `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
-          `&includeIngredients=${this.state.includeAdditionalIngredients
-            // DO NOT concat on call (call at end of this comment block)
-            // concat on react side and have includeAdditionalIngredients store all ingredients to be included
-            // this allows users to temporarily exclude items that live in their pantry
-            // .concat(this.state.currUser.pantry)
-            .join('%2C+')}` +
-          `&excludeIngredients=${this.state.excludeAdditionalIngredients.join('%2C+')}` +
-          `&intolerances=${
-            this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
-          }`
-      )
-      .then(res => {
-        console.log(res);
-        this.setState({ recipeSearchResults: res.data });
-      })
-      .catch(err => console.log(err));
-  };
+  // getRecipe = () => {
+  //   axios
+  //     .get(
+  //       `/recipeAPI/recipes/complexRecipe/?query=${this.state.desiredMeal}` +
+  //         `&cuisine=${this.state.cuisine.join('%2C+')}` +
+  //         `&diet=${this.state.currUser.dietary_restrictions.join('%2C+')}` +
+  //         `&includeIngredients=${this.state.includeAdditionalIngredients
+  //           // DO NOT concat on call (call at end of this comment block)
+  //           // concat on react side and have includeAdditionalIngredients store all ingredients to be included
+  //           // this allows users to temporarily exclude items that live in their pantry
+  //           // .concat(this.state.currUser.pantry)
+  //           .join('%2C+')}` +
+  //         `&excludeIngredients=${this.state.excludeAdditionalIngredients.join('%2C+')}` +
+  //         `&intolerances=${
+  //           this.state.filterAllergies ? this.state.currUser.allergies.join('%2C+') : ''
+  //         }`
+  //     )
+  //     .then(res => {
+  //       console.log(res);
+  //       this.setState({ recipeSearchResults: res.data });
+  //     })
+  //     .catch(err => console.log(err));
+  // };
 
   handleAdditionalIngredients = (name, value) => {
     console.log('name:');
