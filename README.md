@@ -35,6 +35,11 @@ Go into source folder
 cd AutoMeal
 ```
 
+Compatible with Node.js v16.20.2
+```
+nvm use16.20.2
+```
+
 Install dependencies with npm script
 
 ```
